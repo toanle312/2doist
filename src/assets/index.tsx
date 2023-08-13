@@ -8,9 +8,18 @@ import helpBtn from "./helpBtn.svg";
 import notiBtn from "./notiBtn.svg";
 import productivityBtn from "./productivityBtn.svg";
 import addTaskBtn from "./addTaskBtn.svg";
+import login from "./login.png";
+import logoOnly from "./logoOnly.svg";
+import google from "./google.svg";
+import facebook from "./facebook.svg";
+import menu from "./menu.svg";
+import searchIcon from "./searchIcon.svg";
+import searchIconActive from "./searchIconActive.svg";
+import closeBtn from "./closeBtn.svg";
 
 export {
   logo,
+  logoOnly,
   today,
   upcoming,
   filter,
@@ -18,8 +27,15 @@ export {
   homeBtn,
   helpBtn,
   notiBtn,
-  productivityBtn, 
-  addTaskBtn
+  productivityBtn,
+  addTaskBtn,
+  login,
+  google,
+  facebook,
+  menu,
+  searchIcon,
+  searchIconActive,
+  closeBtn
 };
 
 export const home =
