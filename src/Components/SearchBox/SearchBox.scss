@@ -1,0 +1,32 @@
+.input::-webkit-input-placeholder{
+  color: white;
+}
+
+.input:hover, :focus{
+  background-color: white;
+  &::-webkit-input-placeholder{
+    color: grey;
+  }
+  &~img{
+    filter: invert(0.5);
+  }
+}
+
+.input:focus{
+  color:black;
+  background-color: white;
+  &~.closeBtn{
+    display: block;
+    img{
+      filter: invert(0.5);
+    }
+  }
+}
+
+.closeBtn{
+  display: none;
+  border-radius: 2px;
+  &:hover{
+    background-color: rgba(0,0,0,0.1);
+  }
+}
