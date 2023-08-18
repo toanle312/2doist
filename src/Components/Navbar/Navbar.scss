@@ -1,0 +1,12 @@
+.navBtn{
+  padding: 3px 4px;
+  border-radius: 2px;
+  &:hover{
+    background-color: rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+}
+
+.mainLayout{
+  transition: left .25s cubic-bezier(0.4, 0, 0.2, 1);
+}

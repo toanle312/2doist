@@ -1,0 +1,32 @@
+.sidebarItem {
+  padding: 5px;
+  border-radius: 5px;
+  &:hover{
+    background-color: #eee;
+    cursor: pointer;
+  }
+}
+
+.sidebar{
+  position: absolute;
+  background-color: #fafafa;
+  transition: left .25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  overflow-y: auto;
+  min-width: 222px;
+  max-width: 395px;
+  height: 100vh;
+  &.show-sidebar {
+    left: 0;
+  }
+  &.hide-sidebar{
+    left: -395px
+  }
+}
+
+.resizeControl {
+  &:hover{
+    background-color: #eee;
+    cursor: col-resize;
+  }
+}

@@ -1,14 +1,14 @@
-import React from 'react'
-import Navbar from '../../Components/Navbar/Navbar'
+import React from 'react';
+import Navbar from '../../Components/Navbar/Navbar';
 
-const Homepage = () => {
+const HomePage : React.FC = () => {
   return (
     <div className="w-full">
       <div className="fixed top-0 left-0 w-full">
-        <Navbar/>
+        <Navbar />
       </div>
     </div>
   )
 }
 
-export default Homepage
+export default HomePage;
