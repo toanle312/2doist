@@ -1,6 +1,6 @@
 import React from 'react'
 
-const InboxPage = () => {
+const InboxPage : React.FC = () => {
   return (
     <div>InboxPage</div>
   )

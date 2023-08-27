@@ -1,27 +1,38 @@
 import React, { useState } from 'react';
 import { auth } from '../../firebase/config';
-import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import store from 'src/Redux/store';
 import { Provider } from 'react-redux';
+import LoadingPage from 'src/Pages/LoadingPage/LoadingPage';
 
-export default function AppProvider({ children }: any) {
+type Props = {
+  children: JSX.Element
+}
+
+const AppProvider : React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
+  /**
+   * Check login in app
+   */
   React.useEffect(() => {
     const unsubcribed = auth.onAuthStateChanged((user) => {
+      // if user is valid then redirect to home page
       if (user) {
+        console.log(user)
         setIsLoading(false);
         navigate('/home');
         return;
       }
+
+      // if user is invalid then stay in login page
       setIsLoading(false);
       navigate('/');
     });
 
-    // clean function
+    // cleanup function
     return () => {
       unsubcribed();
     };
@@ -29,7 +40,9 @@ export default function AppProvider({ children }: any) {
 
   return (
     <Provider store={ store }>
-      {isLoading ? <Spin style={{ position: 'fixed', inset: 0 }} /> : children}
+      {isLoading ? <LoadingPage/> : children}
     </Provider>
   );
 }
+
+export default AppProvider;

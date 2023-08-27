@@ -58,7 +58,7 @@ const Sidebar: React.FC<Props> = ({setSideBarWidth, sidebarWidth, isOpen}) => {
       onMouseDown={(e) => e.preventDefault()}
       className={`sidebar ${isOpen ? 'show-sidebar' : 'hide-sidebar'}`}
     >
-      <ul className="px-[15px] pt-[30px] flex-1 w-full">
+      <ul className="px-[15px] pt-[30px] flex-1 w-full h-[calc(100vh-48px)]">
         {SideBarItems.map((sideBarItem) => (
           <NavLink to={sideBarItem.path} key={sideBarItem.id} className="sidebarItem flex">
             <img src={sideBarItem.icon} alt={sideBarItem.content} />

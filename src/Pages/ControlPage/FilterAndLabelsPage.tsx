@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FilterAndLabelsPage = () => {
+const FilterAndLabelsPage : React.FC = () => {
   return (
     <div>FilterAndLabelsPage</div>
   )

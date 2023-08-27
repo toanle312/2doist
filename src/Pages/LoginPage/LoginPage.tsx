@@ -1,20 +1,18 @@
-import React, { useEffect } from "react";
 import { login, logo, logoOnly, google, facebook } from "../../assets";
 import { Button } from "antd";
-import { auth, googleProvider } from "../../firebase/config";
+import { facebookProvider, googleProvider } from "../../firebase/config";
 import { loginUser } from "../../Redux/Auth/AuthSlice";
-import { useAppDispatch, useAppSelector } from "../../Hooks";
-import { useNavigate } from "react-router-dom";
-import { PAGE_URL } from "src/Utils";
-import { stat } from "fs";
+import { useAppDispatch } from "../../Hooks";
 
-const LoginPage = () => {
+const LoginPage : React.FC = () => {
   const dispatch = useAppDispatch();
   const handleGoogleLogin = () => {
     dispatch(loginUser(googleProvider));
   };
-  const handleFacebookLogin = () => {};
+  const handleFacebookLogin = () => {
+    dispatch(loginUser(facebookProvider));
 
+  };
 
   return (
     <div className="w-full h-[100vh] flex justify-center font-sans">
@@ -37,7 +35,7 @@ const LoginPage = () => {
                   Login with Google
                 </div>
               </Button>
-              <Button className="w-[250px] text-[18px] h-auto">
+              <Button className="w-[250px] text-[18px] h-auto" disabled>
                 <div
                   className="flex gap-2 justify-center"
                   onClick={handleFacebookLogin}

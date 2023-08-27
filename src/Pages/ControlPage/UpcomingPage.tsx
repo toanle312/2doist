@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UpcomingPage = () => {
+const UpcomingPage : React.FC = () => {
   return (
     <div>UpcomingPage</div>
   )

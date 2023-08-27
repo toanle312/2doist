@@ -5,8 +5,10 @@ module.exports = {
     extend: {
       colors: {
         textColor : "#202020",
+        textGray: "#808080",
         primary: "#db4c3f",
-        hoverColor: "hsla(0,0%,100%,0.2)"
+        hoverColor: "hsla(0,0%,100%,0.2)",
+
       },
       boxShadow: {
         custom: '0 -1px 4px 6px rgb(222 72 58 / 0.1), 0 2px 4px 1px rgb(222 72 58 / 0.1)'

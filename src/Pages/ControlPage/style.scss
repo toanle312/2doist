@@ -1,0 +1,19 @@
+.today-header{
+  padding: 36px 55px 0;
+  margin-bottom: 24px;
+  display: flex;
+
+  &__content{
+    width: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+  }
+}
+
+.today-control{ 
+  display: flex;
+  background-color: black;
+  height: 800px;
+}

@@ -16,6 +16,7 @@ import menu from "./menu.svg";
 import searchIcon from "./searchIcon.svg";
 import searchIconActive from "./searchIconActive.svg";
 import closeBtn from "./closeBtn.svg";
+import loading from "./loading.png"
 
 export {
   logo,
@@ -35,7 +36,8 @@ export {
   menu,
   searchIcon,
   searchIconActive,
-  closeBtn
+  closeBtn,
+  loading
 };
 
 export const home =
