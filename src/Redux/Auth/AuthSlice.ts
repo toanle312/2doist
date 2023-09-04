@@ -1,7 +1,10 @@
-import { auth } from "../../firebase/config";
+import { auth, db } from "../../firebase/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
-import { AuthProvider, User, signInWithPopup } from "firebase/auth";
+import { AuthProvider, User, getAdditionalUserInfo, signInWithPopup } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
+import { addUser } from "src/firebase/provider";
+import { UserDTO } from "src/interface";
 
 const initialState: { isLoading: boolean; account: User } = {
   isLoading: false,
@@ -47,7 +50,16 @@ export const loginUser = createAsyncThunk(
   async (provider: AuthProvider, thunkAPI) => {
     try {
       const userData = await signInWithPopup(auth, provider);
+      const user = getAdditionalUserInfo(userData);
       localStorage.setItem("user", JSON.stringify(userData.user));
+      if(user?.isNewUser)
+      {
+        await addUser("users", {
+          _id: userData.user.uid,
+          fullName: userData.user.displayName,
+          email: userData.user.email
+        } as UserDTO);
+      }
       return userData.user;
     } catch (error: any) {
       message.error(`Login ${error.response.data.message}`);

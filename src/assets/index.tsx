@@ -16,7 +16,8 @@ import menu from "./menu.svg";
 import searchIcon from "./searchIcon.svg";
 import searchIconActive from "./searchIconActive.svg";
 import closeBtn from "./closeBtn.svg";
-import loading from "./loading.png"
+import loading from "./loading.png";
+import { FlagFilled, FlagOutlined } from "@ant-design/icons";
 
 export {
   logo,
@@ -37,7 +38,7 @@ export {
   searchIcon,
   searchIconActive,
   closeBtn,
-  loading
+  loading,
 };
 
 export const home =
@@ -48,3 +49,28 @@ export const education =
   "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4da.svg";
 export const routines =
   "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f501.svg";
+
+export const priorities = [
+  {
+    id: "P1",
+    name: "Priority 1",
+    icon: <FlagFilled style={{color: "#d1453b"}}/>
+  },
+  {
+    id: "P2",
+    name: "Priority 2",
+    icon: <FlagFilled style={{color: "#eb8909"}}/>
+
+  },
+  {
+    id: "P3",
+    name: "Priority 3",
+    icon: <FlagFilled style={{color: "#246fe0"}}/>
+
+  },
+  {
+    id: "P4",
+    name: "Priority 4",
+    icon: <FlagOutlined/>
+  },
+];

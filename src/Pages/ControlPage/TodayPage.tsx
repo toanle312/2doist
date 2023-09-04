@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./style.scss";
+import { collection, getDoc, getDocs } from "firebase/firestore";
+import { db } from "src/firebase/config";
+import { Todo } from "src/Components/Todo/Todo";
 
 const TodayPage: React.FC = () => {
   const [currentDay, setCurrentDay] = useState<string>("");
@@ -22,6 +25,18 @@ const TodayPage: React.FC = () => {
     };
   }, [handleScroll]);
 
+  useEffect(() => {
+    (async () => {
+      const data = await getDocs(collection(db, "todos"));
+      const filteredData = data.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id
+      }));
+
+      console.log(filteredData);
+    })()
+  }, [])
+
   return (
     <div onScroll={handleScroll}>
       <header className="today-header">
@@ -33,7 +48,11 @@ const TodayPage: React.FC = () => {
           <button>View</button>
         </div>
       </header>
-      <section className="today-control"></section>
+      <section className="today-control">
+        <div className="m-auto max-w-[800px] w-full">
+          <Todo/>
+        </div>
+      </section>
     </div>
   );
 };

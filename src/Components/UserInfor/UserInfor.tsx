@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Avatar, Button } from "antd";
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/Hooks";
 import { logoutUser } from "src/Redux/Auth/AuthSlice";
@@ -15,7 +15,7 @@ export const UserInfor = () => {
 
   return (
     <div>
-      <img
+      <Avatar
         src={userData?.photoURL as string}
         alt="avatar"
         className="w-[30px] rounded-[100%] relative border-solid border-[2px] border-white

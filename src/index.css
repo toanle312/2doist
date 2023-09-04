@@ -7,7 +7,6 @@
   --control-height: calc(100vh - 48px);
 }
 
-
 * {
   scroll-behavior: smooth;
 }

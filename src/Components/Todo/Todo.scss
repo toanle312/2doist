@@ -1,0 +1,17 @@
+.todo {
+  .icon {
+    padding: 2px;
+    border-radius: 100%;
+  }
+  &:hover {
+    color: #db4c3f;
+    cursor: pointer;
+
+    .icon {
+      padding: 2px;
+      background-color: #db4c3f;
+      color: #fff;
+      border-radius: 100%;
+    }
+  }
+}
