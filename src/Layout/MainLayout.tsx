@@ -10,7 +10,7 @@ const MainLayout: React.FC = () => {
 
   return (
     <div className="w-full">
-      <div className="fixed top-0 left-0 w-full">
+      <div className="w-full">
         {/* Navbar contain Sidebar */}
         <Navbar
           setIsOpenMenu={setIsOpenMenu}

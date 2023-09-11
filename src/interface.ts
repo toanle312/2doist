@@ -28,3 +28,18 @@ export interface TodoDTO {
   priority: number;
   subTask: TodoDTO;
 }
+
+export enum MonthShortHand{
+  Jan,
+  Feb,
+  Mar,
+  Apr,
+  May,
+  Jun,
+  Jul,
+  Aug,
+  Sep,
+  Oct,
+  Nov,
+  Dec, 
+}

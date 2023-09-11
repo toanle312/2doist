@@ -1,3 +1,6 @@
-.home-page{
+@import "../../Styles/styles.scss";
+
+.home-page {
   overflow-y: scroll;
+  margin-top: $navbar-height;
 }

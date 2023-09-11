@@ -3,27 +3,22 @@ import "./style.scss";
 import { collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "src/firebase/config";
 import { Todo } from "src/Components/Todo/Todo";
+import { useDate } from "src/Hooks/use-date";
 
 const TodayPage: React.FC = () => {
-  const [currentDay, setCurrentDay] = useState<string>("");
-  const [scrollY, setScrollY] = useState<number>();
+  const {today} = useDate();
 
-  useEffect(() => {
-    const nowDay = new Date();
-    setCurrentDay(nowDay.toDateString());
-  }, []);
+  // const handleScroll = useCallback(() => {
+  //   console.log("scroll");
+  // }, []);
 
-  const handleScroll = useCallback(() => {
-    console.log("scroll");
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll, true); // true <=> { capture: true }
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, true); // true <=> { capture: true }
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [handleScroll]);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll, false);
+  //   };
+  // }, [handleScroll]);
 
   useEffect(() => {
     (async () => {
@@ -32,18 +27,16 @@ const TodayPage: React.FC = () => {
         ...doc.data(),
         id: doc.id
       }));
-
-      console.log(filteredData);
     })()
   }, [])
 
   return (
-    <div onScroll={handleScroll}>
+    <div>
       <header className="today-header">
         <div className="today-header__content">
           <div>
             <span className="text-[20px] font-bold mr-2">Today</span>
-            <span className="text-[14px] text-textGray">{currentDay}</span>
+            <span className="text-[14px] text-textGray">{today}</span>
           </div>
           <button>View</button>
         </div>

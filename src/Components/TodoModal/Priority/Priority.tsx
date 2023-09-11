@@ -1,7 +1,8 @@
 import { CheckOutlined, FlagOutlined } from "@ant-design/icons";
 import { Popover } from "antd";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { priorities } from "src/assets";
+
 import "./Priority.scss";
 
 type Props = {
@@ -29,7 +30,7 @@ export const Priority: React.FC<Props> = ({ priority, setPriority }) => {
         {priority === p.id && <CheckOutlined />}
       </div>
     ));
-  }, [priority]);
+  }, [priority, setPriority]);
 
   return (
     <Popover
@@ -42,12 +43,7 @@ export const Priority: React.FC<Props> = ({ priority, setPriority }) => {
         setIsOpen(visible);
       }}
     >
-      <button
-        className="modal__control-item"
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
+      <button className="modal__control-item">
         {icon}
         {priority}
         {priority !== "Priority" && (
@@ -56,6 +52,7 @@ export const Priority: React.FC<Props> = ({ priority, setPriority }) => {
               e.stopPropagation();
               setPriority("Priority");
               setIcon(<FlagOutlined />);
+              setIsOpen(false);
             }}
           >
             X

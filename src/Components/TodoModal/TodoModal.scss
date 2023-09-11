@@ -1,8 +1,60 @@
-.priority{
-  padding: 4px;
-  border-radius: 5px;
-  &:hover{
-    cursor: pointer;
-    background-color: #ccc;
+@import "../../Styles/styles.scss";
+
+.modal{
+  display: flex;
+  min-width: 200px;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 16px;
+  padding: 6px;
+  border-radius: 10px;
+  border: solid 1px #808080;
+  width: 100%;
+  &__input{
+    border: none;
+    outline: none;
+  }
+  &__control{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0;
+    &-item{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 5px;
+      border: solid 1px #e6e6e6;
+      padding: 2px 4px;
+      font-size: 14px;
+      color: #666666;
+      &:hover{
+        background-color: $hover-color;
+      }
+    }
+  }
+  &__footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px;
+    font-size: 16px;
+
+    .btn{
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 600;
+      &:disabled{
+        cursor:not-allowed;
+        opacity: 0.5;
+        &:hover{
+          filter: brightness(1)
+        }
+      }
+      &:hover{
+        filter: brightness(0.9)
+      }
+    }
   }
 }

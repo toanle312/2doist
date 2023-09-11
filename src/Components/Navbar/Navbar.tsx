@@ -18,16 +18,9 @@ type Props = {
 
 const Navbar: React.FC<Props> = ({ isOpenMenu, setIsOpenMenu, sidebarWidth }) => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-
-  const handleLogout = () => {
-    dispatch(logoutUser());
-  };
-
-
   
   return (
-    <div className="w-full flex bg-primary p-2 justify-between">
+    <div className="w-full flex bg-primary p-2 justify-between fixed top-0 left-0">
       {/* Left control */}
       <div className="flex gap-1">
         <img

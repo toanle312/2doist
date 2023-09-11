@@ -1,0 +1,10 @@
+@import "../TodoModal.scss";
+
+.priority{
+  padding: 4px;
+  border-radius: 5px;
+  &:hover{
+    cursor: pointer;
+    background-color: #ccc;
+  }
+}

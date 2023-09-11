@@ -1,0 +1,31 @@
+@import "../../../Styles/styles.scss";
+
+.date-picker{
+
+  &__date{
+    display: flex;
+  }
+  &__header{
+    margin: 8px 0;
+    width: 100%;
+  }
+  &__month-list{
+    max-height: 200px;
+    overflow-y: scroll;
+    &::-webkit-scrollbar{
+      display: none;
+    }
+  }
+}
+
+.active-date{
+  border-radius: 100%;
+  background-color: $primary;
+  color: white;
+  font-weight: 500;
+}
+
+.disable-date{
+  color: rgb(209, 209, 209);
+  pointer-events: none;
+}

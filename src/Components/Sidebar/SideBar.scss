@@ -1,3 +1,5 @@
+@import "../../Styles/styles.scss";
+
 .sidebarItem {
   padding: 5px;
   border-radius: 5px;
@@ -8,14 +10,15 @@
 }
 
 .sidebar{
-  position: absolute;
+  position: fixed;
   background-color: #fafafa;
   transition: left .25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   overflow-y: auto;
   min-width: 222px;
   max-width: 395px;
-  height: 100vh;
+  height: calc(100vh - $navbar-height);
+  top: $navbar-height;
   &.show-sidebar {
     left: 0;
   }

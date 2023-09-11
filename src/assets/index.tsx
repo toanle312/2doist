@@ -16,6 +16,10 @@ import menu from "./menu.svg";
 import searchIcon from "./searchIcon.svg";
 import searchIconActive from "./searchIconActive.svg";
 import closeBtn from "./closeBtn.svg";
+import tomorrow from "./tomorrow.svg";
+import nextWeekend from "./nextWeekend.svg";
+import nextWeek from "./nextWeek.svg";
+import noDate from "./noDate.svg";
 import loading from "./loading.png";
 import { FlagFilled, FlagOutlined } from "@ant-design/icons";
 
@@ -39,6 +43,10 @@ export {
   searchIconActive,
   closeBtn,
   loading,
+  tomorrow,
+  nextWeek,
+  nextWeekend,
+  noDate
 };
 
 export const home =
@@ -54,23 +62,21 @@ export const priorities = [
   {
     id: "P1",
     name: "Priority 1",
-    icon: <FlagFilled style={{color: "#d1453b"}}/>
+    icon: <FlagFilled style={{ color: "#d1453b" }} />,
   },
   {
     id: "P2",
     name: "Priority 2",
-    icon: <FlagFilled style={{color: "#eb8909"}}/>
-
+    icon: <FlagFilled style={{ color: "#eb8909" }} />,
   },
   {
     id: "P3",
     name: "Priority 3",
-    icon: <FlagFilled style={{color: "#246fe0"}}/>
-
+    icon: <FlagFilled style={{ color: "#246fe0" }} />,
   },
   {
     id: "P4",
     name: "Priority 4",
-    icon: <FlagOutlined/>
+    icon: <FlagOutlined />,
   },
 ];

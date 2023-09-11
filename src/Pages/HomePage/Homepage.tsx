@@ -16,7 +16,7 @@ const HomePage: React.FC<Props> = ({ isOpenMenu, sidebarWidth }) => {
               marginLeft: sidebarWidth,
               width: `calc(100% - ${sidebarWidth}px`,
             }
-          : { margin: "auto" }
+          : { margin: "auto", marginTop: "48px" }
       }
       className="h-[--control-height] bg-white w-full text-black px-[55px] pb-[84px]
       home-page"

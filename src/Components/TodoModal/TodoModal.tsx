@@ -3,7 +3,8 @@ import { Popover } from "antd";
 import React, { useMemo, useState } from "react";
 import { priorities } from "src/assets";
 import "./TodoModal.scss";
-import { Priority } from "../Priority/Priority";
+import { Priority } from "./Priority/Priority";
+import { DueDate } from "./DueDate/DueDate";
 
 export type Props = {
   setAddTodo: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,10 +35,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo }) => {
         }}
       />
       <div className="modal__control">
-        <button className="modal__control-item">
-          <CalendarOutlined />
-          Due date
-        </button>
+        <DueDate/>
         <Priority priority={priority} setPriority={setPriority} />
         <button className="modal__control-item">
           <TagOutlined />

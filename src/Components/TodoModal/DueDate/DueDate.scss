@@ -1,0 +1,12 @@
+@import "../TodoModal.scss";
+
+.date-item{
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  justify-content: center;
+  &:hover{
+    background-color: $hover-color;
+    cursor: pointer;
+  }
+}
