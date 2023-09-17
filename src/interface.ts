@@ -22,7 +22,7 @@ export interface TodoDTO {
   _id: string;
   task: string;
   description: string;
-  dueDate: Date;
+  dueDate: string;
   project: string;
   comment: Array<CommentDTO>;
   priority: number;

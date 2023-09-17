@@ -1,6 +1,5 @@
 import React from "react";
 import LoginPage from "../Pages/LoginPage/LoginPage";
-import HomePage from "../Pages/HomePage/HomePage";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { NESTED_URL, PAGE_URL } from "../Utils";
 import {

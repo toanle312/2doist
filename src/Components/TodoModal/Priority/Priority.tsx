@@ -1,18 +1,20 @@
 import { CheckOutlined, FlagOutlined } from "@ant-design/icons";
 import { Popover } from "antd";
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { priorities } from "src/assets";
 
 import "./Priority.scss";
+import {TodoContext} from "src/Context/TodoContext";
 
-type Props = {
-  priority: string;
-  setPriority: React.Dispatch<React.SetStateAction<string>>;
-};
-
-export const Priority: React.FC<Props> = ({ priority, setPriority }) => {
+export const Priority: React.FC = () => {
   const [icon, setIcon] = useState<JSX.Element>(<FlagOutlined />);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const {
+
+    priority,
+    setPriority,
+  } = useContext(TodoContext);
 
   const priorityItem = useMemo(() => {
     return priorities.map((p) => (

@@ -1,6 +1,7 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState, useContext } from "react";
 import "./DatePicker.scss";
 import { v4 as uuidv4 } from "uuid";
+import { TodoContext } from "src/Context/TodoContext";
 
 type Props = {
   year: number;
@@ -106,6 +107,8 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
     return allDays;
   }, [month, year]);
 
+  const {dueDate, setDueDate} = useContext(TodoContext);
+
   return (
     <div className="flex flex-wrap">
       {days.map((day) => {
@@ -113,25 +116,32 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
           return (
             <span
               key={`${day + 1}/${month + 1}/${year}`}
-              className={`basis-[14.285%] py-2 text-center ${
-                isCurrentDate(currentDate as Date, year, month, day + 1)
-                  ? "active-date"
-                  : ""
-              }${
+              className={`basis-[14.285%] py-[4px] px-[6px] text-center text-extra-small cursor-pointer ${
                 isDisableDate(currentDate as Date, year, month, day + 1)
                   ? "disable-date"
                   : ""
+              } ${
+                isCurrentDate(currentDate as Date, year, month, day + 1)
+                  ? "text-primary font-medium"
+                  : ""
+              } ${
+                dueDate === new Date(year, month, day+1).toDateString()
+                  ? "active-date"
+                  : "hover-date"
               }`}
               onClick={() => {
-                console.log("hello");
+                setDueDate(new Date(year, month, day+1).toDateString())
               }}
             >
-              {day + 1}
+              <p>{day + 1}</p>
             </span>
           );
         }
         return (
-          <p key={uuidv4()} className="basis-[14.285%] py-2 text-center" />
+          <p
+            key={uuidv4()}
+            className="basis-[14.285%] py-2 text-center text-extra-small"
+          />
         );
       })}
     </div>

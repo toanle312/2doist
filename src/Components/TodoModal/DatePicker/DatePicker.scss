@@ -1,31 +1,42 @@
 @import "../../../Styles/styles.scss";
 
-.date-picker{
-
-  &__date{
+.date-picker {
+  font-size: 14px;
+  &__date {
     display: flex;
   }
-  &__header{
+  &__header {
     margin: 8px 0;
     width: 100%;
   }
-  &__month-list{
+  &__month-list {
     max-height: 200px;
     overflow-y: scroll;
-    &::-webkit-scrollbar{
+    &::-webkit-scrollbar {
       display: none;
     }
   }
 }
 
-.active-date{
-  border-radius: 100%;
-  background-color: $primary;
-  color: white;
-  font-weight: 500;
+.active-date {
+  p {
+    
+    border-radius: 100%;
+    background-color: $primary;
+    color: white;
+    font-weight: 500;
+  }
 }
 
-.disable-date{
+.hover-date:hover {
+  p {
+    border-radius: 100%;
+    background-color: #e6e6e6;
+  }
+}
+
+
+.disable-date {
   color: rgb(209, 209, 209);
   pointer-events: none;
 }

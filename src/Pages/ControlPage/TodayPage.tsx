@@ -4,9 +4,10 @@ import { collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "src/firebase/config";
 import { Todo } from "src/Components/Todo/Todo";
 import { useDate } from "src/Hooks/use-date";
+import TodoProvider from "src/Context/TodoContext";
 
 const TodayPage: React.FC = () => {
-  const {today} = useDate();
+  const { today } = useDate();
 
   // const handleScroll = useCallback(() => {
   //   console.log("scroll");
@@ -23,15 +24,15 @@ const TodayPage: React.FC = () => {
   useEffect(() => {
     (async () => {
       const data = await getDocs(collection(db, "todos"));
-      const filteredData = data.docs.map(doc => ({
+      const filteredData = data.docs.map((doc) => ({
         ...doc.data(),
-        id: doc.id
+        id: doc.id,
       }));
-    })()
-  }, [])
+    })();
+  }, []);
 
   return (
-    <div>
+    <div className="control">
       <header className="today-header">
         <div className="today-header__content">
           <div>
@@ -41,9 +42,16 @@ const TodayPage: React.FC = () => {
           <button>View</button>
         </div>
       </header>
+      <section className="todo-list">
+        <div className="m-auto max-w-[800px] w-full">
+          List
+        </div>
+      </section>
       <section className="today-control">
         <div className="m-auto max-w-[800px] w-full">
-          <Todo/>
+          <TodoProvider>
+            <Todo type="Today" />
+          </TodoProvider>
         </div>
       </section>
     </div>

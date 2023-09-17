@@ -1,20 +1,21 @@
-import { CalendarOutlined, FlagOutlined, TagOutlined } from "@ant-design/icons";
-import { Popover } from "antd";
-import React, { useMemo, useState } from "react";
-import { priorities } from "src/assets";
+import {  TagOutlined } from "@ant-design/icons";
+import React, { useContext } from "react";
 import "./TodoModal.scss";
 import { Priority } from "./Priority/Priority";
 import { DueDate } from "./DueDate/DueDate";
+import { TodoContext } from "src/Context/TodoContext";
 
 export type Props = {
   setAddTodo: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const TodoModal: React.FC<Props> = ({ setAddTodo }) => {
-  const [taskName, setTaskName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-
-  const [priority, setPriority] = useState<string>("Priority");
+  const {
+    taskName,
+    setTaskName,
+    description,
+    setDescription,
+  } = useContext(TodoContext);
 
   return (
     <div className="modal">
@@ -35,8 +36,8 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo }) => {
         }}
       />
       <div className="modal__control">
-        <DueDate/>
-        <Priority priority={priority} setPriority={setPriority} />
+        <DueDate />
+        <Priority />
         <button className="modal__control-item">
           <TagOutlined />
           Label

@@ -27,7 +27,7 @@ export const UserInfor = () => {
       ) : (
         <>
           <div
-            className="w-full h-full bg-transparent absolute top-0 right-0"
+            className="w-full h-[100vh] bg-transparent absolute top-0 right-0"
             onClick={() => setIsOpen(false)}
           ></div>
           <div className="absolute right-2 top-[45px]">

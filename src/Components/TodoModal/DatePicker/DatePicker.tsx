@@ -16,12 +16,12 @@ export const DatePicker: React.FC<Props> = ({ today }) => {
   return (
     <div className="date-picker">
       <div className="date-picker__header">
-        <p className="font-large text-medium">{today}</p>
+        <p className="font-large text-small">{today}</p>
       </div>
       <div className="date-picker__date">
         {dateInWeek.map((date) => {
           return (
-            <p key={date} className="basis-[14.285%] flex-1 text-center">
+            <p key={date} className="basis-[14.285%] text-extra-small flex-1 text-center">
               {date[0]}
             </p>
           );
