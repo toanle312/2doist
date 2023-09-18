@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState, useContext } from "react";
 import "./DatePicker.scss";
 import { v4 as uuidv4 } from "uuid";
 import { TodoContext } from "src/Context/TodoContext";
+import { DaysInWeek } from "src/interface";
+import { useDate } from "src/Hooks/use-date";
 
 type Props = {
   year: number;
@@ -12,7 +14,7 @@ type Props = {
 /**
  *
  * @param year current year
- * @param month current month
+ * @param month current month (0 - 11)
  * @returns number of days in month of year
  */
 const getDaysInMonth = (year: number, month: number) => {
@@ -27,7 +29,7 @@ const getDaysInMonth = (year: number, month: number) => {
 /**
  *
  * @param year current year
- * @param month current month
+ * @param month current month (0 - 11)
  * @param day current day
  * @returns day of the week of current day (0 - 6: SUN - MON - ... - SAT)
  */
@@ -40,7 +42,7 @@ const getCurrentDayInWeek = (year: number, month: number, day: number) => {
  *
  * @param currentDate current date
  * @param year current year
- * @param month current month
+ * @param month current month (0 - 11)
  * @param day current day
  * @returns check if current date is actual current date
  */
@@ -64,7 +66,7 @@ const isCurrentDate = (
  *
  * @param currentDate current date
  * @param year current year
- * @param month current month
+ * @param month current month (0 - 11)
  * @param day current day
  * @returns check if each date in month is validated by the current date
  */
@@ -107,7 +109,8 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
     return allDays;
   }, [month, year]);
 
-  const {dueDate, setDueDate} = useContext(TodoContext);
+  const { dueDate, setDueDate, setIsOpenDueDate, setShowDueDate, dateList } =
+    useContext(TodoContext);
 
   return (
     <div className="flex flex-wrap">
@@ -125,12 +128,32 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
                   ? "text-primary font-medium"
                   : ""
               } ${
-                dueDate === new Date(year, month, day+1).toDateString()
+                dueDate === new Date(year, month, day + 1).toDateString()
                   ? "active-date"
                   : "hover-date"
               }`}
               onClick={() => {
-                setDueDate(new Date(year, month, day+1).toDateString())
+                const date = new Date(year, month, day + 1).toDateString();
+                const findDate = dateList.find(
+                  (dateItem) => dateItem.date === date
+                );
+                if (findDate) {
+                  setDueDate(findDate.date);
+                  setShowDueDate({
+                    color: findDate.color,
+                    text:
+                      findDate.content === "No Date"
+                        ? "Due Date"
+                        : findDate.content,
+                  });
+                } else {
+                  setDueDate(date);
+                  setShowDueDate({
+                    color: "#692ec2",
+                    text: DaysInWeek[getCurrentDayInWeek(year, month, day + 1)],
+                  });
+                }
+                setIsOpenDueDate(false);
               }}
             >
               <p>{day + 1}</p>

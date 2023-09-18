@@ -1,5 +1,5 @@
 import {  TagOutlined } from "@ant-design/icons";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./TodoModal.scss";
 import { Priority } from "./Priority/Priority";
 import { DueDate } from "./DueDate/DueDate";
@@ -7,15 +7,30 @@ import { TodoContext } from "src/Context/TodoContext";
 
 export type Props = {
   setAddTodo: React.Dispatch<React.SetStateAction<boolean>>;
+  type: string;
 };
 
-export const TodoModal: React.FC<Props> = ({ setAddTodo }) => {
+export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
   const {
     taskName,
     setTaskName,
     description,
     setDescription,
+    handleCancelTodo,
+    handleAddTodo
   } = useContext(TodoContext);
+
+  const {setDueDate, setShowDueDate} = useContext(TodoContext)
+
+  useEffect(() => {
+    if(type === "Today"){
+      setDueDate(new Date().toDateString());
+      setShowDueDate({
+        text: "Today",
+        color: "#4b9244"
+      }); //
+    }
+  }, [])
 
   return (
     <div className="modal">
@@ -50,6 +65,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo }) => {
           <button
             className="bg-[#f5f5f5] text-black btn"
             onClick={() => {
+              handleCancelTodo();
               setAddTodo(false);
             }}
           >
@@ -58,6 +74,9 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo }) => {
           <button
             className="bg-primary text-white btn"
             disabled={taskName === ""}
+            onClick={() => {
+              handleAddTodo();
+            }}
           >
             Add task
           </button>

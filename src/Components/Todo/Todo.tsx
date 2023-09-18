@@ -12,24 +12,8 @@ import { priorities } from "src/assets";
 import { TodoModal } from "../TodoModal/TodoModal";
 import { TodoContext } from "src/Context/TodoContext";
 
-type Props = {
-  type: string;
-}
-
-export const Todo: React.FC<Props> = ({type}) => {
+export const Todo: React.FC = () => {
   const [addTodo, setAddTodo] = useState<boolean>(false);
-  const {setDueDate, setShowDueDate} = useContext(TodoContext)
-
-  useEffect(() => {
-    if(type === "Today"){
-      setDueDate(new Date().toDateString());
-      setShowDueDate({
-        text: "Today",
-        color: "#4b9244"
-      }); //
-    }
-  }, [])
-
 
   return (
     <div>
@@ -44,7 +28,7 @@ export const Todo: React.FC<Props> = ({type}) => {
           <p>Add task</p>
         </div>
       ) : (
-        <TodoModal setAddTodo={setAddTodo}/>
+        <TodoModal type="Today" setAddTodo={setAddTodo}/>
       )}
     </div>
   );

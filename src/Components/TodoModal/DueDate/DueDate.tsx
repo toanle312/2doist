@@ -1,18 +1,23 @@
 import { Popover } from "antd";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./DueDate.scss";
 import { CalendarOutlined } from "@ant-design/icons";
 import { DueDateItems } from "./DueDateItems";
 import { TodoContext } from "src/Context/TodoContext";
 
 export const DueDate = () => {
-  const { showDueDate, setDueDate, setShowDueDate } = useContext(TodoContext);
+  const { showDueDate, setDueDate, setShowDueDate, isOpenDueDate, setIsOpenDueDate } = useContext(TodoContext);
   return (
     <Popover
       placement="leftBottom"
       content={<DueDateItems />}
       arrow={false}
       trigger="click"
+      open={isOpenDueDate}
+      onOpenChange={(visible) => {
+        setIsOpenDueDate(visible);
+      }}
+      
     >
       <button
         className="modal__control-item"

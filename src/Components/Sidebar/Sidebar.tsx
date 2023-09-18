@@ -56,7 +56,7 @@ const Sidebar: React.FC<Props> = ({setSideBarWidth, sidebarWidth, isOpen}) => {
       ref={sidebarRef}
       style={{ width: sidebarWidth }}
       onMouseDown={(e) => e.preventDefault()}
-      className={`sidebar ${isOpen ? 'show-sidebar' : 'hide-sidebar'} fixed`}
+      className={`sidebar ${isOpen ? 'show-sidebar' : 'hide-sidebar'}`}
     >
       <ul className="px-[15px] pt-[30px] flex-1 w-full h-[calc(100vh-48px)]">
         {SideBarItems.map((sideBarItem) => (

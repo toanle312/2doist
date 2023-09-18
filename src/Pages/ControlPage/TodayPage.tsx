@@ -28,6 +28,7 @@ const TodayPage: React.FC = () => {
         ...doc.data(),
         id: doc.id,
       }));
+      console.log(filteredData)
     })();
   }, []);
 
@@ -50,7 +51,7 @@ const TodayPage: React.FC = () => {
       <section className="today-control">
         <div className="m-auto max-w-[800px] w-full">
           <TodoProvider>
-            <Todo type="Today" />
+            <Todo/>
           </TodoProvider>
         </div>
       </section>

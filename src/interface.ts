@@ -19,17 +19,16 @@ export interface CommentDTO {
   createAt: Date;
 }
 export interface TodoDTO {
-  _id: string;
-  task: string;
+  taskName: string;
   description: string;
   dueDate: string;
-  project: string;
-  comment: Array<CommentDTO>;
+  project?: string;
+  comment?: Array<CommentDTO>;
   priority: number;
-  subTask: TodoDTO;
+  subTask?: TodoDTO;
 }
 
-export enum MonthShortHand{
+export enum MonthShortHand {
   Jan,
   Feb,
   Mar,
@@ -41,5 +40,23 @@ export enum MonthShortHand{
   Sep,
   Oct,
   Nov,
-  Dec, 
+  Dec,
+}
+
+export enum DaysInWeek {
+  Sun,
+  Mon,
+  Tue,
+  Wed,
+  Thurs,
+  Fri,
+  Sat,
+}
+
+export enum Priority {
+  "Priority" = 0,
+  "P1" = 1,
+  "P2" = 2,
+  "P3" = 3,
+  "P4" = 4
 }

@@ -2,7 +2,7 @@
   color: white;
 }
 
-.input:hover, :focus{
+.input:hover,.input:focus{
   background-color: white;
   &::-webkit-input-placeholder{
     color: grey;
