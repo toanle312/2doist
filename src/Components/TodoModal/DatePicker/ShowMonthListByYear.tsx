@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {  } from "react";
 import { MonthList } from "./MonthList";
 import { MonthShortHand } from "src/interface";
 type Props = {

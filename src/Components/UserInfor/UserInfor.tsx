@@ -1,5 +1,5 @@
 import { Avatar, Button } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/Hooks";
 import { logoutUser } from "src/Redux/Auth/AuthSlice";
 

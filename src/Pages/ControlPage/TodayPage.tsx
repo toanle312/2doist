@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./style.scss";
-import { collection, getDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "src/firebase/config";
 import { Todo } from "src/Components/Todo/Todo";
 import { useDate } from "src/Hooks/use-date";

@@ -4,10 +4,6 @@ import SearchBox from "../SearchBox/SearchBox";
 import "./Navbar.scss";
 import { useNavigate } from "react-router-dom";
 import { NESTED_URL } from "../../Utils";
-import { Button } from "antd";
-import { useAppDispatch, useAppSelector } from "../../Hooks";
-import authSlice, { logoutUser } from "../../Redux/Auth/AuthSlice";
-import { auth } from "../../firebase/config";
 import { UserInfor } from "../UserInfor/UserInfor";
 
 type Props = {

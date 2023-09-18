@@ -1,8 +1,7 @@
-import { auth, db } from "../../firebase/config";
+import { auth } from "../../firebase/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { AuthProvider, User, getAdditionalUserInfo, signInWithPopup } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
 import { addUser } from "src/firebase/provider";
 import { UserDTO } from "src/interface";
 
@@ -24,18 +23,19 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.pending, (state, action) => {
+      // underscore can be used for ignoring function parameters (_param => ignore param)
+      .addCase(loginUser.pending, (state, _action) => {
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.account = action?.payload as User;
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state, _action) => {
         state.isLoading = true;
         state.account = {} as User;
       })
-      .addCase(logoutUser.pending, (state, action) => {
+      .addCase(logoutUser.pending, (state, _action) => {
         state.isLoading = true;
       })
       .addCase(logoutUser.fulfilled, (state, action) => {

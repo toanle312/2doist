@@ -1,16 +1,9 @@
 import {
-  CalendarOutlined,
-  FlagFilled,
-  FlagOutlined,
-  PlusOutlined,
-  TagOutlined,
+  PlusOutlined
 } from "@ant-design/icons";
-import React, { useMemo, useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import "./Todo.scss";
-import { Popover } from "antd";
-import { priorities } from "src/assets";
 import { TodoModal } from "../TodoModal/TodoModal";
-import { TodoContext } from "src/Context/TodoContext";
 
 export const Todo: React.FC = () => {
   const [addTodo, setAddTodo] = useState<boolean>(false);

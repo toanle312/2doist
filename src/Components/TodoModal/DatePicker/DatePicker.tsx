@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import "./DatePicker.scss";
-import { MonthList } from "./MonthList";
 import { ShowMonthListByYear } from "./ShowMonthListByYear";
 
 type Props = {

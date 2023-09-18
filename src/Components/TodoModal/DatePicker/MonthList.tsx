@@ -1,41 +1,14 @@
-import React, { useEffect, useMemo, useState, useContext } from "react";
+import React, { useMemo, useContext } from "react";
 import "./DatePicker.scss";
 import { v4 as uuidv4 } from "uuid";
 import { TodoContext } from "src/Context/TodoContext";
 import { DaysInWeek } from "src/interface";
-import { useDate } from "src/Hooks/use-date";
+import { getCurrentDayInWeek, getDaysInMonth } from "src/Utils";
 
 type Props = {
   year: number;
   month: number;
   currentDate?: Date;
-};
-
-/**
- *
- * @param year current year
- * @param month current month (0 - 11)
- * @returns number of days in month of year
- */
-const getDaysInMonth = (year: number, month: number) => {
-  const date = new Date(year, month, 0);
-
-  if (!isNaN(date.getDate())) {
-    return Array.from(Array(date?.getDate())?.keys());
-  }
-  return [];
-};
-
-/**
- *
- * @param year current year
- * @param month current month (0 - 11)
- * @param day current day
- * @returns day of the week of current day (0 - 6: SUN - MON - ... - SAT)
- */
-const getCurrentDayInWeek = (year: number, month: number, day: number) => {
-  const date = new Date(year, month, day);
-  return date.getDay();
 };
 
 /**
