@@ -7,8 +7,10 @@ import {
   nextWeekend as nextWeekendIcon,
   noDate,
 } from "src/assets";
-import { addTodo } from "src/firebase/provider";
+import { addTodo } from "src/Redux/Todos/TodosSlice";
 import { Priority, TodoDTO } from "src/interface";
+import { useDispatch } from "react-redux";
+import { useAppDispatch } from "src/Hooks";
 
 export const TodoContext = createContext<{
   taskName: string;
@@ -26,6 +28,7 @@ export const TodoContext = createContext<{
   dateList: DateList[];
   handleAddTodo: () => void;
   handleCancelTodo: () => void;
+  isLoadingAddTodo: boolean;
 }>({} as any);
 
 type ShowDueDate = {
@@ -51,6 +54,7 @@ const TodoProvider = ({ children }: any) => {
     text: "Due Date",
   });
   const [isOpenDueDate, setIsOpenDueDate] = useState<boolean>(false);
+  const [isLoadingAddTodo, setIsLoadingAddTodo] = useState<boolean>(false);
 
   const { today, tomorrow, nextWeek, nextWeekend } = useDate();
   const dateList = useMemo(() => {
@@ -93,25 +97,23 @@ const TodoProvider = ({ children }: any) => {
     ];
   }, [today, tomorrow, nextWeek, nextWeekend]);
 
+  const dispatch = useAppDispatch();
+
   const handleAddTodo = async () => {
-    try {
-      await addTodo("todos", {
-        taskName,
-        description,
-        priority: Priority[priority as keyof typeof Priority],
-        dueDate,
-      } as TodoDTO);
-    } catch (error) {
-      console.error(error);
-      throw new Error("Can not add new todo");
-    }
-    
-    console.log({
-      taskName,
-      description,
-      priority,
-      dueDate,
-    });
+    setIsLoadingAddTodo(false);
+    await dispatch(
+      addTodo({
+        group: "todos",
+        todo: {
+          taskName,
+          priority: Priority[priority as keyof typeof Priority],
+          description,
+          dueDate,
+        } as TodoDTO,
+      })
+    );
+    setIsLoadingAddTodo(true);
+
   };
 
   const handleCancelTodo = () => {
@@ -139,6 +141,7 @@ const TodoProvider = ({ children }: any) => {
         dateList,
         handleAddTodo,
         handleCancelTodo,
+        isLoadingAddTodo
       }}
     >
       {children}

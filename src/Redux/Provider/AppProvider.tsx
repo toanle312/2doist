@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { auth } from '../../firebase/config';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { auth } from "../../firebase/config";
+import { useNavigate } from "react-router-dom";
 
-import store from 'src/Redux/store';
-import { Provider } from 'react-redux';
-import LoadingPage from 'src/Pages/LoadingPage/LoadingPage';
+import store from "src/Redux/store";
+import { Provider } from "react-redux";
+import LoadingPage from "src/Pages/LoadingPage/LoadingPage";
+import { PAGE_URL } from "src/Utils";
 
 type Props = {
-  children: JSX.Element
-}
+  children: JSX.Element;
+};
 
-const AppProvider : React.FC<Props> = ({ children }) => {
+const AppProvider: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,15 +22,17 @@ const AppProvider : React.FC<Props> = ({ children }) => {
     const unsubcribed = auth.onAuthStateChanged((user) => {
       // if user is valid then redirect to home page
       if (user) {
-        console.log(user)
+        console.log(user);
         setIsLoading(false);
-        navigate('/home');
+        if (location.pathname === PAGE_URL.LOGIN || location.pathname === "/") {
+          navigate(PAGE_URL.HOME);
+        }
         return;
       }
 
       // if user is invalid then stay in login page
       setIsLoading(false);
-      navigate('/');
+      navigate("/");
     });
 
     // cleanup function
@@ -39,10 +42,8 @@ const AppProvider : React.FC<Props> = ({ children }) => {
   }, []);
 
   return (
-    <Provider store={ store }>
-      {isLoading ? <LoadingPage/> : children}
-    </Provider>
+    <Provider store={store}>{isLoading ? <LoadingPage /> : children}</Provider>
   );
-}
+};
 
 export default AppProvider;

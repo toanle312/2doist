@@ -10,7 +10,8 @@ import {
 } from "../Pages/ControlPage";
 import PrivateRoute from "../Router/PrivateRoute/PrivateRoute";
 import MainLayout from "src/Layout/MainLayout";
-const AppRouter : React.FC = () => {
+import PageNotFound from "src/Pages/PageNotFound/PageNotFound";
+const AppRouter: React.FC = () => {
   return (
     <Routes>
       {/* Auto redirect to login page */}
@@ -22,20 +23,24 @@ const AppRouter : React.FC = () => {
         {/* Auto redirect to home page */}
         <Route path={PAGE_URL.HOME} element={<MainLayout />}>
           <Route
+            index
             path={PAGE_URL.HOME}
-            element={<Navigate to={NESTED_URL.TODAY} />}
+            element={<Navigate to={NESTED_URL.TODAY} replace />}
           />
           <Route path={NESTED_URL.INBOX} element={<InboxPage />}></Route>
-          <Route path={NESTED_URL.TODAY} element={<TodayPage />}></Route>
+          <Route path={NESTED_URL.TODAY} element={<TodayPage />}>
+          </Route>
           <Route path={NESTED_URL.UPCOMING} element={<UpcomingPage />}></Route>
           <Route
             path={NESTED_URL.FILTER_LABELS}
             element={<FilterAndLabelsPage />}
           ></Route>
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Route>
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
-}
+};
 
 export default AppRouter;

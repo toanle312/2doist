@@ -1,4 +1,4 @@
-import {  TagOutlined } from "@ant-design/icons";
+import { TagOutlined } from "@ant-design/icons";
 import React, { useContext, useEffect } from "react";
 import "./TodoModal.scss";
 import { Priority } from "./Priority/Priority";
@@ -17,20 +17,20 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
     description,
     setDescription,
     handleCancelTodo,
-    handleAddTodo
+    handleAddTodo,
+    setDueDate,
+    setShowDueDate,
   } = useContext(TodoContext);
 
-  const {setDueDate, setShowDueDate} = useContext(TodoContext)
-
   useEffect(() => {
-    if(type === "Today"){
+    if (type === "Today") {
       setDueDate(new Date().toDateString());
       setShowDueDate({
         text: "Today",
-        color: "#4b9244"
+        color: "#4b9244",
       }); //
     }
-  }, [])
+  }, []);
 
   return (
     <div className="modal">
@@ -76,6 +76,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
             disabled={taskName === ""}
             onClick={() => {
               handleAddTodo();
+              handleCancelTodo();
             }}
           >
             Add task
