@@ -1,5 +1,5 @@
-import { createContext, useMemo, useState } from "react";
 import { useDate } from "src/Hooks/use-date";
+import { createContext, useEffect, useMemo, useState } from "react";
 import {
   tomorrow as tomorrowIcon,
   today as todayIcon,
@@ -9,7 +9,6 @@ import {
 } from "src/assets";
 import { addTodo } from "src/Redux/Todos/TodosSlice";
 import { Priority, TodoDTO } from "src/interface";
-import { useDispatch } from "react-redux";
 import { useAppDispatch } from "src/Hooks";
 
 export const TodoContext = createContext<{
@@ -19,6 +18,8 @@ export const TodoContext = createContext<{
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   priority: string;
   setPriority: React.Dispatch<React.SetStateAction<string>>;
+  type: string;
+  setType: React.Dispatch<React.SetStateAction<string>>;
   dueDate: string;
   setDueDate: React.Dispatch<React.SetStateAction<string>>;
   showDueDate: ShowDueDate;
@@ -49,14 +50,15 @@ const TodoProvider = ({ children }: any) => {
   const [description, setDescription] = useState<string>("");
   const [priority, setPriority] = useState<string>("Priority");
   const [dueDate, setDueDate] = useState<string>("");
+  const [type, setType] = useState<string>("");
   const [showDueDate, setShowDueDate] = useState<ShowDueDate>({
     color: "",
     text: "Due Date",
   });
   const [isOpenDueDate, setIsOpenDueDate] = useState<boolean>(false);
   const [isLoadingAddTodo, setIsLoadingAddTodo] = useState<boolean>(false);
-
   const { today, tomorrow, nextWeek, nextWeekend } = useDate();
+  
   const dateList = useMemo(() => {
     return [
       {
@@ -113,7 +115,6 @@ const TodoProvider = ({ children }: any) => {
       })
     );
     setIsLoadingAddTodo(true);
-
   };
 
   const handleCancelTodo = () => {
@@ -122,6 +123,22 @@ const TodoProvider = ({ children }: any) => {
     setDescription("");
     setDueDate("");
   };
+
+  useEffect(() => {
+    if (type === "Today") {
+      setDueDate(new Date().toDateString());
+      setShowDueDate({
+        text: "Today",
+        color: "#4b9244",
+      }); //
+    } else if (type === "Inbox") {
+      setDueDate("");
+      setShowDueDate({
+        text: "Due Date",
+        color: "",
+      });
+    }
+  }, [type]);
 
   return (
     <TodoContext.Provider
@@ -141,7 +158,9 @@ const TodoProvider = ({ children }: any) => {
         dateList,
         handleAddTodo,
         handleCancelTodo,
-        isLoadingAddTodo
+        isLoadingAddTodo,
+        type,
+        setType,
       }}
     >
       {children}

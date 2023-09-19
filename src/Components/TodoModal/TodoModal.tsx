@@ -18,19 +18,12 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
     setDescription,
     handleCancelTodo,
     handleAddTodo,
-    setDueDate,
-    setShowDueDate,
+    setType,
   } = useContext(TodoContext);
 
   useEffect(() => {
-    if (type === "Today") {
-      setDueDate(new Date().toDateString());
-      setShowDueDate({
-        text: "Today",
-        color: "#4b9244",
-      }); //
-    }
-  }, []);
+    setType(type);
+  }, [])
 
   return (
     <div className="modal">
@@ -67,6 +60,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
             onClick={() => {
               handleCancelTodo();
               setAddTodo(false);
+              setType("");
             }}
           >
             Cancel
@@ -77,6 +71,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
             onClick={() => {
               handleAddTodo();
               handleCancelTodo();
+              setType(type);
             }}
           >
             Add task
