@@ -51,7 +51,7 @@ export const Priority: React.FC = () => {
       }}
     >
       <button className="modal__control-item">
-        {icon}
+        {priority === "Priority" ?  <FlagOutlined/> :icon}
         {priority}
         {priority !== "Priority" && <div onClick={handleCancelPriority}>X</div>}
       </button>

@@ -51,7 +51,7 @@ const TodoProvider = ({ children }: any) => {
   const [isOpenDueDate, setIsOpenDueDate] = useState<boolean>(false);
   const [isLoadingAddTodo, setIsLoadingAddTodo] = useState<boolean>(false);
   const { today, tomorrow, nextWeek, nextWeekend } = useDate();
-  
+
   const dateList = useMemo(() => {
     return [
       {
@@ -114,7 +114,6 @@ const TodoProvider = ({ children }: any) => {
     setPriority("Priority");
     setTaskName("");
     setDescription("");
-    setDueDate("");
   };
 
   useEffect(() => {
@@ -131,6 +130,7 @@ const TodoProvider = ({ children }: any) => {
         color: "",
       });
     }
+    setType("");
   }, [type]);
 
   return (
@@ -152,6 +152,8 @@ const TodoProvider = ({ children }: any) => {
         handleAddTodo,
         handleCancelTodo,
         isLoadingAddTodo,
+        type,
+        setType,
         month,
         setMonth,
         year,

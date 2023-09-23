@@ -21,15 +21,9 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
     setType,
   } = useContext(TodoContext);
 
-  // Check if in tab today (type = today)
+  // set type of todo: Today or Inbox
   useEffect(() => {
-    if (type === "Today") {
-      setDueDate(new Date().toDateString());
-      setShowDueDate({
-        text: "Today",
-        color: "#4b9244",
-      }); //
-    }
+    setType(type);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -68,7 +62,6 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
             onClick={() => {
               handleCancelTodo();
               setAddTodo(false);
-              setType("");
             }}
           >
             Cancel
