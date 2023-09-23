@@ -18,8 +18,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
     setDescription,
     handleCancelTodo,
     handleAddTodo,
-    setDueDate,
-    setShowDueDate,
+    setType,
   } = useContext(TodoContext);
 
   // Check if in tab today (type = today)
@@ -69,6 +68,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
             onClick={() => {
               handleCancelTodo();
               setAddTodo(false);
+              setType("");
             }}
           >
             Cancel
@@ -79,6 +79,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
             onClick={() => {
               handleAddTodo();
               handleCancelTodo();
+              setType(type);
             }}
           >
             Add task
