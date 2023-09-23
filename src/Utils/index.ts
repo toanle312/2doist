@@ -42,7 +42,7 @@ export const NESTED_URL = {
  * @returns number of days in month of year
  */
 export const getDaysInMonth = (year: number, month: number) => {
-  const date = new Date(year, month, 0);
+  const date = new Date(year, month + 1, 0);
 
   if (!isNaN(date.getDate())) {
     return Array.from(Array(date?.getDate())?.keys());

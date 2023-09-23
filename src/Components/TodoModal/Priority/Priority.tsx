@@ -4,17 +4,13 @@ import React, { useContext, useMemo, useState } from "react";
 import { priorities } from "src/assets";
 
 import "./Priority.scss";
-import {TodoContext} from "src/Context/TodoContext";
+import { TodoContext } from "src/Context/TodoContext";
 
 export const Priority: React.FC = () => {
   const [icon, setIcon] = useState<JSX.Element>(<FlagOutlined />);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const {
-
-    priority,
-    setPriority,
-  } = useContext(TodoContext);
+  const { priority, setPriority } = useContext(TodoContext);
 
   const priorityItem = useMemo(() => {
     return priorities.map((p) => (
@@ -34,6 +30,15 @@ export const Priority: React.FC = () => {
     ));
   }, [priority, setPriority]);
 
+  const handleCancelPriority = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    setPriority("Priority");
+    setIcon(<FlagOutlined />);
+    setIsOpen(false);
+  };
+
   return (
     <Popover
       content={priorityItem}
@@ -48,18 +53,7 @@ export const Priority: React.FC = () => {
       <button className="modal__control-item">
         {icon}
         {priority}
-        {priority !== "Priority" && (
-          <div
-            onClick={(e) => {
-              e.stopPropagation();
-              setPriority("Priority");
-              setIcon(<FlagOutlined />);
-              setIsOpen(false);
-            }}
-          >
-            X
-          </div>
-        )}
+        {priority !== "Priority" && <div onClick={handleCancelPriority}>X</div>}
       </button>
     </Popover>
   );

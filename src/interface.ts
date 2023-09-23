@@ -60,3 +60,16 @@ export enum Priority {
   "P3" = 3,
   "P4" = 4
 }
+
+export type ShowDueDate = {
+  color: string;
+  text: string;
+};
+
+export type DateList = {
+  id: string;
+  icon: string;
+  date: string;
+  content: string;
+  color: string;
+};

@@ -8,8 +8,7 @@ import {
   noDate,
 } from "src/assets";
 import { addTodo } from "src/Redux/Todos/TodosSlice";
-import { Priority, TodoDTO } from "src/interface";
-import { useDispatch } from "react-redux";
+import { DateList, Priority, ShowDueDate, TodoDTO } from "src/interface";
 import { useAppDispatch } from "src/Hooks";
 
 export const TodoContext = createContext<{
@@ -29,22 +28,15 @@ export const TodoContext = createContext<{
   handleAddTodo: () => void;
   handleCancelTodo: () => void;
   isLoadingAddTodo: boolean;
+  month: number;
+  setMonth: React.Dispatch<React.SetStateAction<number>>;
+  year: number;
+  setYear: React.Dispatch<React.SetStateAction<number>>;
 }>({} as any);
 
-type ShowDueDate = {
-  color: string;
-  text: string;
-};
-
-type DateList = {
-  id: string;
-  icon: string;
-  date: string;
-  content: string;
-  color: string;
-};
-
 const TodoProvider = ({ children }: any) => {
+  const [month, setMonth] = useState<number>(0);
+  const [year, setYear] = useState<number>(0);
   const [taskName, setTaskName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [priority, setPriority] = useState<string>("Priority");
@@ -113,7 +105,6 @@ const TodoProvider = ({ children }: any) => {
       })
     );
     setIsLoadingAddTodo(true);
-
   };
 
   const handleCancelTodo = () => {
@@ -141,7 +132,11 @@ const TodoProvider = ({ children }: any) => {
         dateList,
         handleAddTodo,
         handleCancelTodo,
-        isLoadingAddTodo
+        isLoadingAddTodo,
+        month,
+        setMonth,
+        year,
+        setYear,
       }}
     >
       {children}

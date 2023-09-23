@@ -22,6 +22,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
     setShowDueDate,
   } = useContext(TodoContext);
 
+  // Check if in tab today (type = today)
   useEffect(() => {
     if (type === "Today") {
       setDueDate(new Date().toDateString());
@@ -30,6 +31,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
         color: "#4b9244",
       }); //
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
