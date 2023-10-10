@@ -7,13 +7,13 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { TodoDTO, UserDTO } from "src/interface";
+import { TTodo, TUser } from "src/interface";
 import { db } from "./config";
 
 class FirebaseProvider {
   public addUser = (
     group: string,
-    userData: UserDTO
+    userData: TUser
   ): Promise<DocumentReference> => {
     const collectionRef = collection(db, group);
     return addDoc(collectionRef, userData);
@@ -26,7 +26,7 @@ class FirebaseProvider {
   
   public addTodo = (
     group: string,
-    todo: TodoDTO
+    todo: TTodo
   ): Promise<DocumentReference> => {
     const collectionRef = collection(db, group);
     return addDoc(collectionRef, todo);
@@ -37,7 +37,7 @@ export const firebaseProvider = new FirebaseProvider();
 
 export const addUser = (
   group: string,
-  userData: UserDTO
+  userData: TUser
 ): Promise<DocumentReference> => {
   const collectionRef = collection(db, group);
   return addDoc(collectionRef, userData);

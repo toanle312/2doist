@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { AuthProvider, User, getAdditionalUserInfo, signInWithPopup } from "firebase/auth";
 import { addUser } from "src/firebase/provider";
-import { UserDTO } from "src/interface";
+import { TUser } from "src/interface";
 
 const initialState: { isLoading: boolean; account: User } = {
   isLoading: false,
@@ -58,7 +58,7 @@ export const loginUser = createAsyncThunk(
           _id: userData.user.uid,
           fullName: userData.user.displayName,
           email: userData.user.email
-        } as UserDTO);
+        } as TUser);
       }
       return userData.user;
     } catch (error: any) {

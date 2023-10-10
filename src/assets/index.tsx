@@ -75,7 +75,7 @@ export const priorities = [
     icon: <FlagFilled style={{ color: "#246fe0" }} />,
   },
   {
-    id: "P4",
+    id: "Priority",
     name: "Priority 4",
     icon: <FlagOutlined />,
   },

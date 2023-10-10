@@ -10,6 +10,13 @@ export const NESTED_URL = {
   FILTER_LABELS: "filter-labels"
 }
 
+export const TODO_PROPERTIES = {
+  DUE_DATE: "dueDate",
+  TASK_NAME: "taskName",
+  PRIORITY: "priority",
+  DESCRIPTION: "description"
+}
+
 // export const Crypto = {
 //   enCode: (data: any) => {
 //     var strToEncrypt = typeof data === "string" ? data : JSON.stringify(data);

@@ -1,0 +1,44 @@
+@import "../../Styles/styles.scss";
+
+.todo-item{
+  margin-bottom: 8px;
+  width: 100%;
+  &:hover{
+    cursor: pointer;
+    .control-list{
+      display: flex;
+      gap: 8px;
+    }
+  }
+
+  .checkbox-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid $text-gray;
+    border-radius: 50%;
+    &:hover{
+      background-color: $hover-strong-color;
+      .check-icon{
+        font-size: 12px;
+        display: block;
+        color: $text-gray;
+      }
+    }
+  }
+  .control-list{
+    display: none;
+    .control-item {
+      color: $text-gray;
+      padding: 0 4px;
+      font-size: 20px;
+      border-radius: 4px;
+      &:hover{
+        background-color: $hover-strong-color;
+        cursor: pointer;
+      }
+    }
+  }
+}

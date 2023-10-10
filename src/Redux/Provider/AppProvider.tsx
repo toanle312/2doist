@@ -22,7 +22,6 @@ const AppProvider: React.FC<Props> = ({ children }) => {
     const unsubcribed = auth.onAuthStateChanged((user) => {
       // if user is valid then redirect to home page
       if (user) {
-        console.log(user);
         setIsLoading(false);
         if (location.pathname === PAGE_URL.LOGIN || location.pathname === "/") {
           navigate(PAGE_URL.HOME);

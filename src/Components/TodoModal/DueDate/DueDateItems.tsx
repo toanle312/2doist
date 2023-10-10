@@ -4,16 +4,22 @@ import { useDate } from "src/Hooks/use-date";
 import "./DueDate.scss";
 import { DatePicker } from "../DatePicker/DatePicker";
 import { TodoContext } from "src/Context/TodoContext";
-import { DateList } from "src/interface";
+import { TDateList } from "src/interface";
+import { TODO_PROPERTIES } from "src/Utils";
 
 export const DueDateItems = () => {
   const { today } = useDate();
 
-  const { dueDate, setDueDate, setShowDueDate, setIsOpenDueDate, dateList } =
-    useContext(TodoContext);
+  const {
+    todo,
+    handleChangeTodo,
+    setShowDueDate,
+    setIsOpenDueDate,
+    dateList,
+  } = useContext(TodoContext);
 
-  const handleChooseDate = (dateItem: DateList) => {
-    setDueDate(dateItem.date);
+  const handleChooseDate = (dateItem: TDateList) => {
+    handleChangeTodo(TODO_PROPERTIES.DUE_DATE, dateItem.date);
     setShowDueDate({
       color: dateItem.color,
       text: dateItem.content === "No Date" ? "Due Date" : dateItem.content,
@@ -26,9 +32,10 @@ export const DueDateItems = () => {
       <input
         placeholder="Type a due date"
         className="w-full outline-none pb-3"
-        value={dueDate}
+        value={todo.dueDate}
+        name="dueDate"
         onChange={(e) => {
-          setDueDate(e.target.value);
+          handleChangeTodo(e.target.name, e.target.value);
         }}
       />
       <hr />

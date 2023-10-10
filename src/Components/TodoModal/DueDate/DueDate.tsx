@@ -4,23 +4,27 @@ import "./DueDate.scss";
 import { CalendarOutlined } from "@ant-design/icons";
 import { DueDateItems } from "./DueDateItems";
 import { TodoContext } from "src/Context/TodoContext";
+import { TODO_PROPERTIES } from "src/Utils";
 
 export const DueDate = () => {
   const {
     showDueDate,
-    setDueDate,
     setShowDueDate,
     isOpenDueDate,
     setIsOpenDueDate,
+    handleChangeTodo
   } = useContext(TodoContext);
 
   // Scroll into view current month after open DueDate
   useEffect(() => {
-    const timerId = setTimeout(() => {
-      document
-        .getElementById("current-month-choose")
-        ?.scrollIntoView({ block: "start", behavior: "instant" });
-    });
+    let timerId: any = undefined;
+    if(isOpenDueDate) {
+      timerId = setTimeout(() => {
+        document
+          .getElementById("current-month-choose")
+          ?.scrollIntoView({ block: "start", behavior: "instant" });
+      });
+    }
 
     return () => {
       // clear timer id
@@ -36,7 +40,7 @@ export const DueDate = () => {
       color: "",
       text: "Due Date",
     });
-    setDueDate("");
+    handleChangeTodo(TODO_PROPERTIES.DUE_DATE, "");
   };
 
   return (

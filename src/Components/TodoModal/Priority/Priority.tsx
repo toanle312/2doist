@@ -5,12 +5,13 @@ import { priorities } from "src/assets";
 
 import "./Priority.scss";
 import { TodoContext } from "src/Context/TodoContext";
+import { TODO_PROPERTIES } from "src/Utils";
 
 export const Priority: React.FC = () => {
   const [icon, setIcon] = useState<JSX.Element>(<FlagOutlined />);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { priority, setPriority } = useContext(TodoContext);
+  const { todo, handleChangeTodo } = useContext(TodoContext);
 
   const priorityItem = useMemo(() => {
     return priorities.map((p) => (
@@ -18,23 +19,23 @@ export const Priority: React.FC = () => {
         key={p.id}
         className="flex items-center gap-2 priority"
         onClick={() => {
-          setPriority(p.id);
+          handleChangeTodo(TODO_PROPERTIES.PRIORITY, p.id);
           setIcon(p.icon);
           setIsOpen(false);
         }}
       >
         {p.icon}
         {p.name}
-        {priority === p.id && <CheckOutlined />}
+        {todo.priority === p.id && <CheckOutlined />}
       </div>
     ));
-  }, [priority, setPriority]);
+  }, [handleChangeTodo, todo.priority]);
 
   const handleCancelPriority = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    setPriority("Priority");
+    handleChangeTodo(TODO_PROPERTIES.PRIORITY, "Priority");
     setIcon(<FlagOutlined />);
     setIsOpen(false);
   };
@@ -51,9 +52,11 @@ export const Priority: React.FC = () => {
       }}
     >
       <button className="modal__control-item">
-        {priority === "Priority" ?  <FlagOutlined/> :icon}
-        {priority}
-        {priority !== "Priority" && <div onClick={handleCancelPriority}>X</div>}
+        {todo.priority === "Priority" ? <FlagOutlined /> : icon}
+        {todo.priority}
+        {todo.priority !== "Priority" && (
+          <div onClick={handleCancelPriority}>X</div>
+        )}
       </button>
     </Popover>
   );

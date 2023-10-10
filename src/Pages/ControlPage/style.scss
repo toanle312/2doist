@@ -1,3 +1,4 @@
+@import "../../Styles/styles.scss";
 
 .control{
   display: flex;
@@ -33,4 +34,5 @@
   width: 100%;
   height: auto;
   padding: 0 55px;
+  overflow-y: scroll;
 }

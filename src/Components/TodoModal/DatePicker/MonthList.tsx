@@ -3,7 +3,7 @@ import "./DatePicker.scss";
 import { v4 as uuidv4 } from "uuid";
 import { TodoContext } from "src/Context/TodoContext";
 import { DaysInWeek, MonthShortHand } from "src/interface";
-import { getCurrentDayInWeek, getDaysInMonth } from "src/Utils";
+import { TODO_PROPERTIES, getCurrentDayInWeek, getDaysInMonth } from "src/Utils";
 
 type Props = {
   year: number;
@@ -84,8 +84,8 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
   }, [month, year]);
 
   const {
-    dueDate,
-    setDueDate,
+    todo,
+    handleChangeTodo,
     setIsOpenDueDate,
     isOpenDueDate,
     setShowDueDate,
@@ -125,15 +125,15 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
     };
   }, [ref, month, setMonth, startPosition, setYear, year]);
 
-  // Update month when due date changes
-  useEffect(() => {
-    setMonth(
-      new Date(dueDate).getMonth() || (currentDate?.getMonth() as number)
-    );
-    setYear(
-      new Date(dueDate).getFullYear() || (currentDate?.getFullYear() as number)
-    );
-  }, [dueDate, currentDate, setMonth, setYear]);
+  // Update month and year when due date change
+  // useEffect(() => {
+  //   setMonth(
+  //     new Date(todo.dueDate).getMonth() || (currentDate?.getMonth() as number)
+  //   );
+  //   setYear(
+  //     new Date(todo.dueDate).getFullYear() || (currentDate?.getFullYear() as number)
+  //   );
+  // }, [todo.dueDate, currentDate, setMonth, setYear]);
 
   // handle to add id for current month
   useEffect(() => {
@@ -152,28 +152,29 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
     const firstMonthChild =
       ref.current?.parentElement?.parentElement?.firstElementChild;
     if (firstMonthChild) {
-      if (!dueDate) {
+      if (!todo.dueDate) {
         firstMonthChild.id = "current-month-choose";
       } else firstMonthChild.removeAttribute("id");
     }
-  }, [ref, isOpenDueDate, dueDate]);
+  }, [ref, isOpenDueDate, todo.dueDate]);
 
   const handleChooseDueDate = (day: number) => {
     const date = new Date(year, month, day + 1).toDateString();
     const findDate = dateList.find((dateItem) => dateItem.date === date);
     if (findDate) {
-      setDueDate(findDate.date);
+      handleChangeTodo(TODO_PROPERTIES.DUE_DATE,findDate.date);
       setShowDueDate({
         color: findDate.color,
         text: findDate.content === "No Date" ? "Due Date" : findDate.content,
       });
     } else {
-      setDueDate(date);
+      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, date);
       setShowDueDate({
         color: "#692ec2",
         text: DaysInWeek[getCurrentDayInWeek(year, month, day + 1)],
       });
     }
+    
     setIsOpenDueDate(false);
   };
 
@@ -209,7 +210,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
                     : ""
                 }${
                   // active choose date and add hover for others date
-                  dueDate === new Date(year, month, day + 1).toDateString()
+                  todo.dueDate === new Date(year, month, day + 1).toDateString()
                     ? " active-date"
                     : " hover-date"
                 }`}

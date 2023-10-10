@@ -9,7 +9,7 @@ export const Todo: React.FC = () => {
   const [addTodo, setAddTodo] = useState<boolean>(false);
 
   return (
-    <div>
+    <div className="mt-[24px]">
       {!addTodo ? (
         <div
           className="flex items-center gap-2 text-textGray todo"

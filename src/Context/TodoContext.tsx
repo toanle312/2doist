@@ -8,25 +8,18 @@ import {
   noDate,
 } from "src/assets";
 import { addTodo } from "src/Redux/Todos/TodosSlice";
-import { DateList, Priority, ShowDueDate, TodoDTO } from "src/interface";
+import { TDateList, Priority, TShowDueDate, TTodo } from "src/interface";
 import { useAppDispatch } from "src/Hooks";
+import {v4 as uuidv4} from "uuid";
 
 export const TodoContext = createContext<{
-  taskName: string;
-  setTaskName: React.Dispatch<React.SetStateAction<string>>;
-  description: string;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  priority: string;
-  setPriority: React.Dispatch<React.SetStateAction<string>>;
   type: string;
   setType: React.Dispatch<React.SetStateAction<string>>;
-  dueDate: string;
-  setDueDate: React.Dispatch<React.SetStateAction<string>>;
-  showDueDate: ShowDueDate;
-  setShowDueDate: React.Dispatch<React.SetStateAction<ShowDueDate>>;
+  showDueDate: TShowDueDate;
+  setShowDueDate: React.Dispatch<React.SetStateAction<TShowDueDate>>;
   isOpenDueDate: boolean;
   setIsOpenDueDate: React.Dispatch<React.SetStateAction<boolean>>;
-  dateList: DateList[];
+  dateList: TDateList[];
   handleAddTodo: () => void;
   handleCancelTodo: () => void;
   isLoadingAddTodo: boolean;
@@ -34,22 +27,41 @@ export const TodoContext = createContext<{
   setMonth: React.Dispatch<React.SetStateAction<number>>;
   year: number;
   setYear: React.Dispatch<React.SetStateAction<number>>;
+  todo: any;
+  setTodo: React.Dispatch<React.SetStateAction<any>>;
+  handleChangeTodo: (name: string, value: any) => void;
 }>({} as any);
 
 const TodoProvider = ({ children }: any) => {
+  // Show current month and current year when scroll calendar 
   const [month, setMonth] = useState<number>(0);
   const [year, setYear] = useState<number>(0);
-  const [taskName, setTaskName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [priority, setPriority] = useState<string>("Priority");
-  const [dueDate, setDueDate] = useState<string>("");
+
+  const [todo, setTodo] = useState({
+    taskName: "",
+    description: "",
+    priority: "Priority",
+    dueDate: "",
+  });
+
+  const handleChangeTodo = (name: string, value: any) => {
+    setTodo((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
   const [type, setType] = useState<string>("");
-  const [showDueDate, setShowDueDate] = useState<ShowDueDate>({
+
+  const [showDueDate, setShowDueDate] = useState<TShowDueDate>({
     color: "",
     text: "Due Date",
   });
   const [isOpenDueDate, setIsOpenDueDate] = useState<boolean>(false);
   const [isLoadingAddTodo, setIsLoadingAddTodo] = useState<boolean>(false);
+
   const { today, tomorrow, nextWeek, nextWeekend } = useDate();
 
   const dateList = useMemo(() => {
@@ -95,36 +107,48 @@ const TodoProvider = ({ children }: any) => {
   const dispatch = useAppDispatch();
 
   const handleAddTodo = async () => {
-    setIsLoadingAddTodo(false);
+    setIsLoadingAddTodo(true);
     await dispatch(
       addTodo({
         group: "todos",
         todo: {
-          taskName,
-          priority: Priority[priority as keyof typeof Priority],
-          description,
-          dueDate,
-        } as TodoDTO,
+          // id: uuidv4(),
+          ...todo,
+          priority: Priority[todo.priority as keyof typeof Priority],
+        } as TTodo,
       })
     );
-    setIsLoadingAddTodo(true);
+    setIsLoadingAddTodo(false);
   };
 
   const handleCancelTodo = () => {
-    setPriority("Priority");
-    setTaskName("");
-    setDescription("");
+    setTodo({
+      taskName: "",
+      description: "",
+      priority: "Priority",
+      dueDate: "",
+    });
   };
 
   useEffect(() => {
     if (type === "Today") {
-      setDueDate(new Date().toDateString());
+      setTodo((prev) => {
+        return {
+          ...prev,
+          dueDate: new Date().toDateString(),
+        };
+      });
       setShowDueDate({
         text: "Today",
         color: "#4b9244",
       }); //
     } else if (type === "Inbox") {
-      setDueDate("");
+      setTodo((prev) => {
+        return {
+          ...prev,
+          dueDate: "",
+        };
+      });
       setShowDueDate({
         text: "Due Date",
         color: "",
@@ -136,14 +160,6 @@ const TodoProvider = ({ children }: any) => {
   return (
     <TodoContext.Provider
       value={{
-        taskName,
-        setTaskName,
-        description,
-        setDescription,
-        priority,
-        setPriority,
-        dueDate,
-        setDueDate,
         showDueDate,
         setShowDueDate,
         isOpenDueDate,
@@ -158,6 +174,9 @@ const TodoProvider = ({ children }: any) => {
         setMonth,
         year,
         setYear,
+        todo,
+        setTodo,
+        handleChangeTodo,
       }}
     >
       {children}

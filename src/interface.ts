@@ -6,26 +6,27 @@ export interface Account {
   isLogin: boolean;
 }
 
-export interface UserDTO {
+export interface TUser{
   _id: string;
   fullName: string;
   email: string;
 }
 
-export interface CommentDTO {
+export interface TComment {
   _id: string;
   content: string;
   avatar: string;
   createAt: Date;
 }
-export interface TodoDTO {
+export interface TTodo {
+  id?: string;
   taskName: string;
   description: string;
   dueDate: string;
   project?: string;
-  comment?: Array<CommentDTO>;
+  comment?: Array<TComment>;
   priority: number;
-  subTask?: TodoDTO;
+  subTask?: TTodo;
 }
 
 export enum MonthShortHand {
@@ -54,19 +55,18 @@ export enum DaysInWeek {
 }
 
 export enum Priority {
-  "Priority" = 0,
   "P1" = 1,
   "P2" = 2,
   "P3" = 3,
-  "P4" = 4
+  "Priority" = 4
 }
 
-export type ShowDueDate = {
+export type TShowDueDate = {
   color: string;
   text: string;
 };
 
-export type DateList = {
+export type TDateList = {
   id: string;
   icon: string;
   date: string;

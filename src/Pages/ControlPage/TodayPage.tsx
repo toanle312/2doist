@@ -1,36 +1,12 @@
 import React, { useEffect } from "react";
 import "./style.scss";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "src/firebase/config";
 import { Todo } from "src/Components/Todo/Todo";
 import { useDate } from "src/Hooks/use-date";
 import TodoProvider from "src/Context/TodoContext";
+import TodoList from "src/Components/TodoList/TodoList";
 
 const TodayPage: React.FC = () => {
   const { today } = useDate();
-
-  // const handleScroll = useCallback(() => {
-  //   console.log("scroll");
-  // }, []);
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll, true); // true <=> { capture: true }
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll, false);
-  //   };
-  // }, [handleScroll]);
-
-  useEffect(() => {
-    (async () => {
-      const data = await getDocs(collection(db, "todos"));
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      console.log(filteredData)
-    })();
-  }, []);
 
   return (
     <div className="control">
@@ -43,9 +19,9 @@ const TodayPage: React.FC = () => {
           <button>View</button>
         </div>
       </header>
-      <section className="todo-list">
+      <section className="todo-list hide-scrollbar">
         <div className="m-auto max-w-[800px] w-full">
-          List
+          <TodoList/>
         </div>
       </section>
       <section className="today-control">
