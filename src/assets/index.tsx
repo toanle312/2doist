@@ -61,21 +61,25 @@ export const routines =
 export const priorities = [
   {
     id: "P1",
+    number: 1,
     name: "Priority 1",
     icon: <FlagFilled style={{ color: "#d1453b" }} />,
   },
   {
     id: "P2",
+    number: 2,
     name: "Priority 2",
     icon: <FlagFilled style={{ color: "#eb8909" }} />,
   },
   {
     id: "P3",
+    number: 3,
     name: "Priority 3",
     icon: <FlagFilled style={{ color: "#246fe0" }} />,
   },
   {
     id: "Priority",
+    number: 4,
     name: "Priority 4",
     icon: <FlagOutlined />,
   },

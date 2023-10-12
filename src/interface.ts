@@ -23,6 +23,7 @@ export interface TTodo {
   taskName: string;
   description: string;
   dueDate: string;
+  isCompleted?: boolean;
   project?: string;
   comment?: Array<TComment>;
   priority: number;
@@ -54,7 +55,7 @@ export enum DaysInWeek {
   Sat,
 }
 
-export enum Priority {
+export enum EPriority {
   "P1" = 1,
   "P2" = 2,
   "P3" = 3,

@@ -3,7 +3,13 @@ import "./DatePicker.scss";
 import { v4 as uuidv4 } from "uuid";
 import { TodoContext } from "src/Context/TodoContext";
 import { DaysInWeek, MonthShortHand } from "src/interface";
-import { TODO_PROPERTIES, getCurrentDayInWeek, getDaysInMonth } from "src/Utils";
+import {
+  TODO_PROPERTIES,
+  getCurrentDayInWeek,
+  getDaysInMonth,
+} from "src/Utils";
+import { DueDateContext } from "src/Context/DueDateContext";
+import { DatePickerContext } from "src/Context/DatePickerContext";
 
 type Props = {
   year: number;
@@ -83,16 +89,11 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
     return allDays;
   }, [month, year]);
 
-  const {
-    todo,
-    handleChangeTodo,
-    setIsOpenDueDate,
-    isOpenDueDate,
-    setShowDueDate,
-    dateList,
-    setMonth,
-    setYear,
-  } = useContext(TodoContext);
+  const { todo, handleChangeTodo } = useContext(TodoContext);
+
+  const { setIsOpenDueDate, isOpenDueDate } = useContext(DueDateContext);
+
+  const { setMonth, setYear } = useContext(DatePickerContext);
 
   // save ref of each month shown in the calendar
   const ref = useRef<HTMLDivElement>(null);
@@ -125,16 +126,6 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
     };
   }, [ref, month, setMonth, startPosition, setYear, year]);
 
-  // Update month and year when due date change
-  // useEffect(() => {
-  //   setMonth(
-  //     new Date(todo.dueDate).getMonth() || (currentDate?.getMonth() as number)
-  //   );
-  //   setYear(
-  //     new Date(todo.dueDate).getFullYear() || (currentDate?.getFullYear() as number)
-  //   );
-  // }, [todo.dueDate, currentDate, setMonth, setYear]);
-
   // handle to add id for current month
   useEffect(() => {
     const allSpanElements = ref.current?.querySelectorAll("span");
@@ -160,21 +151,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
 
   const handleChooseDueDate = (day: number) => {
     const date = new Date(year, month, day + 1).toDateString();
-    const findDate = dateList.find((dateItem) => dateItem.date === date);
-    if (findDate) {
-      handleChangeTodo(TODO_PROPERTIES.DUE_DATE,findDate.date);
-      setShowDueDate({
-        color: findDate.color,
-        text: findDate.content === "No Date" ? "Due Date" : findDate.content,
-      });
-    } else {
-      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, date);
-      setShowDueDate({
-        color: "#692ec2",
-        text: DaysInWeek[getCurrentDayInWeek(year, month, day + 1)],
-      });
-    }
-    
+    handleChangeTodo(TODO_PROPERTIES.DUE_DATE, date);
     setIsOpenDueDate(false);
   };
 

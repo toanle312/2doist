@@ -3,6 +3,7 @@ import "./DatePicker.scss";
 import { ShowMonthListByYear } from "./ShowMonthListByYear";
 import { MonthShortHand } from "src/interface";
 import { TodoContext } from "src/Context/TodoContext";
+import { DatePickerContext } from "src/Context/DatePickerContext";
 
 type Props = {
   today: string;
@@ -16,7 +17,7 @@ const dateInWeek = ["MON", "TUE", "WED", "TH", "FRI", "SA", "SU"];
  * @returns Table of month in years to choose date
  */
 export const DatePicker: React.FC<Props> = ({ today }) => {
-  const { month, year } = useContext(TodoContext);
+  const { month, year } = useContext(DatePickerContext);
 
   // Update today
   const currentDate = useMemo(() => {

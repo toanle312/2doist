@@ -6,17 +6,21 @@ import { DatePicker } from "../DatePicker/DatePicker";
 import { TodoContext } from "src/Context/TodoContext";
 import { TDateList } from "src/interface";
 import { TODO_PROPERTIES } from "src/Utils";
+import { DueDateContext } from "src/Context/DueDateContext";
+import DatePickerProvider from "src/Context/DatePickerContext";
 
-export const DueDateItems = () => {
+type Props = {
+  setShowDueDate: any;
+  setIsOpenDueDate: any;
+  dateList: any;
+};
+
+export const DueDateItems: React.FC = () => {
   const { today } = useDate();
 
-  const {
-    todo,
-    handleChangeTodo,
-    setShowDueDate,
-    setIsOpenDueDate,
-    dateList,
-  } = useContext(TodoContext);
+  const { todo, handleChangeTodo } = useContext(TodoContext);
+  const { setShowDueDate, setIsOpenDueDate, dateList } =
+    useContext(DueDateContext);
 
   const handleChooseDate = (dateItem: TDateList) => {
     handleChangeTodo(TODO_PROPERTIES.DUE_DATE, dateItem.date);
@@ -59,7 +63,9 @@ export const DueDateItems = () => {
       </ul>
       <hr />
       {/* Show Date Picker */}
-      <DatePicker today={today} />
+      <DatePickerProvider>
+        <DatePicker today={today} />
+      </DatePickerProvider>
     </div>
   );
 };

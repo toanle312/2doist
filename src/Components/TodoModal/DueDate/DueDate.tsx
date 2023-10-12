@@ -1,24 +1,33 @@
 import { Popover } from "antd";
-import { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import "./DueDate.scss";
 import { CalendarOutlined } from "@ant-design/icons";
 import { DueDateItems } from "./DueDateItems";
 import { TodoContext } from "src/Context/TodoContext";
 import { TODO_PROPERTIES } from "src/Utils";
+import { DaysInWeek, TShowDueDate } from "src/interface";
+import { DueDateContext } from "src/Context/DueDateContext";
 
-export const DueDate = () => {
+type Props = {
+  initDate?: string;
+  handleChangeEditTodo?: (name: string, value: any) => void;
+};
+
+export const DueDate: React.FC<Props> = () => {
+  const { todo, handleChangeTodo } = useContext(TodoContext);
+
   const {
-    showDueDate,
-    setShowDueDate,
     isOpenDueDate,
     setIsOpenDueDate,
-    handleChangeTodo
-  } = useContext(TodoContext);
+    showDueDate,
+    setShowDueDate,
+    dateList,
+  } = useContext(DueDateContext);
 
   // Scroll into view current month after open DueDate
   useEffect(() => {
     let timerId: any = undefined;
-    if(isOpenDueDate) {
+    if (isOpenDueDate) {
       timerId = setTimeout(() => {
         document
           .getElementById("current-month-choose")
@@ -43,6 +52,25 @@ export const DueDate = () => {
     handleChangeTodo(TODO_PROPERTIES.DUE_DATE, "");
   };
 
+  useEffect(() => {
+    const findDate = dateList.find(
+      (dateItem) => dateItem.date === todo.dueDate
+    );
+    if (findDate) {
+      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, findDate.date);
+      setShowDueDate({
+        color: findDate.color,
+        text: findDate.content === "No Date" ? "Due Date" : findDate.content,
+      });
+    } else {
+      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, todo.dueDate);
+      setShowDueDate({
+        color: "#692ec2",
+        text: DaysInWeek[new Date(todo.dueDate).getDay()],
+      });
+    }
+  }, [todo.dueDate, dateList]);
+
   return (
     <Popover
       placement="leftBottom"
@@ -55,12 +83,10 @@ export const DueDate = () => {
       }}
     >
       <button className="modal__control-item">
-        <CalendarOutlined style={{ color: showDueDate.color }} />
-        <p style={{ color: showDueDate.color }}>{showDueDate.text}</p>
-        {showDueDate.text !== "Due Date" && (
-          <div onClick={handleCancelDueDate}>
-            X
-          </div>
+        <CalendarOutlined style={{ color: showDueDate?.color }} />
+        <p style={{ color: showDueDate?.color }}>{showDueDate?.text}</p>
+        {showDueDate?.text !== "Due Date" && (
+          <div onClick={handleCancelDueDate}>X</div>
         )}
       </button>
     </Popover>

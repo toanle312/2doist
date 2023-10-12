@@ -19,18 +19,18 @@ const TodayPage: React.FC = () => {
           <button>View</button>
         </div>
       </header>
-      <section className="todo-list hide-scrollbar">
-        <div className="m-auto max-w-[800px] w-full">
-          <TodoList/>
-        </div>
-      </section>
-      <section className="today-control">
-        <div className="m-auto max-w-[800px] w-full">
-          <TodoProvider>
-            <Todo/>
-          </TodoProvider>
-        </div>
-      </section>
+      <TodoProvider>
+        <section className="todo-list hide-scrollbar">
+          <div className="m-auto max-w-[800px] w-full">
+            <TodoList />
+          </div>
+        </section>
+        <section className="today-control">
+          <div className="m-auto max-w-[800px] w-full">
+            <Todo />
+          </div>
+        </section>
+      </TodoProvider>
     </div>
   );
 };

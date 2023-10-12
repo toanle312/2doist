@@ -2,7 +2,8 @@ import { auth } from "../../firebase/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { AuthProvider, User, getAdditionalUserInfo, signInWithPopup } from "firebase/auth";
-import { addUser } from "src/firebase/provider";
+import { firebaseProvider } from "src/firebase/provider";
+// import { addUser } from "src/firebase/provider";
 import { TUser } from "src/interface";
 
 const initialState: { isLoading: boolean; account: User } = {
@@ -54,7 +55,7 @@ export const loginUser = createAsyncThunk(
       localStorage.setItem("user", JSON.stringify(userData.user));
       if(user?.isNewUser)
       {
-        await addUser("users", {
+        await firebaseProvider.addUser("users", {
           _id: userData.user.uid,
           fullName: userData.user.displayName,
           email: userData.user.email

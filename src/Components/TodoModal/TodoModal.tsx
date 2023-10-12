@@ -4,26 +4,26 @@ import "./TodoModal.scss";
 import { Priority } from "./Priority/Priority";
 import { DueDate } from "./DueDate/DueDate";
 import { TodoContext } from "src/Context/TodoContext";
+import { TTodo } from "src/interface";
+import { TODO_TYPES } from "src/Utils";
+import DueDateProvider from "src/Context/DueDateContext";
 
 export type Props = {
   setAddTodo: React.Dispatch<React.SetStateAction<boolean>>;
-  type: string;
+  type?: string;
 };
 
 export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
-  const {
-    handleCancelTodo,
-    handleAddTodo,
-    setType,
-    handleChangeTodo,
-    todo,
-  } = useContext(TodoContext);
+  const { handleCancelTodo, handleAddTodo, handleChangeTodo, todo } =
+    useContext(TodoContext);
 
-  // set type of todo: Today or Inbox
   useEffect(() => {
-    setType(type);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if(type === TODO_TYPES.TODAY)
+    {
+      handleChangeTodo("dueDate", new Date().toDateString());
+    }
   }, []);
+
 
   return (
     <div className="modal">
@@ -31,7 +31,7 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
         className="modal__input font-medium"
         placeholder="Task name"
         name="taskName"
-        value={todo.taskName}
+        value={todo?.taskName}
         onChange={(e) => {
           handleChangeTodo(e.target.name, e.target.value);
         }}
@@ -40,13 +40,15 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
         className="modal__input"
         placeholder="Description"
         name="description"
-        value={todo.description}
+        value={todo?.description}
         onChange={(e) => {
           handleChangeTodo(e.target.name, e.target.value);
         }}
       />
       <div className="modal__control">
-        <DueDate />
+        <DueDateProvider>
+          <DueDate />
+        </DueDateProvider>
         <Priority />
         <button className="modal__control-item">
           <TagOutlined />
@@ -68,11 +70,10 @@ export const TodoModal: React.FC<Props> = ({ setAddTodo, type }) => {
           </button>
           <button
             className="bg-primary text-white btn"
-            disabled={todo.taskName === ""}
+            disabled={todo?.taskName === ""}
             onClick={() => {
               handleAddTodo();
-              handleCancelTodo();
-              setType(type);
+              handleCancelTodo(type);
             }}
           >
             Add task

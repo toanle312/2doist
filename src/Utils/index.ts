@@ -17,6 +17,11 @@ export const TODO_PROPERTIES = {
   DESCRIPTION: "description"
 }
 
+export const TODO_TYPES = {
+  TODAY: "Today",
+  INBOX: "Inbox",
+}
+
 // export const Crypto = {
 //   enCode: (data: any) => {
 //     var strToEncrypt = typeof data === "string" ? data : JSON.stringify(data);

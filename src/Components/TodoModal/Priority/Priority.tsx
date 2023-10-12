@@ -6,6 +6,7 @@ import { priorities } from "src/assets";
 import "./Priority.scss";
 import { TodoContext } from "src/Context/TodoContext";
 import { TODO_PROPERTIES } from "src/Utils";
+import {EPriority} from "src/interface"
 
 export const Priority: React.FC = () => {
   const [icon, setIcon] = useState<JSX.Element>(<FlagOutlined />);
@@ -19,23 +20,23 @@ export const Priority: React.FC = () => {
         key={p.id}
         className="flex items-center gap-2 priority"
         onClick={() => {
-          handleChangeTodo(TODO_PROPERTIES.PRIORITY, p.id);
+          handleChangeTodo(TODO_PROPERTIES.PRIORITY, p.number);
           setIcon(p.icon);
           setIsOpen(false);
         }}
       >
         {p.icon}
         {p.name}
-        {todo.priority === p.id && <CheckOutlined />}
+        {todo?.priority === p.number && <CheckOutlined />}
       </div>
     ));
-  }, [handleChangeTodo, todo.priority]);
+  }, [handleChangeTodo, todo?.priority]);
 
   const handleCancelPriority = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    handleChangeTodo(TODO_PROPERTIES.PRIORITY, "Priority");
+    handleChangeTodo(TODO_PROPERTIES.PRIORITY, 4);
     setIcon(<FlagOutlined />);
     setIsOpen(false);
   };
@@ -52,9 +53,9 @@ export const Priority: React.FC = () => {
       }}
     >
       <button className="modal__control-item">
-        {todo.priority === "Priority" ? <FlagOutlined /> : icon}
-        {todo.priority}
-        {todo.priority !== "Priority" && (
+        {todo?.priority === 4 ? <FlagOutlined /> : icon}
+        {EPriority[todo?.priority]}
+        {todo?.priority !== 4 && (
           <div onClick={handleCancelPriority}>X</div>
         )}
       </button>
