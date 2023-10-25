@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import TodoItem from "./TodoItem";
 import { useAppDispatch, useAppSelector } from "src/Hooks";
 import { getTodos } from "src/Redux/Todos/TodosSlice";
-import TodoProvider from "src/Context/TodoContext";
 
 const TodoList = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +17,7 @@ const TodoList = () => {
       {todos
         .filter((todo) => !todo.isCompleted)
         .map((todo) => {
-          return <TodoItem key={todo?.id} todo={todo} />;
+          return <TodoItem key={todo?.id} todo={todo} type={"FULL"}/>;
         })}
     </ul>
   );

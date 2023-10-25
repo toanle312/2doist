@@ -8,10 +8,13 @@ import {
   noDate,
 } from "src/assets";
 import { TDateList, TShowDueDate } from "src/interface";
+import { MODAL_TYPES } from "src/Utils";
 
 export const DueDateContext = createContext<{
   showDueDate: TShowDueDate;
   setShowDueDate: React.Dispatch<React.SetStateAction<TShowDueDate>>;
+  type: string;
+  setType: React.Dispatch<React.SetStateAction<string>>;
   isOpenDueDate: boolean;
   setIsOpenDueDate: React.Dispatch<React.SetStateAction<boolean>>;
   dateList: TDateList[];
@@ -25,11 +28,12 @@ type Props = {
   children: ReactNode;
 };
 
-
 const DueDateProvider: React.FC<Props> = ({ children }: any) => {
   // Show current month and current year when scroll calendar
   const [month, setMonth] = useState<number>(0);
   const [year, setYear] = useState<number>(0);
+
+  const [type, setType] = useState<string>("");
 
   const [showDueDate, setShowDueDate] = useState<TShowDueDate>({
     color: "",
@@ -92,6 +96,8 @@ const DueDateProvider: React.FC<Props> = ({ children }: any) => {
         setMonth,
         year,
         setYear,
+        type,
+        setType,
       }}
     >
       {children}

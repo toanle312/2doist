@@ -11,3 +11,6 @@
   scroll-behavior: smooth;
 }
 
+.ant-popover {
+  z-index: 100;
+}

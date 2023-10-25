@@ -1,18 +1,23 @@
 import { CheckOutlined, FlagOutlined } from "@ant-design/icons";
 import { Popover } from "antd";
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { priorities } from "src/assets";
 
 import "./Priority.scss";
 import { TodoContext } from "src/Context/TodoContext";
 import { TODO_PROPERTIES } from "src/Utils";
-import {EPriority} from "src/interface"
+import { EPriority } from "src/interface";
 
 export const Priority: React.FC = () => {
+  const { todo, handleChangeTodo } = useContext(TodoContext);
+
   const [icon, setIcon] = useState<JSX.Element>(<FlagOutlined />);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { todo, handleChangeTodo } = useContext(TodoContext);
+  useEffect(() => {
+    const initPriority = priorities.find((p) => p.number === todo.priority);
+    setIcon(initPriority?.icon as JSX.Element);
+  }, [todo.priority]);
 
   const priorityItem = useMemo(() => {
     return priorities.map((p) => (
@@ -55,9 +60,7 @@ export const Priority: React.FC = () => {
       <button className="modal__control-item">
         {todo?.priority === 4 ? <FlagOutlined /> : icon}
         {EPriority[todo?.priority]}
-        {todo?.priority !== 4 && (
-          <div onClick={handleCancelPriority}>X</div>
-        )}
+        {todo?.priority !== 4 && <div onClick={handleCancelPriority}>X</div>}
       </button>
     </Popover>
   );

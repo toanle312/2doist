@@ -5,7 +5,7 @@ import "./DueDate.scss";
 import { DatePicker } from "../DatePicker/DatePicker";
 import { TodoContext } from "src/Context/TodoContext";
 import { TDateList } from "src/interface";
-import { TODO_PROPERTIES } from "src/Utils";
+import { DUEDATE_TYPES, TODO_PROPERTIES } from "src/Utils";
 import { DueDateContext } from "src/Context/DueDateContext";
 import DatePickerProvider from "src/Context/DatePickerContext";
 
@@ -18,12 +18,17 @@ type Props = {
 export const DueDateItems: React.FC = () => {
   const { today } = useDate();
 
-  const { todo, handleChangeTodo } = useContext(TodoContext);
-  const { setShowDueDate, setIsOpenDueDate, dateList } =
+  const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
+  const { setShowDueDate, setIsOpenDueDate,type, dateList } =
     useContext(DueDateContext);
 
   const handleChooseDate = (dateItem: TDateList) => {
-    handleChangeTodo(TODO_PROPERTIES.DUE_DATE, dateItem.date);
+    if (type === DUEDATE_TYPES.FULL) {
+      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, dateItem.date);
+    } else {
+      handleUpdateTodo({ ...todo, dueDate: dateItem.date });
+    }
+    // handleChangeTodo(TODO_PROPERTIES.DUE_DATE, dateItem.date);
     setShowDueDate({
       color: dateItem.color,
       text: dateItem.content === "No Date" ? "Due Date" : dateItem.content,

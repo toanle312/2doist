@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import { TodoContext } from "src/Context/TodoContext";
 import { DaysInWeek, MonthShortHand } from "src/interface";
 import {
+  DUEDATE_TYPES,
+  MODAL_TYPES,
   TODO_PROPERTIES,
   getCurrentDayInWeek,
   getDaysInMonth,
@@ -89,9 +91,10 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
     return allDays;
   }, [month, year]);
 
-  const { todo, handleChangeTodo } = useContext(TodoContext);
+  const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
 
-  const { setIsOpenDueDate, isOpenDueDate } = useContext(DueDateContext);
+  const { setIsOpenDueDate, isOpenDueDate, type } =
+    useContext(DueDateContext);
 
   const { setMonth, setYear } = useContext(DatePickerContext);
 
@@ -151,7 +154,11 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
 
   const handleChooseDueDate = (day: number) => {
     const date = new Date(year, month, day + 1).toDateString();
-    handleChangeTodo(TODO_PROPERTIES.DUE_DATE, date);
+    if (type === DUEDATE_TYPES.FULL) {
+      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, date);
+    } else {
+      handleUpdateTodo({ ...todo, dueDate: date });
+    }
     setIsOpenDueDate(false);
   };
 

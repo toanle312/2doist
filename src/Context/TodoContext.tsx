@@ -1,23 +1,16 @@
-import { useDate } from "src/Hooks/use-date";
-import { ReactNode, createContext, useEffect, useMemo, useState } from "react";
-import {
-  tomorrow as tomorrowIcon,
-  today as todayIcon,
-  nextWeek as nextWeekIcon,
-  nextWeekend as nextWeekendIcon,
-  noDate,
-} from "src/assets";
-import { addTodo } from "src/Redux/Todos/TodosSlice";
-import { DaysInWeek, TDateList, TShowDueDate, TTodo } from "src/interface";
+import { ReactNode, createContext, useState } from "react";
+import { addTodo, updateTodo } from "src/Redux/Todos/TodosSlice";
+import { TTodo } from "src/interface";
 import { useAppDispatch } from "src/Hooks";
-import { TODO_PROPERTIES, TODO_TYPES } from "src/Utils";
-import { JsxElement } from "typescript";
+import { TODO_PAGES } from "src/Utils";
 
 export const TodoContext = createContext<{
   handleAddTodo: () => void;
+  handleUpdateTodo: (updatedTodo: TTodo) => void;
   handleCancelTodo: (type?: string) => void;
   todo: TTodo;
   isLoadingAddTodo: boolean;
+  isLoadingUpdateTodo: boolean;
   setTodo: React.Dispatch<React.SetStateAction<TTodo>>;
   handleChangeTodo: (name: string, value: any) => void;
   selectedItem: string;
@@ -37,6 +30,7 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
   });
 
   const [isLoadingAddTodo, setIsLoadingAddTodo] = useState<boolean>(false);
+  const [isLoadingUpdateTodo, setIsLoadingUpdateTodo] = useState<boolean>(false);
 
   const [selectedItem, setSelectedItem] = useState<string>("");
 
@@ -52,22 +46,44 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
   };
 
   const handleAddTodo = async () => {
-    setIsLoadingAddTodo(true);
-    await dispatch(
-      addTodo({
-        group: "todos",
-        todo: {
-          // id: uuidv4(),
-          ...todo,
-          isCompleted: false,
-        } as TTodo,
-      })
-    );
-    setIsLoadingAddTodo(false);
+    try {
+      setIsLoadingAddTodo(true);
+      await dispatch(
+        addTodo({
+          group: "todos",
+          todo: {
+            ...todo,
+            isCompleted: false,
+          } as TTodo,
+        })
+      );
+      setIsLoadingAddTodo(false);
+    } catch (error) {
+      console.error(error);
+      throw new Error("Can not add todo");
+    }
+  };
+
+  const handleUpdateTodo = async (updatedTodo: TTodo) => {
+    try {
+      setIsLoadingUpdateTodo(true);
+      dispatch(
+        updateTodo({
+          group: "todos",
+          todo: {
+            ...updatedTodo,
+          },
+        })
+      ).unwrap();
+      setIsLoadingUpdateTodo(false);
+    } catch (error) {
+      console.error(error);
+      throw new Error("Can not update todo");
+    }
   };
 
   const handleCancelTodo = (type?: string) => {
-    if (type === TODO_TYPES.TODAY) {
+    if (type === TODO_PAGES.TODAY) {
       setTodo({
         taskName: "",
         description: "",
@@ -82,15 +98,16 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
         dueDate: "",
       });
     }
-    // console.log(todo)
   };
 
   return (
     <TodoContext.Provider
       value={{
         handleAddTodo,
+        handleUpdateTodo,
         handleCancelTodo,
         isLoadingAddTodo,
+        isLoadingUpdateTodo,
         todo,
         setTodo,
         handleChangeTodo,

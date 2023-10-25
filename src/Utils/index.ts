@@ -17,10 +17,21 @@ export const TODO_PROPERTIES = {
   DESCRIPTION: "description"
 }
 
-export const TODO_TYPES = {
+export const TODO_PAGES = {
   TODAY: "Today",
   INBOX: "Inbox",
 }
+
+export const MODAL_TYPES = {
+  ADD: "Add",
+  SAVE: "Save",
+}
+
+export const DUEDATE_TYPES = {
+  FULL: "Full",
+  SHORT: "Short",
+}
+
 
 // export const Crypto = {
 //   enCode: (data: any) => {

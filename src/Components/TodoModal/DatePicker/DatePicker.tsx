@@ -12,12 +12,18 @@ type Props = {
 const dateInWeek = ["MON", "TUE", "WED", "TH", "FRI", "SA", "SU"];
 
 /**
- * 
- * @param props includes today: current date 
+ *
+ * @param props includes today: current date
  * @returns Table of month in years to choose date
  */
 export const DatePicker: React.FC<Props> = ({ today }) => {
-  const { month, year } = useContext(DatePickerContext);
+  const { month, year, setMonth, setYear } = useContext(DatePickerContext);
+
+  useEffect(() => {
+    const date = new Date(today);
+    setMonth(date.getMonth());
+    setYear(date.getFullYear());
+  }, [today]);
 
   // Update today
   const currentDate = useMemo(() => {
@@ -27,7 +33,9 @@ export const DatePicker: React.FC<Props> = ({ today }) => {
   return (
     <div className="date-picker overflow-hidden">
       <div className="date-picker__header">
-        <p className="font-large text-small">{MonthShortHand[month] +" "+ year}</p>
+        <p className="font-large text-small">
+          {MonthShortHand[month] + " " + year}
+        </p>
       </div>
       {/* Show date in week */}
       <div className="date-picker__date">

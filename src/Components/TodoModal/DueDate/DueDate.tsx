@@ -1,19 +1,19 @@
 import { Popover } from "antd";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "./DueDate.scss";
 import { CalendarOutlined } from "@ant-design/icons";
 import { DueDateItems } from "./DueDateItems";
 import { TodoContext } from "src/Context/TodoContext";
-import { TODO_PROPERTIES } from "src/Utils";
-import { DaysInWeek, TShowDueDate } from "src/interface";
+import { DUEDATE_TYPES, TODO_PROPERTIES } from "src/Utils";
+import { DaysInWeek } from "src/interface";
 import { DueDateContext } from "src/Context/DueDateContext";
 
 type Props = {
-  initDate?: string;
-  handleChangeEditTodo?: (name: string, value: any) => void;
+  type?: string;
+  setIsEditDueDate?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const DueDate: React.FC<Props> = () => {
+export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate }) => {
   const { todo, handleChangeTodo } = useContext(TodoContext);
 
   const {
@@ -22,7 +22,12 @@ export const DueDate: React.FC<Props> = () => {
     showDueDate,
     setShowDueDate,
     dateList,
+    setType,
   } = useContext(DueDateContext);
+
+  useEffect(() => {
+    setType(type as string);
+  }, [type, setType]);
 
   // Scroll into view current month after open DueDate
   useEffect(() => {
@@ -32,7 +37,7 @@ export const DueDate: React.FC<Props> = () => {
         document
           .getElementById("current-month-choose")
           ?.scrollIntoView({ block: "start", behavior: "instant" });
-      });
+      }, 100);
     }
 
     return () => {
@@ -53,7 +58,7 @@ export const DueDate: React.FC<Props> = () => {
   };
 
   useEffect(() => {
-    const findDate = dateList.find(
+    const findDate = dateList?.find(
       (dateItem) => dateItem.date === todo.dueDate
     );
     if (findDate) {
@@ -71,6 +76,12 @@ export const DueDate: React.FC<Props> = () => {
     }
   }, [todo.dueDate, dateList]);
 
+  useEffect(() => {
+    if (isOpenDueDate===false) {
+      setIsEditDueDate?.(false);
+    }
+  }, [isOpenDueDate, setIsEditDueDate]);
+
   return (
     <Popover
       placement="leftBottom"
@@ -82,13 +93,18 @@ export const DueDate: React.FC<Props> = () => {
         setIsOpenDueDate(visible);
       }}
     >
-      <button className="modal__control-item">
-        <CalendarOutlined style={{ color: showDueDate?.color }} />
-        <p style={{ color: showDueDate?.color }}>{showDueDate?.text}</p>
-        {showDueDate?.text !== "Due Date" && (
-          <div onClick={handleCancelDueDate}>X</div>
-        )}
-      </button>
+      {/* <div className="w-full h-full bg-black fixed top-0 right-0"></div> */}
+      {type === DUEDATE_TYPES.FULL ? (
+        <button className="modal__control-item">
+          <CalendarOutlined style={{ color: showDueDate?.color }} />
+          <p style={{ color: showDueDate?.color }}>{showDueDate?.text}</p>
+          {showDueDate?.text !== "Due Date" && (
+            <div onClick={handleCancelDueDate}>X</div>
+          )}
+        </button>
+      ) : (
+        <CalendarOutlined />
+      )}
     </Popover>
   );
 };

@@ -4,22 +4,22 @@ import {
 import React, { useContext, useState } from "react";
 import "./Todo.scss";
 import { TodoModal } from "../TodoModal/TodoModal";
-import { TODO_TYPES } from "src/Utils";
+import { MODAL_TYPES, TODO_PAGES } from "src/Utils";
 import { TodoContext } from "src/Context/TodoContext";
 import { TTodo } from "src/interface";
 
 export const Todo: React.FC = () => {
-  const [addTodo, setAddTodo] = useState<boolean>(false);
+  const [isAddTodo, setIsAddTodo] = useState<boolean>(false);
 
   const {selectedItem, setSelectedItem, handleCancelTodo : resetTodo} = useContext(TodoContext);
 
   return (
     <div className="mt-[24px]">
-      {!addTodo || selectedItem !== "nothing" ? (
+      {!isAddTodo || selectedItem !== "nothing" ? (
         <div
           className="flex items-center gap-2 text-textGray todo"
           onClick={() => {
-            setAddTodo(true);
+            setIsAddTodo(true);
             setSelectedItem("nothing");
             resetTodo("Today");
           }}
@@ -28,7 +28,7 @@ export const Todo: React.FC = () => {
           <p>Add task</p>
         </div>
       ) : (
-        <TodoModal type={TODO_TYPES.TODAY} setAddTodo={setAddTodo}/>
+        <TodoModal type={MODAL_TYPES.ADD} page={TODO_PAGES.TODAY} setIsModalOpen={setIsAddTodo}/>
       )}
     </div>
   );
