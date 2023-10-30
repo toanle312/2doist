@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { firebaseProvider } from "src/firebase/provider";
+import { firebaseProvider } from "src/Firebase/provider";
 import { TTodo } from "src/interface";
 
 const initialState: { todos: TTodo[]; status: string } = {

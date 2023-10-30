@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { auth } from "../../firebase/config";
+import { auth } from "../../Firebase/config";
 import { useNavigate } from "react-router-dom";
 
 import store from "src/Redux/store";

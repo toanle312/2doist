@@ -1,6 +1,6 @@
-import { login, logo, logoOnly, google, facebook } from "../../assets";
+import { login, logo, logoOnly, google, facebook } from "../../Assets";
 import { Button } from "antd";
-import { facebookProvider, googleProvider } from "../../firebase/config";
+import { facebookProvider, googleProvider } from "../../Firebase/config";
 import { loginUser } from "../../Redux/Auth/AuthSlice";
 import { useAppDispatch } from "../../Hooks";
 

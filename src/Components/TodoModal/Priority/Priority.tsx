@@ -1,7 +1,7 @@
 import { CheckOutlined, FlagOutlined } from "@ant-design/icons";
 import { Popover } from "antd";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { priorities } from "src/assets";
+import { priorities } from "src/Assets";
 
 import "./Priority.scss";
 import { TodoContext } from "src/Context/TodoContext";

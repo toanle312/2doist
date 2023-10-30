@@ -1,5 +1,5 @@
 import React from "react";
-import { homeBtn, menu } from "../../assets";
+import { homeBtn, menu } from "../../Assets";
 import SearchBox from "../SearchBox/SearchBox";
 import "./Navbar.scss";
 import { useNavigate } from "react-router-dom";

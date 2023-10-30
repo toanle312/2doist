@@ -6,7 +6,7 @@ import {
   nextWeek as nextWeekIcon,
   nextWeekend as nextWeekendIcon,
   noDate,
-} from "src/assets";
+} from "src/Assets";
 import { TDateList, TShowDueDate } from "src/interface";
 import { MODAL_TYPES } from "src/Utils";
 

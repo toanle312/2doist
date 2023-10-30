@@ -1,4 +1,4 @@
-import { loading, logoOnly } from '../../assets'
+import { loading, logoOnly } from '../../Assets'
 import React from 'react'
 import "./LoadingPage.scss"
 

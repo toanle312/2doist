@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { SideBarItems } from "../../data";
+import { SideBarItems } from "../../Data";
 import "./SideBar.scss";
 import { NavLink } from "react-router-dom";
 

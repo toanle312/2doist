@@ -1,5 +1,5 @@
 import React from 'react'
-import { closeBtn, searchIcon } from '../../assets'
+import { closeBtn, searchIcon } from '../../Assets'
 import "./SearchBox.scss"
 
 type Props = {
