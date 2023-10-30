@@ -9,17 +9,12 @@ import { DUEDATE_TYPES, TODO_PROPERTIES } from "src/Utils";
 import { DueDateContext } from "src/Context/DueDateContext";
 import DatePickerProvider from "src/Context/DatePickerContext";
 
-type Props = {
-  setShowDueDate: any;
-  setIsOpenDueDate: any;
-  dateList: any;
-};
 
 export const DueDateItems: React.FC = () => {
   const { today } = useDate();
 
   const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
-  const { setShowDueDate, setIsOpenDueDate,type, dateList } =
+  const { setShowDueDate, setIsOpenDueDate, type, dateList } =
     useContext(DueDateContext);
 
   const handleChooseDate = (dateItem: TDateList) => {
@@ -50,7 +45,7 @@ export const DueDateItems: React.FC = () => {
       <hr />
       {/* Show quick access for date */}
       <ul>
-        {dateList?.map((dateItem: any) => (
+        {dateList?.filter(item => item.date !== todo.dueDate).map((dateItem: any) => (
           <li
             key={dateItem.id}
             className="date-item"

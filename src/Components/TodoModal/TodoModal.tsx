@@ -1,11 +1,12 @@
 import { TagOutlined } from "@ant-design/icons";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import "./TodoModal.scss";
 import { Priority } from "./Priority/Priority";
 import { DueDate } from "./DueDate/DueDate";
 import { TodoContext } from "src/Context/TodoContext";
 import { DUEDATE_TYPES, MODAL_TYPES, TODO_PAGES } from "src/Utils";
 import DueDateProvider from "src/Context/DueDateContext";
+import { TTodo } from "src/interface";
 
 export type Props = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +26,7 @@ export const TodoModal: React.FC<Props> = ({
     handleAddTodo,
     handleChangeTodo,
     handleUpdateTodo,
+    setTodo,
     todo,
   } = useContext(TodoContext);
 
@@ -33,6 +35,8 @@ export const TodoModal: React.FC<Props> = ({
       handleChangeTodo("dueDate", new Date().toDateString());
     }
   }, []);
+
+  const ref = useRef<TTodo>(todo);
 
   return (
     <div className="modal">
@@ -54,7 +58,7 @@ export const TodoModal: React.FC<Props> = ({
           handleChangeTodo(e.target.name, e.target.value);
         }}
       />
-      {isEditText === false && (
+      {!isEditText && (
         <>
           <div className="modal__control">
             <DueDateProvider>
@@ -70,12 +74,15 @@ export const TodoModal: React.FC<Props> = ({
         </>
       )}
       <div className="modal__footer">
-        <div>{isEditText === false ? "Choose here" : ""}</div>
+        <div>{!isEditText ? "Choose here" : ""}</div>
         <div className="flex gap-2">
           <button
             className="bg-[#f5f5f5] text-black btn"
             onClick={() => {
-              handleCancelTodo();
+              if (type === MODAL_TYPES.ADD) {
+                handleCancelTodo();
+              }
+              setTodo(ref.current);
               setIsModalOpen(false);
             }}
           >
@@ -93,12 +100,12 @@ export const TodoModal: React.FC<Props> = ({
               Add task
             </button>
           ) : (
+            !isEditText &&
             <button
               className="bg-primary text-white btn"
               disabled={todo?.taskName === ""}
               onClick={() => {
                 handleUpdateTodo(todo);
-                handleCancelTodo(page);
                 setIsModalOpen(false);
               }}
             >

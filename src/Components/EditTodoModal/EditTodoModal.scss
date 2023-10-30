@@ -1,0 +1,18 @@
+@import "../../Styles/styles.scss";
+h1{
+  font-weight: 500;
+  color: $text-gray;
+}
+
+.add-subtask-btn{
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: $text-gray;
+  padding: 2px;
+  border-radius: 3px;
+  &:hover{
+    color: $text-color;
+    background-color: $hover-color;
+  }
+}

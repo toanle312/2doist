@@ -28,7 +28,7 @@ export const Todo: React.FC = () => {
           <p>Add task</p>
         </div>
       ) : (
-        <TodoModal type={MODAL_TYPES.ADD} page={TODO_PAGES.TODAY} setIsModalOpen={setIsAddTodo}/>
+        <TodoModal type={MODAL_TYPES.ADD} page={TODO_PAGES.TODAY} setIsModalOpen={setIsAddTodo} isEditText={false}/>
       )}
     </div>
   );

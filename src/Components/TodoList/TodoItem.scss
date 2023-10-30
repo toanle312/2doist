@@ -5,7 +5,6 @@
   width: 100%;
 
   &:hover {
-    cursor: pointer;
     .control-list {
       display: flex!important;
       gap: 8px!important;
@@ -43,5 +42,13 @@
       display: block;
       color: $text-gray;
     }
+  }
+  &:disabled{
+    border-color: #d6d6d6;
+    background-color: unset;
+    .check-icon {
+      display: none;
+    }
+    cursor: not-allowed;
   }
 }

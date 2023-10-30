@@ -11,9 +11,10 @@ import { DueDateContext } from "src/Context/DueDateContext";
 type Props = {
   type?: string;
   setIsEditDueDate?: React.Dispatch<React.SetStateAction<boolean>>;
+  position?: string;
 };
 
-export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate }) => {
+export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate, position = "leftBottom" }) => {
   const { todo, handleChangeTodo } = useContext(TodoContext);
 
   const {
@@ -37,7 +38,7 @@ export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate }) => {
         document
           .getElementById("current-month-choose")
           ?.scrollIntoView({ block: "start", behavior: "instant" });
-      }, 100);
+      }, 300);
     }
 
     return () => {
@@ -84,7 +85,7 @@ export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate }) => {
 
   return (
     <Popover
-      placement="leftBottom"
+      placement={position as any}
       content={<DueDateItems />}
       arrow={false}
       trigger="click"
