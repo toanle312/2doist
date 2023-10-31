@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { TTodo } from "src/interface";
+import { TTodo } from "@/interface";
 
 import "./TodoItem.scss";
 import {
@@ -7,18 +7,25 @@ import {
   CommentOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import { TodoModal } from "../TodoModal/TodoModal";
-import { TodoContext } from "src/Context/TodoContext";
-import { DUEDATE_TYPES, MODAL_TYPES, TODO_PAGES } from "src/Utils";
-import { DueDate } from "../TodoModal/DueDate/DueDate";
-import DueDateProvider from "src/Context/DueDateContext";
-import EditTodoModal from "../EditTodoModal/EditTodoModal";
+import { TodoModal } from "@/Components/TodoModal/TodoModal";
+import { TodoContext } from "@/Context/TodoContext";
+import { DUEDATE_TYPES, MODAL_TYPES, TODOITEM_TYPES, TODO_PAGES } from "@/Utils";
+import { DueDate } from "@/Components/TodoModal/DueDate/DueDate";
+import DueDateProvider from "@/Context/DueDateContext";
+import EditTodoModal from "@/Components/EditTodoModal/EditTodoModal";
 
 type Props = {
   todo: TTodo;
   type: string;
 };
 
+/**
+ * if type = FULL => return todo item with full control
+ * 
+ * if type = SHORT => return simple todo item
+ * @param Props todo, type
+ * @returns JSX.Element
+ */
 const TodoItem: React.FC<Props> = ({ todo, type }) => {
   const { setTodo, selectedItem, setSelectedItem, handleUpdateTodo } =
     useContext(TodoContext);
@@ -47,7 +54,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
 
   return (
     <>
-      {type === "FULL" ? (
+      {type === TODOITEM_TYPES.FULL &&
         // Item with full control -> use for todo list
         <section>
           <li
@@ -149,7 +156,8 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
             currentTodo={todo}
           />
         </section>
-      ) : (
+      }
+      {type === TODOITEM_TYPES.SHORT &&
         // Item without control -> use for edit todo modal
         <li className="todo-item">
           {isEditTodo ? (
@@ -211,7 +219,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
             </>
           )}
         </li>
-      )}
+      }
     </>
   );
 };

@@ -1,8 +1,8 @@
 import { ReactNode, createContext, useState } from "react";
-import { addTodo, updateTodo } from "src/Redux/Todos/TodosSlice";
-import { TTodo } from "src/interface";
-import { useAppDispatch } from "src/Hooks";
-import { TODO_PAGES } from "src/Utils";
+import { addTodo, updateTodo } from "@/Redux/Todos/TodosSlice";
+import { TTodo } from "@/interface";
+import { useAppDispatch } from "@/Hooks";
+import { TODO_PAGES } from "@/Utils";
 
 export const TodoContext = createContext<{
   handleAddTodo: () => void;

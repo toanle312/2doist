@@ -1,16 +1,16 @@
 import React from "react";
-import LoginPage from "../Pages/LoginPage/LoginPage";
+import LoginPage from "@/Pages/LoginPage/LoginPage";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { NESTED_URL, PAGE_URL } from "../Utils";
+import { NESTED_URL, PAGE_URL } from "@/Utils";
 import {
   FilterAndLabelsPage,
   InboxPage,
   TodayPage,
   UpcomingPage,
-} from "../Pages/ControlPage";
-import PrivateRoute from "../Router/PrivateRoute/PrivateRoute";
-import MainLayout from "src/Layout/MainLayout";
-import PageNotFound from "src/Pages/PageNotFound/PageNotFound";
+} from "@/Pages/ControlPage";
+import PrivateRoute from "@/Router/PrivateRoute/PrivateRoute";
+import MainLayout from "@/Layout/MainLayout";
+import PageNotFound from "@/Pages/PageNotFound/PageNotFound";
 const AppRouter: React.FC = () => {
   return (
     <Routes>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { auth } from "../../Firebase/config";
+import { auth } from "@/Firebase/config";
 import { useNavigate } from "react-router-dom";
 
-import store from "src/Redux/store";
+import store from "@/Redux/store";
 import { Provider } from "react-redux";
-import LoadingPage from "src/Pages/LoadingPage/LoadingPage";
-import { PAGE_URL } from "src/Utils";
+import LoadingPage from "@/Pages/LoadingPage/LoadingPage";
+import { PAGE_URL } from "@/Utils";
 
 type Props = {
   children: JSX.Element;

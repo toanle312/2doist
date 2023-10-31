@@ -1,10 +1,10 @@
-import { auth } from "../../Firebase/config";
+import { auth } from "@/Firebase/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { AuthProvider, User, getAdditionalUserInfo, signInWithPopup } from "firebase/auth";
-import { firebaseProvider } from "src/Firebase/provider";
-// import { addUser } from "src/firebase/provider";
-import { TUser } from "src/interface";
+import { firebaseProvider } from "@/Firebase/provider";
+// import { addUser } from "@/firebase/provider";
+import { TUser } from "@/interface";
 
 const initialState: { isLoading: boolean; account: User } = {
   isLoading: false,

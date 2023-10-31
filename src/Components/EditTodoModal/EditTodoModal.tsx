@@ -1,16 +1,15 @@
-import { CheckOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Modal } from "antd";
-import React, { useContext, useEffect, useState } from "react";
-import { TTodo } from "src/interface";
-import TodoItem from "../TodoList/TodoItem";
-import { Priority } from "../TodoModal/Priority/Priority";
-import DueDateProvider from "src/Context/DueDateContext";
-import { DueDate } from "../TodoModal/DueDate/DueDate";
-import { DUEDATE_TYPES } from "src/Utils";
+import { PlusOutlined } from "@ant-design/icons";
+import { Modal } from "antd";
+import React, { useContext } from "react";
+import { TTodo } from "@/interface";
+import TodoItem from "@/Components/TodoList/TodoItem";
+import { Priority } from "@/Components/TodoModal/Priority/Priority";
+import DueDateProvider from "@/Context/DueDateContext";
+import { DueDate } from "@/Components/TodoModal/DueDate/DueDate";
+import { DUEDATE_TYPES, TODOITEM_TYPES } from "@/Utils";
 
 import "./EditTodoModal.scss"
-import { hover } from "@testing-library/user-event/dist/hover";
-import { TodoContext } from "src/Context/TodoContext";
+import { TodoContext } from "@/Context/TodoContext";
 
 type Props = {
   isOpenEditTodoModal: boolean;
@@ -38,7 +37,7 @@ const EditTodoModal: React.FC<Props> = ({
         <hr />
         <div className="flex w-full h-full">
           <div className="flex flex-col basis-[75%] p-4 h-full">
-            <TodoItem todo={todo} type="SHORT" />
+            <TodoItem todo={todo} type={TODOITEM_TYPES.SHORT} />
             <button className="add-subtask-btn w-[106px] mt-5 ml-[24px]">
               <PlusOutlined/> Add sub-task
             </button>

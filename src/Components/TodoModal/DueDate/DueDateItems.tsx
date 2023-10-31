@@ -1,13 +1,13 @@
 import { useContext } from "react";
-import { useDate } from "src/Hooks/use-date";
+import { useDate } from "@/Hooks/use-date";
 
 import "./DueDate.scss";
-import { DatePicker } from "../DatePicker/DatePicker";
-import { TodoContext } from "src/Context/TodoContext";
-import { TDateList } from "src/interface";
-import { DUEDATE_TYPES, TODO_PROPERTIES } from "src/Utils";
-import { DueDateContext } from "src/Context/DueDateContext";
-import DatePickerProvider from "src/Context/DatePickerContext";
+import { DatePicker } from "@/Components/TodoModal/DatePicker/DatePicker";
+import { TodoContext } from "@/Context/TodoContext";
+import { TDateList } from "@/interface";
+import { DUEDATE_TYPES, TODO_PROPERTIES } from "@/Utils";
+import { DueDateContext } from "@/Context/DueDateContext";
+import DatePickerProvider from "@/Context/DatePickerContext";
 
 
 export const DueDateItems: React.FC = () => {

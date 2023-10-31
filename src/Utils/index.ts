@@ -32,6 +32,8 @@ export const DUEDATE_TYPES = {
   SHORT: "Short",
 }
 
+export const TODOITEM_TYPES = DUEDATE_TYPES;
+
 
 // export const Crypto = {
 //   enCode: (data: any) => {

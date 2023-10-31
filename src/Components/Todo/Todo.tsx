@@ -3,10 +3,9 @@ import {
 } from "@ant-design/icons";
 import React, { useContext, useState } from "react";
 import "./Todo.scss";
-import { TodoModal } from "../TodoModal/TodoModal";
-import { MODAL_TYPES, TODO_PAGES } from "src/Utils";
-import { TodoContext } from "src/Context/TodoContext";
-import { TTodo } from "src/interface";
+import { TodoModal } from "@/Components/TodoModal/TodoModal";
+import { MODAL_TYPES, TODO_PAGES } from "@/Utils";
+import { TodoContext } from "@/Context/TodoContext";
 
 export const Todo: React.FC = () => {
   const [isAddTodo, setIsAddTodo] = useState<boolean>(false);
@@ -17,7 +16,7 @@ export const Todo: React.FC = () => {
     <div className="mt-[24px]">
       {!isAddTodo || selectedItem !== "nothing" ? (
         <div
-          className="flex items-center gap-2 text-textGray todo"
+          className="flex items-center gap-2 text-textGray todo text-medium"
           onClick={() => {
             setIsAddTodo(true);
             setSelectedItem("nothing");

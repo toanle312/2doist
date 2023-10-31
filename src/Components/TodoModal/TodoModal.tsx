@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useRef } from "react";
 import "./TodoModal.scss";
 import { Priority } from "./Priority/Priority";
 import { DueDate } from "./DueDate/DueDate";
-import { TodoContext } from "src/Context/TodoContext";
-import { DUEDATE_TYPES, MODAL_TYPES, TODO_PAGES } from "src/Utils";
-import DueDateProvider from "src/Context/DueDateContext";
-import { TTodo } from "src/interface";
+import { TodoContext } from "@/Context/TodoContext";
+import { DUEDATE_TYPES, MODAL_TYPES, TODO_PAGES } from "@/Utils";
+import DueDateProvider from "@/Context/DueDateContext";
+import { TTodo } from "@/interface";
 
 export type Props = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;

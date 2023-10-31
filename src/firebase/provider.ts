@@ -8,7 +8,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { TTodo, TUser } from "src/interface";
+import { TTodo, TUser } from "@/interface";
 import { db } from "./config";
 
 class FirebaseProvider {

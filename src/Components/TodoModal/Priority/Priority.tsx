@@ -1,12 +1,12 @@
 import { CheckOutlined, FlagOutlined } from "@ant-design/icons";
 import { Popover } from "antd";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { priorities } from "src/Assets";
+import { priorities } from "@/Assets";
 
 import "./Priority.scss";
-import { TodoContext } from "src/Context/TodoContext";
-import { TODO_PROPERTIES } from "src/Utils";
-import { EPriority } from "src/interface";
+import { TodoContext } from "@/Context/TodoContext";
+import { TODO_PROPERTIES } from "@/Utils";
+import { EPriority } from "@/interface";
 
 export const Priority: React.FC = () => {
   const { todo, handleChangeTodo } = useContext(TodoContext);

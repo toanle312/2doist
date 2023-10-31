@@ -1,10 +1,10 @@
 import React from "react";
-import { homeBtn, menu } from "../../Assets";
-import SearchBox from "../SearchBox/SearchBox";
+import { homeBtn, menu } from "@/Assets";
+import SearchBox from "@/Components/SearchBox/SearchBox";
 import "./Navbar.scss";
 import { useNavigate } from "react-router-dom";
-import { NESTED_URL } from "../../Utils";
-import { UserInfor } from "../UserInfor/UserInfor";
+import { NESTED_URL } from "@/Utils";
+import { UserInfor } from "@/Components/UserInfor/UserInfor";
 
 type Props = {
   isOpenMenu: boolean;
@@ -16,7 +16,7 @@ const Navbar: React.FC<Props> = ({ isOpenMenu, setIsOpenMenu, sidebarWidth }) =>
   const navigate = useNavigate();
   
   return (
-    <div className="w-full flex bg-primary p-2 justify-between fixed top-0 left-0">
+    <div className="w-full flex bg-primary p-2 justify-between fixed top-0 left-0 h-[48px]">
       {/* Left control */}
       <div className="flex gap-1">
         <img

@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import "./style.scss";
-import { Todo } from "src/Components/Todo/Todo";
-import { useDate } from "src/Hooks/use-date";
-import TodoProvider from "src/Context/TodoContext";
-import TodoList from "src/Components/TodoList/TodoList";
+import { Todo } from "@/Components/Todo/Todo";
+import { useDate } from "@/Hooks/use-date";
+import TodoProvider from "@/Context/TodoContext";
+import TodoList from "@/Components/TodoList/TodoList";
+
 
 
 const TodayPage: React.FC = () => {

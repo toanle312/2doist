@@ -1,4 +1,4 @@
-import { filter, inbox, today, upcoming } from "../Assets";
+import { filter, inbox, today, upcoming } from "@/Assets";
 import { v4 as uuidv4} from "uuid";
 
 export const SideBarItems = [

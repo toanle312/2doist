@@ -1,8 +1,8 @@
-import { login, logo, logoOnly, google, facebook } from "../../Assets";
+import { login, logo, logoOnly, google, facebook } from "@/Assets";
 import { Button } from "antd";
-import { facebookProvider, googleProvider } from "../../Firebase/config";
-import { loginUser } from "../../Redux/Auth/AuthSlice";
-import { useAppDispatch } from "../../Hooks";
+import { facebookProvider, googleProvider } from "@/Firebase/config";
+import { loginUser } from "@/Redux/Auth/AuthSlice";
+import { useAppDispatch } from "@/Hooks";
 
 const LoginPage : React.FC = () => {
   const dispatch = useAppDispatch();

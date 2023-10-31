@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { AppDispatch, RootState } from "../Redux/store";
+import { AppDispatch, RootState } from "@/Redux/store";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { User } from "firebase/auth";
-import { auth } from "src/Firebase/config";
+import { auth } from "@/Firebase/config";
 
 //useDispatch hook with types.
 export const useAppDispatch = () => useDispatch<AppDispatch>();

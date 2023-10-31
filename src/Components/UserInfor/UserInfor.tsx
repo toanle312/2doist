@@ -1,7 +1,7 @@
 import { Avatar, Button } from "antd";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "src/Hooks";
-import { logoutUser } from "src/Redux/Auth/AuthSlice";
+import { useAppDispatch, useAppSelector } from "@/Hooks";
+import { logoutUser } from "@/Redux/Auth/AuthSlice";
 
 export const UserInfor = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -1,4 +1,4 @@
-import { useDate } from "src/Hooks/use-date";
+import { useDate } from "@/Hooks/use-date";
 import { ReactNode, createContext, useEffect, useMemo, useState } from "react";
 import {
   tomorrow as tomorrowIcon,
@@ -6,9 +6,9 @@ import {
   nextWeek as nextWeekIcon,
   nextWeekend as nextWeekendIcon,
   noDate,
-} from "src/Assets";
-import { TDateList, TShowDueDate } from "src/interface";
-import { MODAL_TYPES } from "src/Utils";
+} from "@/Assets";
+import { TDateList, TShowDueDate } from "@/interface";
+import { MODAL_TYPES } from "@/Utils";
 
 export const DueDateContext = createContext<{
   showDueDate: TShowDueDate;

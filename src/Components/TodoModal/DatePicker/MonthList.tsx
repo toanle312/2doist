@@ -1,17 +1,17 @@
 import React, { useMemo, useContext, useRef, useEffect } from "react";
 import "./DatePicker.scss";
 import { v4 as uuidv4 } from "uuid";
-import { TodoContext } from "src/Context/TodoContext";
-import { DaysInWeek, MonthShortHand } from "src/interface";
+import { TodoContext } from "@/Context/TodoContext";
+import { DaysInWeek, MonthShortHand } from "@/interface";
 import {
   DUEDATE_TYPES,
   MODAL_TYPES,
   TODO_PROPERTIES,
   getCurrentDayInWeek,
   getDaysInMonth,
-} from "src/Utils";
-import { DueDateContext } from "src/Context/DueDateContext";
-import { DatePickerContext } from "src/Context/DatePickerContext";
+} from "@/Utils";
+import { DueDateContext } from "@/Context/DueDateContext";
+import { DatePickerContext } from "@/Context/DatePickerContext";
 
 type Props = {
   year: number;

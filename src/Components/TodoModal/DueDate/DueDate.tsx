@@ -3,10 +3,10 @@ import React, { useContext, useEffect } from "react";
 import "./DueDate.scss";
 import { CalendarOutlined } from "@ant-design/icons";
 import { DueDateItems } from "./DueDateItems";
-import { TodoContext } from "src/Context/TodoContext";
-import { DUEDATE_TYPES, TODO_PROPERTIES } from "src/Utils";
-import { DaysInWeek } from "src/interface";
-import { DueDateContext } from "src/Context/DueDateContext";
+import { TodoContext } from "@/Context/TodoContext";
+import { DUEDATE_TYPES, TODO_PROPERTIES } from "@/Utils";
+import { DaysInWeek } from "@/interface";
+import { DueDateContext } from "@/Context/DueDateContext";
 
 type Props = {
   type?: string;
