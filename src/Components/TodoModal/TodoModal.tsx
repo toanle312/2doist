@@ -7,8 +7,12 @@ import { TodoContext } from "@/Context/TodoContext";
 import { DUEDATE_TYPES, MODAL_TYPES, TODO_PAGES } from "@/Utils";
 import DueDateProvider from "@/Context/DueDateContext";
 import { TTodo } from "@/interface";
+import { v4 as uuidv4 } from "uuid";
+import { useAppDispatch } from "@/Hooks";
+import { updateSubTask } from "@/Redux/SubTasks/SubTasksSlice";
 
 export type Props = {
+  mainTodo?: TTodo;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   page?: string;
   type?: string;
@@ -20,6 +24,7 @@ export const TodoModal: React.FC<Props> = ({
   page,
   type,
   isEditText,
+  mainTodo,
 }) => {
   const {
     handleCancelTodo,
@@ -36,7 +41,11 @@ export const TodoModal: React.FC<Props> = ({
     }
   }, []);
 
+  useEffect(() => {}, []);
+
   const ref = useRef<TTodo>(todo);
+
+  const dispatch = useAppDispatch();
 
   return (
     <div className="modal">
@@ -88,7 +97,7 @@ export const TodoModal: React.FC<Props> = ({
           >
             Cancel
           </button>
-          {type === MODAL_TYPES.ADD ? (
+          {(type === MODAL_TYPES.ADD && (
             <button
               className="bg-primary text-white btn"
               disabled={todo?.taskName === ""}
@@ -99,19 +108,19 @@ export const TodoModal: React.FC<Props> = ({
             >
               Add task
             </button>
-          ) : (
-            !isEditText &&
-            <button
-              className="bg-primary text-white btn"
-              disabled={todo?.taskName === ""}
-              onClick={() => {
-                handleUpdateTodo(todo);
-                setIsModalOpen(false);
-              }}
-            >
-              Save
-            </button>
-          )}
+          )) ||
+            (type === MODAL_TYPES.SAVE && !isEditText && (
+              <button
+                className="bg-primary text-white btn"
+                disabled={todo?.taskName === ""}
+                onClick={() => {
+                  handleUpdateTodo(todo);
+                  setIsModalOpen(false);
+                }}
+              >
+                Save
+              </button>
+            ))}
         </div>
       </div>
     </div>

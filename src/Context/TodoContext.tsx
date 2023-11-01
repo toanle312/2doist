@@ -1,21 +1,34 @@
-import { ReactNode, createContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { addTodo, updateTodo } from "@/Redux/Todos/TodosSlice";
-import { TTodo } from "@/interface";
+import { TSubTask, TTodo } from "@/interface";
 import { useAppDispatch } from "@/Hooks";
 import { TODO_PAGES } from "@/Utils";
+import { updateSubTask } from "@/Redux/SubTasks/SubTasksSlice";
+import { v4 as uuidv4 } from "uuid";
 
-export const TodoContext = createContext<{
+type ContextValueProps = {
   handleAddTodo: () => void;
+  handleUpdateSubTask: (subTask: TSubTask) => void;
   handleUpdateTodo: (updatedTodo: TTodo) => void;
   handleCancelTodo: (type?: string) => void;
-  todo: TTodo;
   isLoadingAddTodo: boolean;
   isLoadingUpdateTodo: boolean;
+  todo: TTodo;
   setTodo: React.Dispatch<React.SetStateAction<TTodo>>;
   handleChangeTodo: (name: string, value: any) => void;
   selectedItem: string;
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
-}>({} as any);
+};
+
+export const TodoContext = createContext<ContextValueProps>(
+  {} as ContextValueProps
+);
 
 type Props = {
   children: ReactNode;
@@ -30,22 +43,23 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
   });
 
   const [isLoadingAddTodo, setIsLoadingAddTodo] = useState<boolean>(false);
-  const [isLoadingUpdateTodo, setIsLoadingUpdateTodo] = useState<boolean>(false);
+  const [isLoadingUpdateTodo, setIsLoadingUpdateTodo] =
+    useState<boolean>(false);
 
   const [selectedItem, setSelectedItem] = useState<string>("");
 
   const dispatch = useAppDispatch();
 
-  const handleChangeTodo = (name: string, value: any) => {
+  const handleChangeTodo = useCallback((name: string, value: any) => {
     setTodo((prev) => {
       return {
         ...prev,
         [name]: value,
       };
     });
-  };
+  }, []);
 
-  const handleAddTodo = async () => {
+  const handleAddTodo = useCallback(async () => {
     try {
       setIsLoadingAddTodo(true);
       await dispatch(
@@ -62,27 +76,52 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
       console.error(error);
       throw new Error("Can not add todo");
     }
-  };
+  }, [todo, dispatch]);
 
-  const handleUpdateTodo = async (updatedTodo: TTodo) => {
-    try {
-      setIsLoadingUpdateTodo(true);
-      dispatch(
-        updateTodo({
-          group: "todos",
-          todo: {
-            ...updatedTodo,
-          },
-        })
-      ).unwrap();
-      setIsLoadingUpdateTodo(false);
-    } catch (error) {
-      console.error(error);
-      throw new Error("Can not update todo");
-    }
-  };
+  const handleUpdateSubTask = useCallback(
+    async (subTask: TSubTask) => {
+      try {
+        setIsLoadingAddTodo(true);
+        await dispatch(
+          updateSubTask({
+            group: "subTasks",
+            subTask: {
+              ...subTask,
+              tasks: [...subTask.tasks, { ...todo, id: uuidv4() }],
+            },
+          })
+        );
+        setIsLoadingAddTodo(false);
+      } catch (error) {
+        console.error(error);
+        throw new Error("Can not add subtask");
+      }
+    },
+    [todo, dispatch]
+  );
 
-  const handleCancelTodo = (type?: string) => {
+  const handleUpdateTodo = useCallback(
+    async (updatedTodo: TTodo) => {
+      try {
+        setIsLoadingUpdateTodo(true);
+        dispatch(
+          updateTodo({
+            group: "todos",
+            todo: {
+              ...updatedTodo,
+            },
+          })
+        ).unwrap();
+        setIsLoadingUpdateTodo(false);
+      } catch (error) {
+        console.error(error);
+        throw new Error("Can not update todo");
+      }
+    },
+    [dispatch]
+  );
+
+  const handleCancelTodo = useCallback((type?: string) => {
     if (type === TODO_PAGES.TODAY) {
       setTodo({
         taskName: "",
@@ -98,25 +137,38 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
         dueDate: "",
       });
     }
-  };
+  }, []);
+
+  const contextValue = useMemo(() => {
+    return {
+      handleAddTodo,
+      handleUpdateTodo,
+      handleCancelTodo,
+      isLoadingAddTodo,
+      isLoadingUpdateTodo,
+      todo,
+      setTodo,
+      handleChangeTodo,
+      selectedItem,
+      setSelectedItem,
+      handleUpdateSubTask,
+    };
+  }, [
+    handleAddTodo,
+    handleUpdateTodo,
+    handleCancelTodo,
+    isLoadingAddTodo,
+    isLoadingUpdateTodo,
+    todo,
+    setTodo,
+    handleChangeTodo,
+    selectedItem,
+    setSelectedItem,
+    handleUpdateSubTask,
+  ]);
 
   return (
-    <TodoContext.Provider
-      value={{
-        handleAddTodo,
-        handleUpdateTodo,
-        handleCancelTodo,
-        isLoadingAddTodo,
-        isLoadingUpdateTodo,
-        todo,
-        setTodo,
-        handleChangeTodo,
-        selectedItem,
-        setSelectedItem,
-      }}
-    >
-      {children}
-    </TodoContext.Provider>
+    <TodoContext.Provider value={contextValue}>{children}</TodoContext.Provider>
   );
 };
 

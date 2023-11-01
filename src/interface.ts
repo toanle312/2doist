@@ -6,7 +6,7 @@ export interface Account {
   isLogin: boolean;
 }
 
-export interface TUser{
+export interface TUser {
   _id: string;
   fullName: string;
   email: string;
@@ -27,7 +27,13 @@ export interface TTodo {
   project?: string;
   comment?: Array<TComment>;
   priority: number;
-  subTask?: TTodo;
+  subTasks?: TTodo[];
+}
+
+export interface TSubTask {
+  id?: string;
+  todoID: string;
+  tasks: TTodo[];
 }
 
 export enum MonthShortHand {

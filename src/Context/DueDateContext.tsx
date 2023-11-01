@@ -84,21 +84,35 @@ const DueDateProvider: React.FC<Props> = ({ children }: any) => {
     ];
   }, [today, tomorrow, nextWeek, nextWeekend]);
 
+  const contextValue = useMemo(() => {
+    return {
+      showDueDate,
+      setShowDueDate,
+      isOpenDueDate,
+      setIsOpenDueDate,
+      dateList,
+      month,
+      setMonth,
+      year,
+      setYear,
+      type,
+      setType,
+    }
+  }, [showDueDate,
+    setShowDueDate,
+    isOpenDueDate,
+    setIsOpenDueDate,
+    dateList,
+    month,
+    setMonth,
+    year,
+    setYear,
+    type,
+    setType])
+
   return (
     <DueDateContext.Provider
-      value={{
-        showDueDate,
-        setShowDueDate,
-        isOpenDueDate,
-        setIsOpenDueDate,
-        dateList,
-        month,
-        setMonth,
-        year,
-        setYear,
-        type,
-        setType,
-      }}
+      value={contextValue}
     >
       {children}
     </DueDateContext.Provider>

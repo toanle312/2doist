@@ -25,6 +25,7 @@ export const TODO_PAGES = {
 export const MODAL_TYPES = {
   ADD: "Add",
   SAVE: "Save",
+  ADD_SUBTASK: "Add sub-task"
 }
 
 export const DUEDATE_TYPES = {

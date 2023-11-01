@@ -20,22 +20,22 @@ class FirebaseProvider {
     return addDoc(collectionRef, userData);
   };
 
-  public fetchTodos = (group: string): Promise<QuerySnapshot> => {
+  public fetchDocs = (group: string): Promise<QuerySnapshot> => {
     const refCollection = collection(db, group);
     return getDocs(refCollection);
   };
 
-  public addTodo = (group: string, todo: TTodo): Promise<DocumentReference> => {
+  public addDocs = (group: string, element: any): Promise<DocumentReference> => {
     const collectionRef = collection(db, group);
-    return addDoc(collectionRef, todo);
+    return addDoc(collectionRef, element);
   };
 
-  public updateTodo = (
+  public updateDocs = (
     group: string,
-    todo: TTodo
+    element: any
   ): Promise<void> => {
-    const documentRef = doc(db, group, todo?.id as string);
-    return setDoc(documentRef, todo);
+    const documentRef = doc(db, group, element?.id as string);
+    return setDoc(documentRef, element);
   };
 }
 

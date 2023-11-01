@@ -11,7 +11,6 @@ export const Todo: React.FC = () => {
   const [isAddTodo, setIsAddTodo] = useState<boolean>(false);
 
   const {selectedItem, setSelectedItem, handleCancelTodo : resetTodo} = useContext(TodoContext);
-
   return (
     <div className="mt-[24px]">
       {!isAddTodo || selectedItem !== "nothing" ? (

@@ -36,7 +36,7 @@ export const todosSlice = createSlice({
       })
       .addCase(updateTodo.fulfilled, (state, action) => {
         state.todos = [...state.todos].map(todo => {
-          if(todo?.id === action.payload?.id){
+          if (todo?.id === action.payload?.id) {
             return action.payload;
           }
           return todo;
@@ -59,7 +59,11 @@ export const addTodo = createAsyncThunk(
   "todos/addTodo",
   async ({ group, todo }: addTodoType) => {
     try {
-      const docRef = await firebaseProvider.addTodo(group, todo);
+      const docRef = await firebaseProvider.addDocs(group, todo);
+      await firebaseProvider.addDocs("subTasks", {
+        "todoID": docRef.id,
+        "tasks": []
+      })
       return {
         id: docRef.id,
         ...todo,
@@ -73,7 +77,7 @@ export const addTodo = createAsyncThunk(
 
 export const updateTodo = createAsyncThunk("todos/updateTodo", async ({ group, todo }: updateTodoType) => {
   try {
-    await firebaseProvider.updateTodo(group, todo);
+    await firebaseProvider.updateDocs(group, todo);
     return todo;
   } catch (error) {
     console.error(error);
@@ -83,7 +87,7 @@ export const updateTodo = createAsyncThunk("todos/updateTodo", async ({ group, t
 
 export const getTodos = createAsyncThunk("todos/getTodos", async () => {
   try {
-    const data = await firebaseProvider.fetchTodos("todos");
+    const data = await firebaseProvider.fetchDocs("todos");
     const filteredData = data.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as TTodo),

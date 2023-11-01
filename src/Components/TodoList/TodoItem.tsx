@@ -9,10 +9,17 @@ import {
 } from "@ant-design/icons";
 import { TodoModal } from "@/Components/TodoModal/TodoModal";
 import { TodoContext } from "@/Context/TodoContext";
-import { DUEDATE_TYPES, MODAL_TYPES, TODOITEM_TYPES, TODO_PAGES } from "@/Utils";
+import {
+  DUEDATE_TYPES,
+  MODAL_TYPES,
+  TODOITEM_TYPES,
+  TODO_PAGES,
+} from "@/Utils";
 import { DueDate } from "@/Components/TodoModal/DueDate/DueDate";
 import DueDateProvider from "@/Context/DueDateContext";
 import EditTodoModal from "@/Components/EditTodoModal/EditTodoModal";
+import { useAppDispatch } from "@/Hooks";
+import { getSubTasks } from "@/Redux/SubTasks/SubTasksSlice";
 
 type Props = {
   todo: TTodo;
@@ -21,7 +28,7 @@ type Props = {
 
 /**
  * if type = FULL => return todo item with full control
- * 
+ *
  * if type = SHORT => return simple todo item
  * @param Props todo, type
  * @returns JSX.Element
@@ -52,9 +59,11 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
     }
   }, [isEditDueDate]);
 
+  const dispatch = useAppDispatch();
+
   return (
     <>
-      {type === TODOITEM_TYPES.FULL &&
+      {type === TODOITEM_TYPES.FULL && (
         // Item with full control -> use for todo list
         <section>
           <li
@@ -63,6 +72,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
               setTodo(todo);
               setIsOpenEditTodoModal(true);
               setSelectedItem(todo?.id as string);
+              dispatch(getSubTasks(todo?.id as string));
             }}
           >
             {isEditTodo && todo?.id === selectedItem ? (
@@ -156,13 +166,14 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
             currentTodo={todo}
           />
         </section>
-      }
-      {type === TODOITEM_TYPES.SHORT &&
+      )}
+      {type === TODOITEM_TYPES.SHORT && (
         // Item without control -> use for edit todo modal
         <li className="todo-item">
           {isEditTodo ? (
             // show todo modal to edit task name and description when click task name or description
-            <div className="flex"
+            <div
+              className="flex"
               onClick={(e) => {
                 e.stopPropagation();
               }}
@@ -219,7 +230,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
             </>
           )}
         </li>
-      }
+      )}
     </>
   );
 };

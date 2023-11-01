@@ -5,11 +5,8 @@ import { useDate } from "@/Hooks/use-date";
 import TodoProvider from "@/Context/TodoContext";
 import TodoList from "@/Components/TodoList/TodoList";
 
-
-
 const TodayPage: React.FC = () => {
   const { today } = useDate();
-
   return (
     <div className="control">
       <header className="today-header">
