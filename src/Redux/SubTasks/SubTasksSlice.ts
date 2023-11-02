@@ -48,6 +48,7 @@ type updateSubTaskType = {
 export const updateSubTask = createAsyncThunk(
   "subTask/updateSubTask",
   async ({ group, subTask }: updateSubTaskType) => {
+    console.log(subTask)
     try {
       await firebaseProvider.updateDocs(group, subTask);
       return subTask;

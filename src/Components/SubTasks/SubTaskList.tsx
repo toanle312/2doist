@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import TodoItem from "./TodoItem";
+import TodoItem from "./SubTaskItem";
 import { TODOITEM_TYPES } from "@/Utils";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { getTodos } from "@/Redux/Todos/TodosSlice";
+import SubTaskItem from "./SubTaskItem";
 
 const SubTaskList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -16,15 +17,9 @@ const SubTaskList: React.FC = () => {
   return (
     <ul>
       {subTasks
-        .filter((subtask) => !subtask.isCompleted)
+        // .filter((subtask) => !subtask.isCompleted)
         .map((subtask) => {
-          return (
-            <TodoItem
-              key={subtask.id}
-              todo={subtask}
-              type={TODOITEM_TYPES.FULL}
-            />
-          );
+          return <SubTaskItem key={subtask.id} todo={subtask} />;
         })}
     </ul>
   );

@@ -24,7 +24,6 @@ export const TodoModal: React.FC<Props> = ({
   page,
   type,
   isEditText,
-  mainTodo,
 }) => {
   const {
     handleCancelTodo,
@@ -41,11 +40,7 @@ export const TodoModal: React.FC<Props> = ({
     }
   }, []);
 
-  useEffect(() => {}, []);
-
   const ref = useRef<TTodo>(todo);
-
-  const dispatch = useAppDispatch();
 
   return (
     <div className="modal">

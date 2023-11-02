@@ -14,7 +14,8 @@ import { v4 as uuidv4 } from "uuid";
 
 type ContextValueProps = {
   handleAddTodo: () => void;
-  handleUpdateSubTask: (subTask: TSubTask) => void;
+  handleAddTaskInSubTask: (subTask: TSubTask) => void;
+  handleUpdateTaskInSubTask: (subTask: TSubTask, updatedTask: TTodo) => void;
   handleUpdateTodo: (updatedTodo: TTodo) => void;
   handleCancelTodo: (type?: string) => void;
   isLoadingAddTodo: boolean;
@@ -78,16 +79,20 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
     }
   }, [todo, dispatch]);
 
-  const handleUpdateSubTask = useCallback(
+  const handleAddTaskInSubTask = useCallback(
     async (subTask: TSubTask) => {
       try {
         setIsLoadingAddTodo(true);
+
         await dispatch(
           updateSubTask({
             group: "subTasks",
             subTask: {
               ...subTask,
-              tasks: [...subTask.tasks, { ...todo, id: uuidv4() }],
+              tasks: [
+                ...subTask.tasks,
+                { ...todo, id: uuidv4(), isCompleted: false },
+              ],
             },
           })
         );
@@ -95,6 +100,32 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
       } catch (error) {
         console.error(error);
         throw new Error("Can not add subtask");
+      }
+    },
+    [todo, dispatch]
+  );
+
+  const handleUpdateTaskInSubTask = useCallback(
+    async (subTask: TSubTask, updatedTask: TTodo) => {
+      try {
+        setIsLoadingAddTodo(true);
+        const updateTasks = [...subTask.tasks].map((task) => {
+          if (task.id === updatedTask.id) return updatedTask;
+          return task;
+        });
+        await dispatch(
+          updateSubTask({
+            group: "subTasks",
+            subTask: {
+              ...subTask,
+              tasks: updateTasks,
+            },
+          })
+        );
+        setIsLoadingAddTodo(false);
+      } catch (error) {
+        console.error(error);
+        throw new Error("Can edit task in subtask");
       }
     },
     [todo, dispatch]
@@ -151,7 +182,8 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
       handleChangeTodo,
       selectedItem,
       setSelectedItem,
-      handleUpdateSubTask,
+      handleAddTaskInSubTask,
+      handleUpdateTaskInSubTask,
     };
   }, [
     handleAddTodo,
@@ -164,7 +196,8 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
     handleChangeTodo,
     selectedItem,
     setSelectedItem,
-    handleUpdateSubTask,
+    handleAddTaskInSubTask,
+    handleUpdateTaskInSubTask,
   ]);
 
   return (

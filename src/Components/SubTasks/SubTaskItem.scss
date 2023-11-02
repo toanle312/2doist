@@ -1,0 +1,46 @@
+@import "../../Styles/styles.scss";
+
+.subtask-item {
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.subtask-item.checked {
+  .task-name {
+    text-decoration: line-through;
+  }
+  .checkbox-btn {
+    background-color: $text-gray;
+    .check-icon {
+      font-size: 12px;
+      display: block;
+      color: white;
+    }
+  }
+}
+
+.checkbox-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid $text-gray;
+  border-radius: 50%;
+  &:hover {
+    background-color: $hover-strong-color;
+    .check-icon {
+      font-size: 12px;
+      display: block;
+      color: $text-gray;
+    }
+  }
+  &:disabled {
+    border-color: #d6d6d6;
+    background-color: unset;
+    .check-icon {
+      display: none;
+    }
+    cursor: not-allowed;
+  }
+}
