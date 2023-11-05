@@ -1,6 +1,4 @@
-import {
-  PlusOutlined
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import React, { useContext, useState } from "react";
 import "./Todo.scss";
 import { TodoModal } from "@/Components/TodoModal/TodoModal";
@@ -10,7 +8,11 @@ import { TodoContext } from "@/Context/TodoContext";
 export const Todo: React.FC = () => {
   const [isAddTodo, setIsAddTodo] = useState<boolean>(false);
 
-  const {selectedItem, setSelectedItem, handleCancelTodo : resetTodo} = useContext(TodoContext);
+  const {
+    selectedItem,
+    setSelectedItem,
+    handleCancelTodo: resetTodo,
+  } = useContext(TodoContext);
   return (
     <div className="mt-[24px]">
       {!isAddTodo || selectedItem !== "nothing" ? (
@@ -26,7 +28,11 @@ export const Todo: React.FC = () => {
           <p>Add task</p>
         </div>
       ) : (
-        <TodoModal type={MODAL_TYPES.ADD} page={TODO_PAGES.TODAY} setIsModalOpen={setIsAddTodo} isEditText={false}/>
+        <TodoModal
+          type={MODAL_TYPES.ADD}
+          page={TODO_PAGES.TODAY}
+          setIsModalOpen={setIsAddTodo}
+        />
       )}
     </div>
   );

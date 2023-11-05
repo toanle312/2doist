@@ -2,6 +2,7 @@ import { Avatar, Button } from "antd";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { logoutUser } from "@/Redux/Auth/AuthSlice";
+import { todosSlice } from "@/Redux/Todos/TodosSlice";
 
 export const UserInfor = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -10,8 +11,9 @@ export const UserInfor = () => {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
+    dispatch(todosSlice.actions.reset());
     dispatch(logoutUser());
-  }
+  };
 
   return (
     <div>
@@ -31,9 +33,13 @@ export const UserInfor = () => {
             onClick={() => setIsOpen(false)}
           ></div>
           <div className="absolute right-2 top-[45px]">
-            <div className="flex flex-col w-[100px] h-[300px] bg-white 
-            justify-center items-center rounded-sm shadow-md">
-              <Button danger type="primary" onClick={handleLogout}>Logout</Button>
+            <div
+              className="flex flex-col w-[100px] h-[300px] bg-white 
+            justify-center items-center rounded-sm shadow-md"
+            >
+              <Button danger type="primary" onClick={handleLogout}>
+                Logout
+              </Button>
             </div>
           </div>
         </>

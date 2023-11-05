@@ -6,8 +6,8 @@
 
   &:hover {
     .control-list {
-      display: flex!important;
-      gap: 8px!important;
+      display: flex !important;
+      gap: 8px !important;
     }
   }
 
@@ -23,6 +23,20 @@
         background-color: $hover-strong-color;
         cursor: pointer;
       }
+    }
+  }
+}
+
+.todo-item.checked {
+  .task-name {
+    text-decoration: line-through;
+  }
+  .checkbox-btn {
+    background-color: $text-gray;
+    .check-icon {
+      font-size: 12px;
+      display: block;
+      color: white;
     }
   }
 }
@@ -43,7 +57,7 @@
       color: $text-gray;
     }
   }
-  &:disabled{
+  &:disabled {
     border-color: #d6d6d6;
     background-color: unset;
     .check-icon {

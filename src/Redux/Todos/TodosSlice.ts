@@ -1,16 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { firebaseProvider } from "@/Firebase/provider";
 import { TTodo } from "@/interface";
+import { auth } from "@/Firebase/config";
 
-const initialState: { todos: TTodo[]; status: string } = {
+const initialState: { todos: TTodo[]; currentSubTask: TTodo[]; currentTodo: TTodo; status: string } = {
   todos: [] as TTodo[],
+  currentSubTask: [] as TTodo[],
+  currentTodo: {} as TTodo,
   status: "Normal",
 };
 
 export const todosSlice = createSlice({
   name: "todos",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    reset: () => {
+      return initialState;
+    },
+    getCurrentTodo: (state, action) => {
+      state.currentTodo = [...state.todos].find(todo => todo.id === action.payload) as TTodo;
+      state.status = "Normal";
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getTodos.pending, (state, _action) => {
@@ -27,6 +38,7 @@ export const todosSlice = createSlice({
       })
       .addCase(addTodo.fulfilled, (state, action) => {
         state.todos.push(action.payload);
+        state.currentSubTask = action.payload.subTasks as TTodo[];
       })
       .addCase(addTodo.rejected, (state, _action) => {
         state.status = "Error";
@@ -41,6 +53,8 @@ export const todosSlice = createSlice({
           }
           return todo;
         })
+        state.currentSubTask = action.payload.subTasks as TTodo[];
+        state.currentTodo = action.payload;
       })
       .addCase(updateTodo.rejected, (state, _action) => {
         state.status = "Error";
@@ -60,10 +74,6 @@ export const addTodo = createAsyncThunk(
   async ({ group, todo }: addTodoType) => {
     try {
       const docRef = await firebaseProvider.addDocs(group, todo);
-      await firebaseProvider.addDocs("subTasks", {
-        "todoID": docRef.id,
-        "tasks": []
-      })
       return {
         id: docRef.id,
         ...todo,
@@ -85,14 +95,14 @@ export const updateTodo = createAsyncThunk("todos/updateTodo", async ({ group, t
   }
 });
 
-export const getTodos = createAsyncThunk("todos/getTodos", async () => {
+export const getTodos = createAsyncThunk("todos/getTodos", async (userId: string) => {
   try {
     const data = await firebaseProvider.fetchDocs("todos");
     const filteredData = data.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as TTodo),
     }));
-    return filteredData;
+    return filteredData.filter((doc) => doc.owner === userId);
   } catch (error) {
     console.error(error);
     throw new Error("Can not fetch todos");

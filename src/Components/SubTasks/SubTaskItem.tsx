@@ -1,78 +1,52 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { TTodo } from "@/interface";
 
 import "./SubTaskItem.scss";
-import {
-  CheckOutlined,
-  CommentOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
-import { TodoModal } from "@/Components/TodoModal/TodoModal";
-import { TodoContext } from "@/Context/TodoContext";
-import {
-  DUEDATE_TYPES,
-  MODAL_TYPES,
-  TODOITEM_TYPES,
-  TODO_PAGES,
-} from "@/Utils";
-import { DueDate } from "@/Components/TodoModal/DueDate/DueDate";
-import DueDateProvider from "@/Context/DueDateContext";
-import { useAppDispatch, useAppSelector } from "@/Hooks";
-import { getSubTasks } from "@/Redux/SubTasks/SubTasksSlice";
+import { CheckOutlined } from "@ant-design/icons";
+import { TodoContext as SubTaskContext } from "@/Context/TodoContext";
+import { MODAL_TYPES } from "@/Utils";
+
+import { useAppSelector } from "@/Hooks";
 import { SubTaskModal } from "../TodoModal/SubTaskModal";
 
 type Props = {
-  todo: TTodo;
+  task: TTodo;
 };
 
 /**
- * @param Props todo
+ * @param Props task
  * @returns JSX.Element
  */
-const SubTaskItem: React.FC<Props> = ({ todo }) => {
-  const { setTodo, selectedItem, setSelectedItem, handleUpdateTaskInSubTask } =
-    useContext(TodoContext);
+const SubTaskItem: React.FC<Props> = ({ task }) => {
+  const {
+    setTodo: setTask,
+    selectedItem,
+    setSelectedItem,
+  } = useContext(SubTaskContext);
 
-  const [isEditTodo, setIsEditTodo] = useState<boolean>(false);
-  const [isEditDueDate, setIsEditDueDate] = useState<boolean>(false);
-
-  const currentSubTask = useAppSelector((state) => state.subTasks.subTask);
+  const [isEditTask, setIsEditTask] = useState<boolean>(false);
 
   const handleToggle: React.MouseEventHandler<HTMLButtonElement> | undefined = (
     e
   ) => {
     e.stopPropagation();
-    handleUpdateTaskInSubTask(currentSubTask, {
-      ...todo,
-      isCompleted: !todo.isCompleted,
-    });
   };
-
-  const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (!isEditDueDate) {
-      if (ref.current) {
-        ref.current.style.display = "none";
-      }
-    }
-  }, [isEditDueDate]);
 
   return (
     <li
       className={`subtask-item relative ${
-        todo.isCompleted ? "checked" : "cursor-pointer"
+        task.isCompleted ? "checked" : "cursor-pointer"
       }`}
       onClick={(e) => {
         e.stopPropagation();
-        if (!todo.isCompleted) {
-          setTodo(todo);
-          setIsEditTodo(true);
-          setSelectedItem(todo?.id as string);
+        if (!task.isCompleted) {
+          setTask(task);
+          setIsEditTask(true);
+          setSelectedItem(task?.id as string);
         }
       }}
     >
-      {isEditTodo && todo?.id === selectedItem ? (
+      {isEditTask && task?.id === selectedItem ? (
         // show todo modal when click edit button
         <div
           onClick={(e) => {
@@ -80,9 +54,8 @@ const SubTaskItem: React.FC<Props> = ({ todo }) => {
           }}
         >
           <SubTaskModal
-            setIsModalOpen={setIsEditTodo}
+            setIsModalOpen={setIsEditTask}
             type={MODAL_TYPES.SAVE}
-            subTask={currentSubTask}
           />
         </div>
       ) : (
@@ -96,8 +69,8 @@ const SubTaskItem: React.FC<Props> = ({ todo }) => {
               <CheckOutlined className={"hidden check-icon"} />
             </button>
             <section className="w-full">
-              <p className="text-medium task-name">{todo.taskName}</p>
-              <p className="text-small text-textGray">{todo.description}</p>
+              <p className="text-small font-[500] task-name">{task.taskName}</p>
+              <p className="text-small text-textGray">{task.description}</p>
               <p className="flex justify-end text-small">Inbox</p>
             </section>
           </section>

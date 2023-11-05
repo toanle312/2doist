@@ -14,7 +14,9 @@ export const TODO_PROPERTIES = {
   DUE_DATE: "dueDate",
   TASK_NAME: "taskName",
   PRIORITY: "priority",
-  DESCRIPTION: "description"
+  DESCRIPTION: "description",
+  SUB_TASKS: "subtasks",
+  LABELS: "labels"
 }
 
 export const TODO_PAGES = {
@@ -25,7 +27,6 @@ export const TODO_PAGES = {
 export const MODAL_TYPES = {
   ADD: "Add",
   SAVE: "Save",
-  ADD_SUBTASK: "Add sub-task"
 }
 
 export const DUEDATE_TYPES = {
@@ -34,32 +35,6 @@ export const DUEDATE_TYPES = {
 }
 
 export const TODOITEM_TYPES = DUEDATE_TYPES;
-
-
-// export const Crypto = {
-//   enCode: (data: any) => {
-//     var strToEncrypt = typeof data === "string" ? data : JSON.stringify(data);
-//     var encrypted = CryptoJS.AES.encrypt(
-//       strToEncrypt,
-//       process.env.REA
-//       process.env.REACT_APP_DOC_ENCODE_KEY
-//     );
-//     return encrypted.toString();
-//   },
-
-//   deCode: (str: any) => {
-//     var decrypted = CryptoJS.AES.decrypt(
-//       str,
-//       process.env.REACT_APP_DOC_ENCODE_KEY
-//     );
-//     var decryptedStr = decrypted.toString(CryptoJS.enc.Utf8);
-//     try {
-//       return JSON.parse(decryptedStr);
-//     } catch (error) {
-//       return decryptedStr;
-//     }
-//   },
-// };
 
 /**
  *

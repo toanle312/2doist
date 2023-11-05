@@ -4,33 +4,29 @@ import "./TodoModal.scss";
 import { Priority } from "./Priority/Priority";
 import { DueDate } from "./DueDate/DueDate";
 import { TodoContext } from "@/Context/TodoContext";
-import { DUEDATE_TYPES, MODAL_TYPES, TODO_PAGES } from "@/Utils";
+import { DUEDATE_TYPES, MODAL_TYPES } from "@/Utils";
 import DueDateProvider from "@/Context/DueDateContext";
 import { TSubTask, TTodo } from "@/interface";
-import { isFulfilled } from "@reduxjs/toolkit";
+import { useAppSelector } from "@/Hooks";
 //
 
 export type Props = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  subTask?: TSubTask;
   type?: string;
 };
 
-export const SubTaskModal: React.FC<Props> = ({
-  setIsModalOpen,
-  subTask,
-  type,
-}) => {
+export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
   const {
-    handleCancelTodo,
-    handleChangeTodo,
-    handleAddTaskInSubTask,
-    handleUpdateTaskInSubTask,
-    setTodo,
-    todo,
+    handleCancelTodo: handleCancelTask,
+    handleChangeTodo: handleChangeTask,
+    setTodo: setTask,
+    handleAddSubTask,
+    todo: task,
   } = useContext(TodoContext);
 
-  const ref = useRef<TTodo>(todo);
+  const ref = useRef<TTodo>(task);
+
+  const todo = useAppSelector((state) => state.todos.currentTodo);
 
   return (
     <div className="modal">
@@ -38,18 +34,18 @@ export const SubTaskModal: React.FC<Props> = ({
         className="modal__input font-medium"
         placeholder="Task name"
         name="taskName"
-        value={todo?.taskName}
+        value={task?.taskName}
         onChange={(e) => {
-          handleChangeTodo(e.target.name, e.target.value);
+          handleChangeTask(e.target.name, e.target.value);
         }}
       />
       <input
         className="modal__input"
         placeholder="Description"
         name="description"
-        value={todo?.description}
+        value={task?.description}
         onChange={(e) => {
-          handleChangeTodo(e.target.name, e.target.value);
+          handleChangeTask(e.target.name, e.target.value);
         }}
       />
 
@@ -71,8 +67,8 @@ export const SubTaskModal: React.FC<Props> = ({
           <button
             className="bg-[#f5f5f5] text-black btn"
             onClick={() => {
-              handleCancelTodo();
-              setTodo(ref.current);
+              handleCancelTask();
+              setTask(ref.current);
               setIsModalOpen(false);
             }}
           >
@@ -81,10 +77,10 @@ export const SubTaskModal: React.FC<Props> = ({
           {type === MODAL_TYPES.ADD ? (
             <button
               className="bg-primary text-white btn"
-              disabled={todo?.taskName === ""}
+              disabled={task?.taskName === ""}
               onClick={() => {
-                handleAddTaskInSubTask(subTask as TSubTask);
-                handleCancelTodo();
+                handleAddSubTask(todo, task);
+                handleCancelTask();
               }}
             >
               Add sub-task
@@ -92,9 +88,10 @@ export const SubTaskModal: React.FC<Props> = ({
           ) : (
             <button
               className="bg-primary text-white btn"
-              disabled={todo?.taskName === ""}
+              disabled={task?.taskName === ""}
               onClick={() => {
-                handleUpdateTaskInSubTask(subTask as TSubTask, todo);
+                // Updated task with current task state
+                // handleUpdateTaskInSubTask(subTask as TSubTask, task);
                 setIsModalOpen(false);
               }}
             >

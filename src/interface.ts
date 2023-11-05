@@ -28,6 +28,8 @@ export interface TTodo {
   comment?: Array<TComment>;
   priority: number;
   subTasks?: TTodo[];
+  labels?: string[];
+  owner?: string;
 }
 
 export interface TSubTask {

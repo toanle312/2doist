@@ -18,8 +18,8 @@ import {
 import { DueDate } from "@/Components/TodoModal/DueDate/DueDate";
 import DueDateProvider from "@/Context/DueDateContext";
 import EditTodoModal from "@/Components/EditTodoModal/EditTodoModal";
-import { useAppDispatch } from "@/Hooks";
-import { getSubTasks } from "@/Redux/SubTasks/SubTasksSlice";
+import { useAppDispatch, useAppSelector } from "@/Hooks";
+import { Alert } from "antd";
 
 type Props = {
   todo: TTodo;
@@ -46,8 +46,16 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
     e
   ) => {
     e.stopPropagation();
-    handleUpdateTodo({ ...todo, isCompleted: true });
+    handleUpdateTodo({ ...todo, isCompleted: !todo.isCompleted });
   };
+
+  const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getSubTasks(todo?.id as string));
+  // }, [todo?.id, dispatch]);
+
+  // const currentSubTask = useAppSelector((state) => state.subTask.subTask);
 
   const ref = useRef<HTMLElement>(null);
 
@@ -59,20 +67,19 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
     }
   }, [isEditDueDate]);
 
-  const dispatch = useAppDispatch();
-
   return (
     <>
       {type === TODOITEM_TYPES.FULL && (
         // Item with full control -> use for todo list
         <section>
           <li
-            className="todo-item relative cursor-pointer"
+            className={`todo-item ${
+              todo.isCompleted ? "checked" : ""
+            } relative cursor-pointer`}
             onClick={() => {
               setTodo(todo);
               setIsOpenEditTodoModal(true);
               setSelectedItem(todo?.id as string);
-              dispatch(getSubTasks(todo?.id as string));
             }}
           >
             {isEditTodo && todo?.id === selectedItem ? (
@@ -83,7 +90,6 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
                 }}
               >
                 <TodoModal
-                  isEditText={false}
                   setIsModalOpen={setIsEditTodo}
                   type={MODAL_TYPES.SAVE}
                   page={
@@ -105,7 +111,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
                   </button>
                   <section className="w-full">
                     <section className="flex justify-between mb-2">
-                      <p className="text-medium">{todo.taskName}</p>
+                      <p className="text-medium task-name">{todo.taskName}</p>
                       <section
                         className="control-list absolute right-0"
                         ref={ref}
@@ -152,6 +158,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
                     <p className="text-small text-textGray">
                       {todo.description}
                     </p>
+                    {/* <p>Tasks - {currentSubTask?.tasks?.length}</p> */}
                     <p className="flex justify-end text-small">Inbox</p>
                   </section>
                 </section>
@@ -163,13 +170,12 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
           <EditTodoModal
             isOpenEditTodoModal={isOpenEditTodoModal}
             setIsOpenEditTodoModal={setIsOpenEditTodoModal}
-            currentTodo={todo}
           />
         </section>
       )}
       {type === TODOITEM_TYPES.SHORT && (
         // Item without control -> use for edit todo modal
-        <li className="todo-item">
+        <li className={`todo-item ${todo.isCompleted ? "checked" : ""}`}>
           {isEditTodo ? (
             // show todo modal to edit task name and description when click task name or description
             <div
@@ -181,12 +187,11 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
               <button
                 className="checkbox-btn mr-2 mt-[8px]"
                 onClick={handleToggle}
-                disabled
               >
                 <CheckOutlined className={"hidden check-icon"} />
               </button>
               <TodoModal
-                isEditText={true}
+                isEditText
                 setIsModalOpen={setIsEditTodo}
                 type={MODAL_TYPES.SAVE}
                 page={
@@ -208,7 +213,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
                 </button>
                 <section className="w-full p-[6.5px] flex flex-col gap-[4px]">
                   <p
-                    className="text-small font-[500] cursor-text"
+                    className="task-name text-small font-[500] cursor-text"
                     onClick={() => {
                       setIsEditTodo(true);
                       setTodo(todo);

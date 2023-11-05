@@ -7,15 +7,14 @@ import {
 } from "react";
 import { addTodo, updateTodo } from "@/Redux/Todos/TodosSlice";
 import { TSubTask, TTodo } from "@/interface";
-import { useAppDispatch } from "@/Hooks";
+import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { TODO_PAGES } from "@/Utils";
-import { updateSubTask } from "@/Redux/SubTasks/SubTasksSlice";
 import { v4 as uuidv4 } from "uuid";
 
 type ContextValueProps = {
   handleAddTodo: () => void;
-  handleAddTaskInSubTask: (subTask: TSubTask) => void;
-  handleUpdateTaskInSubTask: (subTask: TSubTask, updatedTask: TTodo) => void;
+  handleAddSubTask: (todo: TTodo, task: TTodo) => void;
+  handleUpdateSubTask: (todo: TTodo, task: TTodo) => void;
   handleUpdateTodo: (updatedTodo: TTodo) => void;
   handleCancelTodo: (type?: string) => void;
   isLoadingAddTodo: boolean;
@@ -25,6 +24,8 @@ type ContextValueProps = {
   handleChangeTodo: (name: string, value: any) => void;
   selectedItem: string;
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
+  isShowAlert: boolean;
+  setIsShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const TodoContext = createContext<ContextValueProps>(
@@ -36,14 +37,20 @@ type Props = {
 };
 
 const TodoProvider: React.FC<Props> = ({ children }) => {
+  const user = useAppSelector((state) => state.auth.account);
   const [todo, setTodo] = useState<TTodo>({
     taskName: "",
     description: "",
     priority: 4,
     dueDate: "",
+    subTasks: [] as TTodo[],
+    labels: [] as string[],
+    isCompleted: false,
+    owner: user.uid,
   });
 
   const [isLoadingAddTodo, setIsLoadingAddTodo] = useState<boolean>(false);
+  const [isShowAlert, setIsShowAlert] = useState<boolean>(false);
   const [isLoadingUpdateTodo, setIsLoadingUpdateTodo] =
     useState<boolean>(false);
 
@@ -60,6 +67,9 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
     });
   }, []);
 
+  /**
+   * Add from current todo state
+   */
   const handleAddTodo = useCallback(async () => {
     try {
       setIsLoadingAddTodo(true);
@@ -68,7 +78,6 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
           group: "todos",
           todo: {
             ...todo,
-            isCompleted: false,
           } as TTodo,
         })
       );
@@ -79,56 +88,60 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
     }
   }, [todo, dispatch]);
 
-  const handleAddTaskInSubTask = useCallback(
-    async (subTask: TSubTask) => {
+  /**
+   * current todo is current subtask => add subtask is add todo but with different group
+   */
+  const handleAddSubTask = useCallback(
+    async (todo: TTodo, task: TTodo) => {
       try {
-        setIsLoadingAddTodo(true);
-
-        await dispatch(
-          updateSubTask({
-            group: "subTasks",
-            subTask: {
-              ...subTask,
-              tasks: [
-                ...subTask.tasks,
-                { ...todo, id: uuidv4(), isCompleted: false },
-              ],
+        const ID = uuidv4();
+        setIsLoadingUpdateTodo(true);
+        dispatch(
+          updateTodo({
+            group: "todos",
+            todo: {
+              ...todo,
+              subTasks: [...(todo.subTasks as TTodo[]), { ...task, id: ID }],
             },
           })
-        );
-        setIsLoadingAddTodo(false);
+        ).unwrap();
+        setIsLoadingUpdateTodo(false);
       } catch (error) {
         console.error(error);
-        throw new Error("Can not add subtask");
+        throw new Error("Can not update todo");
       }
     },
-    [todo, dispatch]
+    [dispatch]
   );
 
-  const handleUpdateTaskInSubTask = useCallback(
-    async (subTask: TSubTask, updatedTask: TTodo) => {
+  const handleUpdateSubTask = useCallback(
+    async (todo: TTodo, updatedTask: TTodo) => {
       try {
-        setIsLoadingAddTodo(true);
-        const updateTasks = [...subTask.tasks].map((task) => {
-          if (task.id === updatedTask.id) return updatedTask;
-          return task;
-        });
-        await dispatch(
-          updateSubTask({
-            group: "subTasks",
-            subTask: {
-              ...subTask,
-              tasks: updateTasks,
+        setIsLoadingUpdateTodo(true);
+        const updatedSubTasks = [...(todo.subTasks as TTodo[])].map(
+          (subtask) => {
+            if (subtask.id === updatedTask.id) {
+              return updatedTask;
+            }
+            return subtask;
+          }
+        );
+        dispatch(
+          updateTodo({
+            group: "todos",
+            todo: {
+              ...todo,
+              subTasks: updatedSubTasks,
             },
           })
-        );
-        setIsLoadingAddTodo(false);
+        ).unwrap();
+        setIsLoadingUpdateTodo(false);
       } catch (error) {
         console.error(error);
-        throw new Error("Can edit task in subtask");
+        throw new Error("Can not update todo");
       }
     },
-    [todo, dispatch]
+    [dispatch]
   );
 
   const handleUpdateTodo = useCallback(
@@ -157,15 +170,23 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
       setTodo({
         taskName: "",
         description: "",
-        priority: 4,
+        subTasks: [] as TTodo[],
+        labels: [] as string[],
+        isCompleted: false,
+        owner: user.uid,
         dueDate: new Date().toDateString(),
+        priority: 4,
       });
     } else {
       setTodo({
         taskName: "",
         description: "",
-        priority: 4,
+        subTasks: [] as TTodo[],
+        labels: [] as string[],
+        isCompleted: false,
+        owner: user.uid,
         dueDate: "",
+        priority: 4,
       });
     }
   }, []);
@@ -177,13 +198,15 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
       handleCancelTodo,
       isLoadingAddTodo,
       isLoadingUpdateTodo,
+      isShowAlert,
+      setIsShowAlert,
       todo,
       setTodo,
       handleChangeTodo,
       selectedItem,
       setSelectedItem,
-      handleAddTaskInSubTask,
-      handleUpdateTaskInSubTask,
+      handleAddSubTask,
+      handleUpdateSubTask,
     };
   }, [
     handleAddTodo,
@@ -191,13 +214,15 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
     handleCancelTodo,
     isLoadingAddTodo,
     isLoadingUpdateTodo,
+    isShowAlert,
+    setIsShowAlert,
     todo,
     setTodo,
     handleChangeTodo,
     selectedItem,
     setSelectedItem,
-    handleAddTaskInSubTask,
-    handleUpdateTaskInSubTask,
+    handleAddSubTask,
+    handleUpdateSubTask,
   ]);
 
   return (

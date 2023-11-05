@@ -9,7 +9,6 @@ import { DUEDATE_TYPES, TODO_PROPERTIES } from "@/Utils";
 import { DueDateContext } from "@/Context/DueDateContext";
 import DatePickerProvider from "@/Context/DatePickerContext";
 
-
 export const DueDateItems: React.FC = () => {
   const { today } = useDate();
 
@@ -23,7 +22,6 @@ export const DueDateItems: React.FC = () => {
     } else {
       handleUpdateTodo({ ...todo, dueDate: dateItem.date });
     }
-    // handleChangeTodo(TODO_PROPERTIES.DUE_DATE, dateItem.date);
     setShowDueDate({
       color: dateItem.color,
       text: dateItem.content === "No Date" ? "Due Date" : dateItem.content,
@@ -45,21 +43,23 @@ export const DueDateItems: React.FC = () => {
       <hr />
       {/* Show quick access for date */}
       <ul>
-        {dateList?.filter(item => item.date !== todo.dueDate).map((dateItem: any) => (
-          <li
-            key={dateItem.id}
-            className="date-item"
-            onClick={() => {
-              handleChooseDate(dateItem);
-            }}
-          >
-            <img src={dateItem.icon} alt="Date Icon" />
-            <p className="flex-1 font-medium text-textColor text-extra-small">
-              {dateItem.content}
-            </p>
-            <p className="text-textGray text-extra-small">{dateItem.date}</p>
-          </li>
-        ))}
+        {dateList
+          ?.filter((item) => item.date !== todo.dueDate)
+          .map((dateItem: any) => (
+            <li
+              key={dateItem.id}
+              className="date-item"
+              onClick={() => {
+                handleChooseDate(dateItem);
+              }}
+            >
+              <img src={dateItem.icon} alt="Date Icon" />
+              <p className="flex-1 font-medium text-textColor text-extra-small">
+                {dateItem.content}
+              </p>
+              <p className="text-textGray text-extra-small">{dateItem.date}</p>
+            </li>
+          ))}
       </ul>
       <hr />
       {/* Show Date Picker */}

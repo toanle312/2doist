@@ -1,26 +1,13 @@
-import React, { useEffect } from "react";
-import TodoItem from "./SubTaskItem";
-import { TODOITEM_TYPES } from "@/Utils";
-import { useAppDispatch, useAppSelector } from "@/Hooks";
-import { getTodos } from "@/Redux/Todos/TodosSlice";
+import { useAppSelector } from "@/Hooks";
 import SubTaskItem from "./SubTaskItem";
 
 const SubTaskList: React.FC = () => {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getTodos());
-  }, []);
-
-  const subTasks = useAppSelector((state) => state.subTasks.subTask.tasks);
-
+  const subTasks = useAppSelector((state) => state.todos.currentTodo.subTasks);
   return (
     <ul>
-      {subTasks
-        // .filter((subtask) => !subtask.isCompleted)
-        .map((subtask) => {
-          return <SubTaskItem key={subtask.id} todo={subtask} />;
-        })}
+      {subTasks?.map((subtask) => {
+        return <SubTaskItem key={subtask.id} task={subtask} />;
+      })}
     </ul>
   );
 };

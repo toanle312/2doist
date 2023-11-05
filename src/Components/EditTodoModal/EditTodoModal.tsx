@@ -8,17 +8,17 @@ import { DueDate } from "@/Components/TodoModal/DueDate/DueDate";
 import { DUEDATE_TYPES, TODOITEM_TYPES } from "@/Utils";
 
 import "./EditTodoModal.scss";
-import { default as SubTaskProvider } from "@/Context/TodoContext";
 import { TodoContext } from "@/Context/TodoContext";
 import { useAppDispatch } from "@/Hooks";
-import { getSubTasks } from "@/Redux/SubTasks/SubTasksSlice";
+import SubTasksControl from "@/Components/SubTasks/SubTasksControl";
 
-import SubTasksControl from "./SubTasksControl";
+// import TodoProvider as SubTaskProvider (subtask is same structure as todo)
+import { default as SubTaskProvider } from "@/Context/TodoContext";
+import { todosSlice } from "@/Redux/Todos/TodosSlice";
 
 type Props = {
   isOpenEditTodoModal: boolean;
   setIsOpenEditTodoModal: React.Dispatch<React.SetStateAction<boolean>>;
-  currentTodo: TTodo;
 };
 
 const EditTodoModal: React.FC<Props> = ({
@@ -29,8 +29,8 @@ const EditTodoModal: React.FC<Props> = ({
   const { todo, handleUpdateTodo } = useContext(TodoContext);
 
   useEffect(() => {
-    dispatch(getSubTasks(todo?.id as string));
-  }, [todo?.id]);
+    dispatch(todosSlice.actions.getCurrentTodo(todo.id));
+  }, [todo, dispatch]);
 
   return (
     <Modal
@@ -52,7 +52,11 @@ const EditTodoModal: React.FC<Props> = ({
               <SubTasksControl />
             </SubTaskProvider>
           </div>
-          <div className="basis-[30%] p-2 bg-[#fafafa] h-full">
+          <div
+            className={`basis-[30%] p-2 bg-[#fafafa] h-full ${
+              todo.isCompleted ? "disabled" : ""
+            }`}
+          >
             <div className="flex flex-col gap-2">
               <div>
                 <h1>Project</h1>

@@ -7,9 +7,6 @@ import { TodoContext } from "@/Context/TodoContext";
 import { DUEDATE_TYPES, MODAL_TYPES, TODO_PAGES } from "@/Utils";
 import DueDateProvider from "@/Context/DueDateContext";
 import { TTodo } from "@/interface";
-import { v4 as uuidv4 } from "uuid";
-import { useAppDispatch } from "@/Hooks";
-import { updateSubTask } from "@/Redux/SubTasks/SubTasksSlice";
 
 export type Props = {
   mainTodo?: TTodo;
@@ -19,11 +16,18 @@ export type Props = {
   isEditText?: boolean;
 };
 
+/**
+ * @param setIsModalOpen function to handle open modal
+ * @param page type of todo page
+ * @param type type of modal
+ * @param isEditText true: modal is edit text only, false: modal is normal
+ * @returns
+ */
 export const TodoModal: React.FC<Props> = ({
   setIsModalOpen,
   page,
   type,
-  isEditText,
+  isEditText = false,
 }) => {
   const {
     handleCancelTodo,
