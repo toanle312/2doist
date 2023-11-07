@@ -97,8 +97,9 @@ const DueDateProvider: React.FC<Props> = ({ children }: any) => {
       setYear,
       type,
       setType,
-    }
-  }, [showDueDate,
+    };
+  }, [
+    showDueDate,
     setShowDueDate,
     isOpenDueDate,
     setIsOpenDueDate,
@@ -108,12 +109,11 @@ const DueDateProvider: React.FC<Props> = ({ children }: any) => {
     year,
     setYear,
     type,
-    setType])
+    setType,
+  ]);
 
   return (
-    <DueDateContext.Provider
-      value={contextValue}
-    >
+    <DueDateContext.Provider value={contextValue}>
       {children}
     </DueDateContext.Provider>
   );

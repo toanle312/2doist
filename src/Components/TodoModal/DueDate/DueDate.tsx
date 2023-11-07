@@ -14,7 +14,11 @@ type Props = {
   position?: string;
 };
 
-export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate, position = "leftBottom" }) => {
+export const DueDate: React.FC<Props> = ({
+  type,
+  setIsEditDueDate,
+  position = "leftBottom",
+}) => {
   const { todo, handleChangeTodo } = useContext(TodoContext);
 
   const {
@@ -51,10 +55,6 @@ export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate, position = "l
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    setShowDueDate({
-      color: "",
-      text: "Due Date",
-    });
     handleChangeTodo(TODO_PROPERTIES.DUE_DATE, "");
   };
 
@@ -63,13 +63,11 @@ export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate, position = "l
       (dateItem) => dateItem.date === todo.dueDate
     );
     if (findDate) {
-      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, findDate.date);
       setShowDueDate({
         color: findDate.color,
         text: findDate.content === "No Date" ? "Due Date" : findDate.content,
       });
     } else {
-      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, todo.dueDate);
       setShowDueDate({
         color: "#692ec2",
         text: DaysInWeek[new Date(todo.dueDate).getDay()],
@@ -78,7 +76,7 @@ export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate, position = "l
   }, [todo.dueDate, dateList]);
 
   useEffect(() => {
-    if (isOpenDueDate===false) {
+    if (isOpenDueDate === false) {
       setIsEditDueDate?.(false);
     }
   }, [isOpenDueDate, setIsEditDueDate]);
@@ -94,7 +92,6 @@ export const DueDate: React.FC<Props> = ({ type, setIsEditDueDate, position = "l
         setIsOpenDueDate(visible);
       }}
     >
-      {/* <div className="w-full h-full bg-black fixed top-0 right-0"></div> */}
       {type === DUEDATE_TYPES.FULL ? (
         <button className="modal__control-item">
           <CalendarOutlined style={{ color: showDueDate?.color }} />

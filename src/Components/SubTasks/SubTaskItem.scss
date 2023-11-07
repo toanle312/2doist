@@ -44,3 +44,12 @@
     cursor: not-allowed;
   }
 }
+
+.checkbox-btn.checked {
+  background-color: $text-gray;
+  .check-icon {
+    font-size: 12px;
+    display: block;
+    color: white;
+  }
+}

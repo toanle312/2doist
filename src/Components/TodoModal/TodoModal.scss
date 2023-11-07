@@ -1,6 +1,6 @@
 @import "../../Styles/styles.scss";
 
-.modal{
+.modal {
   display: flex;
   min-width: 150px;
   flex-direction: column;
@@ -10,16 +10,16 @@
   border-radius: 10px;
   border: solid 1px #808080;
   width: 100%;
-  &__input{
+  &__input {
     border: none;
     outline: none;
   }
-  &__control{
+  &__control {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin: 8px 0;
-    &-item{
+    &-item {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -28,32 +28,32 @@
       padding: 2px 4px;
       font-size: 14px;
       color: #666666;
-      &:hover{
+      &:hover {
         background-color: $hover-color;
       }
     }
   }
-  &__footer{
+  &__footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 4px;
     font-size: 14px;
 
-    .btn{
+    .btn {
       padding: 6px 12px;
       border-radius: 5px;
       font-size: 14px;
       font-weight: 600;
-      &:disabled{
-        cursor:not-allowed;
+      &:disabled {
+        cursor: not-allowed;
         opacity: 0.5;
-        &:hover{
-          filter: brightness(1)
+        &:hover {
+          filter: brightness(1);
         }
       }
-      &:hover{
-        filter: brightness(0.9)
+      &:hover {
+        filter: brightness(0.9);
       }
     }
   }

@@ -5,7 +5,10 @@ import { TodoModal } from "@/Components/TodoModal/TodoModal";
 import { MODAL_TYPES, TODO_PAGES } from "@/Utils";
 import { TodoContext } from "@/Context/TodoContext";
 
-export const Todo: React.FC = () => {
+type Props = {
+  page: string;
+};
+export const Todo: React.FC<Props> = ({ page }) => {
   const [isAddTodo, setIsAddTodo] = useState<boolean>(false);
 
   const {
@@ -21,7 +24,7 @@ export const Todo: React.FC = () => {
           onClick={() => {
             setIsAddTodo(true);
             setSelectedItem("nothing");
-            resetTodo("Today");
+            resetTodo(page);
           }}
         >
           <PlusOutlined className="icon" />
@@ -30,7 +33,7 @@ export const Todo: React.FC = () => {
       ) : (
         <TodoModal
           type={MODAL_TYPES.ADD}
-          page={TODO_PAGES.TODAY}
+          page={page}
           setIsModalOpen={setIsAddTodo}
         />
       )}

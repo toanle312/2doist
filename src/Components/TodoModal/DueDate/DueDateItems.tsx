@@ -13,7 +13,7 @@ export const DueDateItems: React.FC = () => {
   const { today } = useDate();
 
   const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
-  const { setShowDueDate, setIsOpenDueDate, type, dateList } =
+  const {  setIsOpenDueDate, type, dateList } =
     useContext(DueDateContext);
 
   const handleChooseDate = (dateItem: TDateList) => {
@@ -22,10 +22,6 @@ export const DueDateItems: React.FC = () => {
     } else {
       handleUpdateTodo({ ...todo, dueDate: dateItem.date });
     }
-    setShowDueDate({
-      color: dateItem.color,
-      text: dateItem.content === "No Date" ? "Due Date" : dateItem.content,
-    });
     setIsOpenDueDate(false);
   };
 

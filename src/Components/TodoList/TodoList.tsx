@@ -1,20 +1,29 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { getTodos } from "@/Redux/Todos/TodosSlice";
 import { TODOITEM_TYPES } from "@/Utils";
-import { DownOutlined, RightOutlined } from "@ant-design/icons";
+import { CheckOutlined, DownOutlined, RightOutlined } from "@ant-design/icons";
+import { TodoContext } from "@/Context/TodoContext";
 
-const TodoList = () => {
+type Props = {
+  type?: string;
+};
+const TodoList: React.FC<Props> = ({ type }) => {
   const dispatch = useAppDispatch();
   const [isShowCompleted, setIsShowCompleted] = useState<boolean>(false);
+
   const user = useAppSelector((state) => state.auth.account);
 
   useEffect(() => {
     dispatch(getTodos(user.uid));
   }, []);
 
-  const todos = useAppSelector((state) => state.todos.todos);
+  const todos = useAppSelector((state) => state.todos.todos).filter((todo) => {
+    if (type === "Today") {
+      return todo.project === type;
+    } else return true;
+  });
 
   return (
     <section>

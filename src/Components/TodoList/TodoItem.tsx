@@ -3,6 +3,7 @@ import { TTodo } from "@/interface";
 
 import "./TodoItem.scss";
 import {
+  CalendarOutlined,
   CheckOutlined,
   CommentOutlined,
   EditOutlined,
@@ -20,6 +21,7 @@ import DueDateProvider from "@/Context/DueDateContext";
 import EditTodoModal from "@/Components/EditTodoModal/EditTodoModal";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { Alert } from "antd";
+import ShowDueDate from "./ShowDueDate";
 
 type Props = {
   todo: TTodo;
@@ -34,8 +36,13 @@ type Props = {
  * @returns JSX.Element
  */
 const TodoItem: React.FC<Props> = ({ todo, type }) => {
-  const { setTodo, selectedItem, setSelectedItem, handleUpdateTodo } =
-    useContext(TodoContext);
+  const {
+    setTodo,
+    selectedItem,
+    setSelectedItem,
+    handleUpdateTodo,
+    setIsShowAlert,
+  } = useContext(TodoContext);
 
   const [isEditTodo, setIsEditTodo] = useState<boolean>(false);
   const [isEditDueDate, setIsEditDueDate] = useState<boolean>(false);
@@ -46,16 +53,10 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
     e
   ) => {
     e.stopPropagation();
+    setTodo(todo);
     handleUpdateTodo({ ...todo, isCompleted: !todo.isCompleted });
+    setIsShowAlert(true);
   };
-
-  const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   dispatch(getSubTasks(todo?.id as string));
-  // }, [todo?.id, dispatch]);
-
-  // const currentSubTask = useAppSelector((state) => state.subTask.subTask);
 
   const ref = useRef<HTMLElement>(null);
 
@@ -95,7 +96,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
                   page={
                     new Date(todo.dueDate) === new Date()
                       ? TODO_PAGES.TODAY
-                      : TODO_PAGES.INBOX
+                      : TODO_PAGES.TASKS
                   }
                 />
               </div>
@@ -158,7 +159,24 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
                     <p className="text-small text-textGray">
                       {todo.description}
                     </p>
-                    {/* <p>Tasks - {currentSubTask?.tasks?.length}</p> */}
+                    <section className="flex mt-2 gap-1">
+                      {todo.subTasks?.length ? (
+                        <p className="text-small text-textGray">
+                          Tasks &#x2022;
+                          {` ${
+                            todo.subTasks?.filter((task) => task.isCompleted)
+                              .length
+                          }
+                      of ${todo.subTasks?.length} `}
+                          &#x2022;
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                      <DueDateProvider>
+                        <ShowDueDate dueDate={todo.dueDate} />
+                      </DueDateProvider>
+                    </section>
                     <p className="flex justify-end text-small">Inbox</p>
                   </section>
                 </section>
@@ -197,7 +215,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
                 page={
                   new Date(todo.dueDate) === new Date()
                     ? TODO_PAGES.TODAY
-                    : TODO_PAGES.INBOX
+                    : TODO_PAGES.TASKS
                 }
               />
             </div>

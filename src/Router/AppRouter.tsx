@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { NESTED_URL, PAGE_URL } from "@/Utils";
 import {
   FilterAndLabelsPage,
-  InboxPage,
+  TasksPage,
   TodayPage,
   UpcomingPage,
 } from "@/Pages/ControlPage";
@@ -27,9 +27,8 @@ const AppRouter: React.FC = () => {
             path={PAGE_URL.HOME}
             element={<Navigate to={NESTED_URL.TODAY} replace />}
           />
-          <Route path={NESTED_URL.INBOX} element={<InboxPage />}></Route>
-          <Route path={NESTED_URL.TODAY} element={<TodayPage />}>
-          </Route>
+          <Route path={NESTED_URL.INBOX} element={<TasksPage />}></Route>
+          <Route path={NESTED_URL.TODAY} element={<TodayPage />}></Route>
           <Route path={NESTED_URL.UPCOMING} element={<UpcomingPage />}></Route>
           <Route
             path={NESTED_URL.FILTER_LABELS}

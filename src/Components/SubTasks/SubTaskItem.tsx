@@ -22,14 +22,21 @@ const SubTaskItem: React.FC<Props> = ({ task }) => {
     setTodo: setTask,
     selectedItem,
     setSelectedItem,
+    handleUpdateSubTask,
   } = useContext(SubTaskContext);
 
   const [isEditTask, setIsEditTask] = useState<boolean>(false);
+
+  const currentTodo = useAppSelector((state) => state.todos.currentTodo);
 
   const handleToggle: React.MouseEventHandler<HTMLButtonElement> | undefined = (
     e
   ) => {
     e.stopPropagation();
+    handleUpdateSubTask(currentTodo, {
+      ...task,
+      isCompleted: !task.isCompleted,
+    });
   };
 
   return (

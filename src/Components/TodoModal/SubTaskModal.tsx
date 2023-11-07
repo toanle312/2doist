@@ -22,6 +22,7 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
     setTodo: setTask,
     handleAddSubTask,
     todo: task,
+    handleUpdateSubTask,
   } = useContext(TodoContext);
 
   const ref = useRef<TTodo>(task);
@@ -92,6 +93,7 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
               onClick={() => {
                 // Updated task with current task state
                 // handleUpdateTaskInSubTask(subTask as TSubTask, task);
+                handleUpdateSubTask(todo, task);
                 setIsModalOpen(false);
               }}
             >

@@ -4,7 +4,7 @@ export const PAGE_URL = {
 }
 
 export const NESTED_URL = {
-  INBOX: "inbox",
+  INBOX: "tasks",
   TODAY: "today",
   UPCOMING: "upcoming",
   FILTER_LABELS: "filter-labels"
@@ -21,7 +21,7 @@ export const TODO_PROPERTIES = {
 
 export const TODO_PAGES = {
   TODAY: "Today",
-  INBOX: "Inbox",
+  TASKS: "Tasks",
 }
 
 export const MODAL_TYPES = {
