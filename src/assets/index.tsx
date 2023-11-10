@@ -10,6 +10,7 @@ import productivityBtn from "./productivityBtn.svg";
 import addTaskBtn from "./addTaskBtn.svg";
 import login from "./login.png";
 import logoOnly from "./logoOnly.svg";
+import logoOnlyV2 from "./logoOnlyV2.svg";
 import google from "./google.svg";
 import facebook from "./facebook.svg";
 import menu from "./menu.svg";
@@ -22,10 +23,12 @@ import nextWeek from "./nextWeek.svg";
 import noDate from "./noDate.svg";
 import loading from "./loading.png";
 import { FlagFilled, FlagOutlined } from "@ant-design/icons";
+import office from "./office-svgrepo-com.svg";
 
 export {
   logo,
   logoOnly,
+  logoOnlyV2,
   today,
   upcoming,
   filter,
@@ -46,7 +49,8 @@ export {
   tomorrow,
   nextWeek,
   nextWeekend,
-  noDate
+  noDate,
+  office,
 };
 
 export const home =

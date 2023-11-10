@@ -61,6 +61,7 @@ const EditTodoModal: React.FC<Props> = ({
               <div>
                 <h1>Project</h1>
                 <hr className="mb-2" />
+                {/* Thêm một dropdown để chọn project */}
                 <p>Inbox</p>
               </div>
               <div>

@@ -26,6 +26,7 @@ class FirebaseProvider {
   };
 
   public addDocs = (group: string, element: any): Promise<DocumentReference> => {
+    console.log(element)
     const collectionRef = collection(db, group);
     return addDoc(collectionRef, element);
   };
@@ -35,6 +36,7 @@ class FirebaseProvider {
     element: any
   ): Promise<void> => {
     const documentRef = doc(db, group, element?.id as string);
+    delete element.id;
     return setDoc(documentRef, element);
   };
 }

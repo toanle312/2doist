@@ -82,3 +82,11 @@ export type TDateList = {
   content: string;
   color: string;
 };
+
+export type TProject = {
+  id?: string;
+  projectName: string;
+  todos?: TTodo[];
+  isNew?: boolean;
+  createdAt?: Date;
+}

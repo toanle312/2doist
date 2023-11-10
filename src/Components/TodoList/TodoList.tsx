@@ -21,7 +21,7 @@ const TodoList: React.FC<Props> = ({ type }) => {
 
   const todos = useAppSelector((state) => state.todos.todos).filter((todo) => {
     if (type === "Today") {
-      return todo.project === type;
+      return todo.dueDate === new Date().toDateString();
     } else return true;
   });
 

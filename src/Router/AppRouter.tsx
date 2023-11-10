@@ -34,6 +34,7 @@ const AppRouter: React.FC = () => {
             path={NESTED_URL.FILTER_LABELS}
             element={<FilterAndLabelsPage />}
           ></Route>
+          <Route path={"project/:id"} element={<UpcomingPage />}></Route>
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Route>

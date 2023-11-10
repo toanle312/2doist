@@ -82,6 +82,7 @@ export const TodoModal: React.FC<Props> = ({
         </>
       )}
       <div className="modal__footer">
+        {/* Thêm một drop down để chọn project */}
         <div>{!isEditText ? "Choose here" : ""}</div>
         <div className="flex gap-2">
           <button

@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const UpcomingPage : React.FC = () => {
-  return (
-    <div>UpcomingPage</div>
-  )
-}
+const UpcomingPage: React.FC = () => {
+  return <div>UpcomingPage</div>;
+};
 
-export default UpcomingPage
+export default UpcomingPage;

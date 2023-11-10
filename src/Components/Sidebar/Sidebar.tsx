@@ -8,6 +8,15 @@ import React, {
 import { SideBarItems } from "@/Data";
 import "./SideBar.scss";
 import { NavLink } from "react-router-dom";
+import {
+  MenuOutlined,
+  OrderedListOutlined,
+  PlusOutlined,
+  ProjectOutlined,
+} from "@ant-design/icons";
+import { useAppDispatch, useAppSelector } from "@/Hooks";
+import { addProject, fetchProjects } from "@/Redux/Projects/ProjectsSlice";
+import ProjectList from "../Projects/ProjectList";
 
 type Props = {
   sidebarWidth: number;
@@ -15,11 +24,16 @@ type Props = {
   isOpen: boolean;
 };
 
-const Sidebar: React.FC<Props> = ({setSideBarWidth, sidebarWidth, isOpen}) => {
+const Sidebar: React.FC<Props> = ({
+  setSideBarWidth,
+  sidebarWidth,
+  isOpen,
+}) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isResizing, setIsResizing] = useState<boolean>(false);
 
-  const startResizing = useCallback(() => {
+  const startResizing = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
     setIsResizing(true);
   }, []);
 
@@ -33,7 +47,8 @@ const Sidebar: React.FC<Props> = ({setSideBarWidth, sidebarWidth, isOpen}) => {
 
       if (isResizing) {
         let currentWidth = e.clientX - currentPos;
-        currentWidth = (currentWidth > 395) ? 395 : (currentWidth < 222) ? 222 : currentWidth;
+        currentWidth =
+          currentWidth > 395 ? 395 : currentWidth < 222 ? 222 : currentWidth;
         setSideBarWidth(currentWidth);
       }
     },
@@ -49,23 +64,48 @@ const Sidebar: React.FC<Props> = ({setSideBarWidth, sidebarWidth, isOpen}) => {
       window.removeEventListener("mouseup", stopResizing);
     };
   }, [resize, stopResizing, isResizing]);
+  const dispatch = useAppDispatch();
 
+  const handleAddNewProject = async () => {
+    try {
+      await dispatch(addProject("Untitled project")).unwrap();
+    } catch (error) {
+      console.error(error);
+      throw new Error("Can not add new project");
+    }
+  };
 
   return (
     <div
       ref={sidebarRef}
       style={{ width: sidebarWidth }}
-      onMouseDown={(e) => e.preventDefault()}
-      className={`sidebar ${isOpen ? 'show-sidebar' : 'hide-sidebar'}`}
+      className={`sidebar ${isOpen ? "show-sidebar" : "hide-sidebar"}`}
     >
-      <ul className="px-[15px] pt-[30px] flex-1 w-full h-[calc(100vh-48px)]">
-        {SideBarItems.map((sideBarItem) => (
-          <NavLink to={sideBarItem.path} key={sideBarItem.id} className="sidebarItem flex">
-            <img src={sideBarItem.icon} alt={sideBarItem.content} />
-            <p className="ml-1">{sideBarItem.content}</p>
-          </NavLink>
-        ))}
-      </ul>
+      <section className="flex px-[8px] pt-[18px] flex-col justify-between w-full ml-1">
+        <ul className="w-full">
+          {SideBarItems.map((sideBarItem) => (
+            <NavLink
+              to={sideBarItem.path}
+              key={sideBarItem.id}
+              className="sidebarItem flex"
+            >
+              <img src={sideBarItem.icon} alt={sideBarItem.content} />
+              <p className="ml-1">{sideBarItem.content}</p>
+            </NavLink>
+          ))}
+        </ul>
+        <section className="flex-1 ">
+          <hr className="my-2" />
+          <ProjectList />
+        </section>
+        <div
+          className="mb-[9px] sidebarItem text-medium flex gap-2"
+          onClick={handleAddNewProject}
+        >
+          <PlusOutlined />
+          New project
+        </div>
+      </section>
       <div
         id="resize"
         className="resizeControl h-[100%] w-[5px] cursor-col-resize"

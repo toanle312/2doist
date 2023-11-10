@@ -74,9 +74,6 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
   const handleAddTodo = useCallback(async () => {
     try {
       setIsLoadingAddTodo(true);
-      if (new Date().toDateString() === todo.dueDate) {
-        todo.project = "Today";
-      } else todo.project = "Tasks";
       await dispatch(
         addTodo({
           group: "todos",
@@ -152,9 +149,6 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
     async (updatedTodo: TTodo) => {
       try {
         setIsLoadingUpdateTodo(true);
-        if (new Date().toDateString() === updatedTodo.dueDate) {
-          updatedTodo.project = "Today";
-        } else updatedTodo.project = "Tasks";
         dispatch(
           updateTodo({
             group: "todos",
@@ -183,7 +177,7 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
         owner: user.uid,
         dueDate: new Date().toDateString(),
         priority: 4,
-        project: "Today",
+        project: "Tasks",
       });
     } else {
       setTodo({
