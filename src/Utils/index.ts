@@ -16,12 +16,14 @@ export const TODO_PROPERTIES = {
   PRIORITY: "priority",
   DESCRIPTION: "description",
   SUB_TASKS: "subtasks",
-  LABELS: "labels"
+  LABELS: "labels",
+  PROJECT: "project",
 }
 
 export const TODO_PAGES = {
   TODAY: "Today",
   TASKS: "Tasks",
+  PROJECT: "Project",
 }
 
 export const MODAL_TYPES = {

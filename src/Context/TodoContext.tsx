@@ -12,7 +12,7 @@ import { TODO_PAGES } from "@/Utils";
 import { v4 as uuidv4 } from "uuid";
 
 type ContextValueProps = {
-  handleAddTodo: () => void;
+  handleAddTodo: () => Promise<TTodo>;
   handleAddSubTask: (todo: TTodo, task: TTodo) => void;
   handleUpdateSubTask: (todo: TTodo, task: TTodo) => void;
   handleUpdateTodo: (updatedTodo: TTodo) => void;
@@ -74,15 +74,17 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
   const handleAddTodo = useCallback(async () => {
     try {
       setIsLoadingAddTodo(true);
-      await dispatch(
+      const addedTodo = await dispatch(
         addTodo({
           group: "todos",
           todo: {
             ...todo,
           } as TTodo,
         })
-      );
+      ).unwrap();
+
       setIsLoadingAddTodo(false);
+      return addedTodo as TTodo;
     } catch (error) {
       console.error(error);
       throw new Error("Can not add todo");
@@ -168,7 +170,8 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
 
   const handleCancelTodo = useCallback((type?: string) => {
     if (type === TODO_PAGES.TODAY) {
-      setTodo({
+      setTodo((prev) => ({
+        ...prev,
         taskName: "",
         description: "",
         subTasks: [] as TTodo[],
@@ -177,10 +180,11 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
         owner: user.uid,
         dueDate: new Date().toDateString(),
         priority: 4,
-        project: "Tasks",
-      });
+        project: prev.project,
+      }));
     } else {
-      setTodo({
+      setTodo((prev) => ({
+        ...prev,
         taskName: "",
         description: "",
         subTasks: [] as TTodo[],
@@ -189,8 +193,8 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
         owner: user.uid,
         dueDate: "",
         priority: 4,
-        project: "Tasks",
-      });
+        project: prev.project,
+      }));
     }
   }, []);
 

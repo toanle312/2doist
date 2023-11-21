@@ -24,3 +24,17 @@ export const useAuth = () => {
   return user;
 };
 
+export const useFetch = (fetchCallback: any) => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    (async () => {
+      try {
+        await dispatch(fetchCallback).unwrap();
+      } catch (error) {
+        console.error(error);
+        throw new Error("Can not fetch data");
+      }
+    })();
+  }, []);
+}
+

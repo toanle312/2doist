@@ -30,6 +30,7 @@ export interface TTodo {
   subTasks?: TTodo[];
   labels?: string[];
   owner?: string;
+  createdAt?: Date;
 }
 
 export interface TSubTask {
@@ -86,7 +87,7 @@ export type TDateList = {
 export type TProject = {
   id?: string;
   projectName: string;
-  todos?: TTodo[];
+  todos?: string[];
   isNew?: boolean;
   createdAt?: Date;
 }

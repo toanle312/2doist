@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useDate } from "@/Hooks/use-date";
+import { useDate } from "@/Hooks/useDate";
 
 import "./DueDate.scss";
 import { DatePicker } from "@/Components/TodoModal/DatePicker/DatePicker";
@@ -13,8 +13,7 @@ export const DueDateItems: React.FC = () => {
   const { today } = useDate();
 
   const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
-  const {  setIsOpenDueDate, type, dateList } =
-    useContext(DueDateContext);
+  const { setIsOpenDueDate, type, dateList } = useContext(DueDateContext);
 
   const handleChooseDate = (dateItem: TDateList) => {
     if (type === DUEDATE_TYPES.FULL) {

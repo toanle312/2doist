@@ -2,9 +2,9 @@ import { firebaseProvider } from "@/Firebase/provider";
 import { TProject } from "@/interface";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-
-const initialState: { projects: TProject[]; status: string } = {
+const initialState: { projects: TProject[]; currentProject: TProject; status: string } = {
   projects: [],
+  currentProject: {} as TProject,
   status: "idle",
 };
 
@@ -12,7 +12,14 @@ export const projectsSlice = createSlice(
   {
     name: "projects",
     initialState: initialState,
-    reducers: {},
+    reducers: {
+      getCurrentProject: (state, action) => {
+        if (action.payload !== "Tasks") {
+          state.currentProject = [...state.projects].find((p: TProject) => p.id === action.payload) as TProject;
+          state.status = "idle";
+        }
+      }
+    },
     extraReducers: (builder) => {
       builder.addCase(addProject.pending, (state, _) => {
         state.status = "pending";
@@ -40,6 +47,23 @@ export const projectsSlice = createSlice(
       builder.addCase(updateProject.rejected, (state, _) => {
         state.status = "rejected";
       });
+      builder.addCase(addTodoIntoProject.pending, (state, _) => {
+        state.status = "pending";
+      });
+      builder.addCase(addTodoIntoProject.fulfilled, (state, action) => {
+        const updatedProjects = [...state.projects].map((project) => {
+          if (project.id === action.payload.id) {
+            return action.payload;
+          }
+          return project;
+        })
+        state.currentProject = action.payload;
+        state.projects = updatedProjects;
+        state.status = "idle";
+      });
+      builder.addCase(addTodoIntoProject.rejected, (state, _) => {
+        state.status = "rejected";
+      });
       builder.addCase(fetchProjects.pending, (state, _) => {
         state.status = "pending";
       });
@@ -56,7 +80,7 @@ export const projectsSlice = createSlice(
 
 export const addProject = createAsyncThunk("projects/addProject", async (project: string) => {
   try {
-    const docRef = await firebaseProvider.addDocs("projects", {
+    const docRef = await firebaseProvider.addNewDoc("projects", {
       projectName: project,
       todos: [],
       createdAt: new Date(),
@@ -80,13 +104,29 @@ export const updateProject = createAsyncThunk("projects/updateProject", async (u
     const temp = JSON.parse(JSON.stringify(updatedProject));
     // convert date string to date object (after copy date object will be converted to date string)
     temp.createdAt = new Date(temp.createdAt);
-    await firebaseProvider.updateDocs("projects", temp);
+    await firebaseProvider.updateDoc("projects", temp);
     return updatedProject;
   } catch (error) {
     console.error(error);
     throw new Error("Can not update project");
   }
 })
+
+export const addTodoIntoProject = createAsyncThunk("projects/addTodoIntoProject", async (
+  project: TProject,
+) => {
+  try {
+    // Copy to new project to handle update
+    const temp = JSON.parse(JSON.stringify(project));
+    temp.createdAt = new Date(temp.createdAt);
+    await firebaseProvider.updateDoc("projects", temp);
+    return project;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Can not add todo into project");
+  }
+})
+
 
 export const fetchProjects = createAsyncThunk("projects/fetchProjects", async () => {
   try {
@@ -100,6 +140,6 @@ export const fetchProjects = createAsyncThunk("projects/fetchProjects", async ()
     return filteredData.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   } catch (error) {
     console.error(error);
-    throw new Error("Can not add todo");
+    throw new Error("Can not fetch projects");
   }
 })

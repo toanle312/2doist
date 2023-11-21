@@ -1,28 +1,37 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import TodoItem from "./TodoItem";
-import { useAppDispatch, useAppSelector } from "@/Hooks";
-import { getTodos } from "@/Redux/Todos/TodosSlice";
-import { TODOITEM_TYPES } from "@/Utils";
-import { CheckOutlined, DownOutlined, RightOutlined } from "@ant-design/icons";
-import { TodoContext } from "@/Context/TodoContext";
+import { useAppSelector, useFetch } from "@/Hooks";
+import { fetchTodosByUserID } from "@/Redux/Todos/TodosSlice";
+import { TODOITEM_TYPES, TODO_PAGES } from "@/Utils";
+import { DownOutlined, RightOutlined } from "@ant-design/icons";
+import React from "react";
 
 type Props = {
   type?: string;
 };
+
+/**
+ *
+ * @param type type of todo page
+ * @returns
+ */
 const TodoList: React.FC<Props> = ({ type }) => {
-  const dispatch = useAppDispatch();
   const [isShowCompleted, setIsShowCompleted] = useState<boolean>(false);
 
   const user = useAppSelector((state) => state.auth.account);
 
-  useEffect(() => {
-    dispatch(getTodos(user.uid));
-  }, []);
+  useFetch(fetchTodosByUserID(user.uid));
+
+  const currentProject = useAppSelector(
+    (state) => state.projects.currentProject
+  );
 
   const todos = useAppSelector((state) => state.todos.todos).filter((todo) => {
-    if (type === "Today") {
+    if (type === TODO_PAGES.TODAY) {
       return todo.dueDate === new Date().toDateString();
-    } else return true;
+    } else if (type === TODO_PAGES.PROJECT) {
+      return todo.project === currentProject.id;
+    } else return todo.project === TODO_PAGES.TASKS;
   });
 
   return (

@@ -19,8 +19,7 @@ import {
 import { DueDate } from "@/Components/TodoModal/DueDate/DueDate";
 import DueDateProvider from "@/Context/DueDateContext";
 import EditTodoModal from "@/Components/EditTodoModal/EditTodoModal";
-import { useAppDispatch, useAppSelector } from "@/Hooks";
-import { Alert } from "antd";
+
 import ShowDueDate from "./ShowDueDate";
 
 type Props = {
@@ -29,11 +28,10 @@ type Props = {
 };
 
 /**
- * if type = FULL => return todo item with full control
  *
- * if type = SHORT => return simple todo item
- * @param Props todo, type
- * @returns JSX.Element
+ * @param todo data of current todo
+ * @param type type of todo item, type = FULL => todo item with full control, type = SHORT => simple todo item
+ * @returns
  */
 const TodoItem: React.FC<Props> = ({ todo, type }) => {
   const {

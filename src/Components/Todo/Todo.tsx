@@ -2,12 +2,18 @@ import { PlusOutlined } from "@ant-design/icons";
 import React, { useContext, useState } from "react";
 import "./Todo.scss";
 import { TodoModal } from "@/Components/TodoModal/TodoModal";
-import { MODAL_TYPES, TODO_PAGES } from "@/Utils";
+import { MODAL_TYPES } from "@/Utils";
 import { TodoContext } from "@/Context/TodoContext";
 
 type Props = {
   page: string;
 };
+
+/**
+ *
+ * @param page type of todo page
+ * @returns
+ */
 export const Todo: React.FC<Props> = ({ page }) => {
   const [isAddTodo, setIsAddTodo] = useState<boolean>(false);
 

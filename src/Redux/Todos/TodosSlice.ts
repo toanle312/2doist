@@ -24,13 +24,13 @@ export const todosSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getTodos.pending, (state, _action) => {
+      .addCase(fetchTodosByUserID.pending, (state, _action) => {
         state.status = "Loading";
       })
-      .addCase(getTodos.fulfilled, (state, action) => {
+      .addCase(fetchTodosByUserID.fulfilled, (state, action) => {
         state.todos = action.payload;
       })
-      .addCase(getTodos.rejected, (state, _action) => {
+      .addCase(fetchTodosByUserID.rejected, (state, _action) => {
         state.status = "Error";
       })
       .addCase(addTodo.pending, (state, _action) => {
@@ -73,10 +73,14 @@ export const addTodo = createAsyncThunk(
   "todos/addTodo",
   async ({ group, todo }: addTodoType) => {
     try {
-      const docRef = await firebaseProvider.addDocs(group, todo);
+      const docRef = await firebaseProvider.addNewDoc(group, {
+        ...todo,
+        createdAt: new Date(),
+      });
       return {
         id: docRef.id,
         ...todo,
+        createdAt: new Date(),
       };
     } catch (error) {
       console.error(error);
@@ -87,7 +91,11 @@ export const addTodo = createAsyncThunk(
 
 export const updateTodo = createAsyncThunk("todos/updateTodo", async ({ group, todo }: updateTodoType) => {
   try {
-    await firebaseProvider.updateDocs(group, todo);
+    const temp = JSON.parse(JSON.stringify(todo));
+    temp.createdAt = new Date(temp.createdAt);
+    console.log(temp);
+    console.log(todo);
+    await firebaseProvider.updateDoc(group, temp);
     return todo;
   } catch (error) {
     console.error(error);
@@ -95,14 +103,16 @@ export const updateTodo = createAsyncThunk("todos/updateTodo", async ({ group, t
   }
 });
 
-export const getTodos = createAsyncThunk("todos/getTodos", async (userId: string) => {
+export const fetchTodosByUserID = createAsyncThunk("todos/fetchTodosByUserID", async (userId: string) => {
   try {
     const data = await firebaseProvider.fetchDocs("todos");
     const filteredData = data.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as TTodo),
+      createdAt: doc.data().createdAt.toDate() as Date,
     }));
-    return filteredData.filter((doc) => doc.owner === userId);
+    return filteredData.filter((doc) => doc.owner === userId)
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
   } catch (error) {
     console.error(error);
     throw new Error("Can not fetch todos");

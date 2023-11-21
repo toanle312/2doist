@@ -2,10 +2,9 @@ import React, { useMemo, useContext, useRef, useEffect } from "react";
 import "./DatePicker.scss";
 import { v4 as uuidv4 } from "uuid";
 import { TodoContext } from "@/Context/TodoContext";
-import { DaysInWeek, MonthShortHand } from "@/interface";
+import { MonthShortHand } from "@/interface";
 import {
   DUEDATE_TYPES,
-  MODAL_TYPES,
   TODO_PROPERTIES,
   getCurrentDayInWeek,
   getDaysInMonth,
@@ -93,8 +92,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
 
   const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
 
-  const { setIsOpenDueDate, isOpenDueDate, type } =
-    useContext(DueDateContext);
+  const { setIsOpenDueDate, isOpenDueDate, type } = useContext(DueDateContext);
 
   const { setMonth, setYear } = useContext(DatePickerContext);
 

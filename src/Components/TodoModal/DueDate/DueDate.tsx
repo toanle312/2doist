@@ -9,11 +9,18 @@ import { DaysInWeek } from "@/interface";
 import { DueDateContext } from "@/Context/DueDateContext";
 
 type Props = {
-  type?: string;
+  type: string;
   setIsEditDueDate?: React.Dispatch<React.SetStateAction<boolean>>;
   position?: string;
 };
 
+/**
+ *
+ * @param type type of the due date component (FULL or SHORT)
+ * @param setIsEditDueDate (optional) function to open or close the due date component
+ * @param position (optional) position of the due date component
+ * @returns
+ */
 export const DueDate: React.FC<Props> = ({
   type,
   setIsEditDueDate,

@@ -1,6 +1,5 @@
 import { Modal } from "antd";
 import React, { useContext, useEffect } from "react";
-import { TTodo } from "@/interface";
 import TodoItem from "@/Components/TodoList/TodoItem";
 import { Priority } from "@/Components/TodoModal/Priority/Priority";
 import DueDateProvider from "@/Context/DueDateContext";
@@ -21,6 +20,12 @@ type Props = {
   setIsOpenEditTodoModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+/**
+ *
+ * @param isOpenEditTodoModal prop to check if edit todo modal is open
+ * @param setIsOpenEditTodoModal function to handle open edit todo modal
+ * @returns
+ */
 const EditTodoModal: React.FC<Props> = ({
   isOpenEditTodoModal,
   setIsOpenEditTodoModal,
@@ -30,7 +35,15 @@ const EditTodoModal: React.FC<Props> = ({
 
   useEffect(() => {
     dispatch(todosSlice.actions.getCurrentTodo(todo.id));
-  }, [todo, dispatch]);
+  }, [todo.id, dispatch]);
+
+  const handleSaveTodoModal = () => {
+    handleUpdateTodo(todo);
+    setIsOpenEditTodoModal(false);
+  };
+  const handleCancelTodoModal = () => {
+    setIsOpenEditTodoModal(false);
+  };
 
   return (
     <Modal
@@ -85,19 +98,14 @@ const EditTodoModal: React.FC<Props> = ({
           <div className="flex gap-2">
             <button
               className="bg-[#f5f5f5] text-black btn"
-              onClick={() => {
-                setIsOpenEditTodoModal(false);
-              }}
+              onClick={handleCancelTodoModal}
             >
               Cancel
             </button>
             <button
               className="bg-primary text-white btn"
               disabled={todo?.taskName === ""}
-              onClick={() => {
-                handleUpdateTodo(todo);
-                setIsOpenEditTodoModal(false);
-              }}
+              onClick={handleSaveTodoModal}
             >
               Save
             </button>

@@ -4,11 +4,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Projects.scss";
 import { useAppDispatch } from "@/Hooks";
-import { updateProject } from "@/Redux/Projects/ProjectsSlice";
+import { projectsSlice, updateProject } from "@/Redux/Projects/ProjectsSlice";
 
 type Props = {
   project: TProject;
 };
+
+/**
+ *
+ * @param project data of the current project
+ * @returns
+ */
 const ProjectItem: React.FC<Props> = ({ project }) => {
   const dispatch = useAppDispatch();
   const [projectName, setProjectName] = useState<string>(project.projectName);
@@ -33,6 +39,9 @@ const ProjectItem: React.FC<Props> = ({ project }) => {
     <NavLink
       to={`/home/project/${project.id}`}
       className="sidebarItem flex gap-2 items-center"
+      onClick={() => {
+        dispatch(projectsSlice.actions.getCurrentProject(project.id));
+      }}
     >
       <MenuOutlined style={{ color: "#db4c3f" }} />
       <input

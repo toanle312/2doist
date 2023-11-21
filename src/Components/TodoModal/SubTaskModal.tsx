@@ -6,7 +6,7 @@ import { DueDate } from "./DueDate/DueDate";
 import { TodoContext } from "@/Context/TodoContext";
 import { DUEDATE_TYPES, MODAL_TYPES } from "@/Utils";
 import DueDateProvider from "@/Context/DueDateContext";
-import { TSubTask, TTodo } from "@/interface";
+import { TTodo } from "@/interface";
 import { useAppSelector } from "@/Hooks";
 //
 
@@ -15,6 +15,11 @@ export type Props = {
   type?: string;
 };
 
+/**
+ * @param setIsModalOpen function to handle open modal
+ * @param type type of modal
+ * @returns
+ */
 export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
   const {
     handleCancelTodo: handleCancelTask,
@@ -28,6 +33,21 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
   const ref = useRef<TTodo>(task);
 
   const todo = useAppSelector((state) => state.todos.currentTodo);
+
+  const handleCancelSubTask = () => {
+    handleCancelTask();
+    setTask(ref.current);
+    setIsModalOpen(false);
+  };
+  const handleAddNewSubTask = () => {
+    handleAddSubTask(todo, task);
+    handleCancelTask();
+  };
+
+  const handleSaveSubTask = () => {
+    handleUpdateSubTask(todo, task);
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="modal">
@@ -67,11 +87,7 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
         <div className="flex gap-2">
           <button
             className="bg-[#f5f5f5] text-black btn"
-            onClick={() => {
-              handleCancelTask();
-              setTask(ref.current);
-              setIsModalOpen(false);
-            }}
+            onClick={handleCancelSubTask}
           >
             Cancel
           </button>
@@ -79,10 +95,7 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
             <button
               className="bg-primary text-white btn"
               disabled={task?.taskName === ""}
-              onClick={() => {
-                handleAddSubTask(todo, task);
-                handleCancelTask();
-              }}
+              onClick={handleAddNewSubTask}
             >
               Add sub-task
             </button>
@@ -90,12 +103,7 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
             <button
               className="bg-primary text-white btn"
               disabled={task?.taskName === ""}
-              onClick={() => {
-                // Updated task with current task state
-                // handleUpdateTaskInSubTask(subTask as TSubTask, task);
-                handleUpdateSubTask(todo, task);
-                setIsModalOpen(false);
-              }}
+              onClick={handleSaveSubTask}
             >
               Save
             </button>

@@ -1,6 +1,6 @@
-import React, {  } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
-import "./HomePage.scss"
+import "./HomePage.scss";
 
 type Props = {
   isOpenMenu: boolean;
@@ -18,8 +18,7 @@ const HomePage: React.FC<Props> = ({ isOpenMenu, sidebarWidth }) => {
             }
           : { margin: "auto", marginTop: "48px" }
       }
-      className="h-[--control-height] bg-white w-full text-black px-[55px] pb-[84px]
-      home-page"
+      className="h-[--control-height] bg-white w-full text-black px-[55px] pb-[36px] home-page"
     >
       <Outlet />
     </div>

@@ -1,15 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { TagOutlined } from "@ant-design/icons";
 import React, { useContext, useEffect, useRef } from "react";
 import "./TodoModal.scss";
 import { Priority } from "./Priority/Priority";
 import { DueDate } from "./DueDate/DueDate";
 import { TodoContext } from "@/Context/TodoContext";
-import { DUEDATE_TYPES, MODAL_TYPES, TODO_PAGES } from "@/Utils";
+import {
+  DUEDATE_TYPES,
+  MODAL_TYPES,
+  TODO_PAGES,
+  TODO_PROPERTIES,
+} from "@/Utils";
 import DueDateProvider from "@/Context/DueDateContext";
-import { TTodo } from "@/interface";
+import { TProject, TTodo } from "@/interface";
+import { useAppDispatch, useAppSelector } from "@/Hooks";
+import { Select } from "antd";
+import { addTodoIntoProject } from "@/Redux/Projects/ProjectsSlice";
+import { firebaseProvider } from "@/Firebase/provider";
 
 export type Props = {
-  mainTodo?: TTodo;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   page?: string;
   type?: string;
@@ -20,7 +29,7 @@ export type Props = {
  * @param setIsModalOpen function to handle open modal
  * @param page type of todo page
  * @param type type of modal
- * @param isEditText true: modal is edit text only, false: modal is normal
+ * @param isEditText (optional) true: modal is edit text only (default), false: modal is normal
  * @returns
  */
 export const TodoModal: React.FC<Props> = ({
@@ -38,13 +47,56 @@ export const TodoModal: React.FC<Props> = ({
     todo,
   } = useContext(TodoContext);
 
+  const dispatch = useAppDispatch();
+  const ref = useRef<TTodo>(todo);
+
+  const projects = useAppSelector((state) => state.projects.projects);
+  const currentProject = useAppSelector(
+    (state) => state.projects.currentProject
+  );
+
   useEffect(() => {
     if (page === TODO_PAGES.TODAY) {
-      handleChangeTodo("dueDate", new Date().toDateString());
+      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, new Date().toDateString());
+    } else if (page === TODO_PAGES.PROJECT) {
+      handleChangeTodo(TODO_PROPERTIES.PROJECT, currentProject.id);
     }
   }, []);
 
-  const ref = useRef<TTodo>(todo);
+  const handleAddNewTodo = async () => {
+    const addedTodo = await handleAddTodo();
+    const projectChange = (await firebaseProvider.getDocById(
+      "projects",
+      addedTodo.project as string
+    )) as TProject;
+    if (todo?.project !== "Tasks") {
+      await dispatch(
+        addTodoIntoProject({
+          ...projectChange,
+          todos: [...(projectChange.todos as any), addedTodo.id],
+        })
+      );
+    }
+
+    handleChangeTodo(
+      TODO_PROPERTIES.PROJECT,
+      page === TODO_PAGES.PROJECT ? currentProject.id : ref.current.project
+    );
+    handleCancelTodo(page);
+  };
+
+  const handleCancelAddTodo = () => {
+    if (type === MODAL_TYPES.ADD) {
+      handleCancelTodo();
+    }
+    setTodo(ref.current);
+    setIsModalOpen(false);
+  };
+
+  const handleSaveTodo = () => {
+    handleUpdateTodo(todo);
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="modal">
@@ -83,17 +135,42 @@ export const TodoModal: React.FC<Props> = ({
       )}
       <div className="modal__footer">
         {/* Thêm một drop down để chọn project */}
-        <div>{!isEditText ? "Choose here" : ""}</div>
+
+        {!isEditText ? (
+          <div>
+            <Select
+              style={{ width: "150px" }}
+              onChange={(value) => {
+                handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
+              }}
+              onSelect={(value) => {
+                handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
+              }}
+              value={todo?.project}
+              options={[
+                {
+                  value: "Tasks",
+                  label: "Tasks",
+                },
+                {
+                  label: "Projects",
+                  options: [
+                    ...projects.map((project) => ({
+                      value: project.id,
+                      label: project.projectName,
+                    })),
+                  ],
+                },
+              ]}
+            />
+          </div>
+        ) : (
+          ""
+        )}
         <div className="flex gap-2">
           <button
             className="bg-[#f5f5f5] text-black btn"
-            onClick={() => {
-              if (type === MODAL_TYPES.ADD) {
-                handleCancelTodo();
-              }
-              setTodo(ref.current);
-              setIsModalOpen(false);
-            }}
+            onClick={handleCancelAddTodo}
           >
             Cancel
           </button>
@@ -101,10 +178,7 @@ export const TodoModal: React.FC<Props> = ({
             <button
               className="bg-primary text-white btn"
               disabled={todo?.taskName === ""}
-              onClick={() => {
-                handleAddTodo();
-                handleCancelTodo(page);
-              }}
+              onClick={handleAddNewTodo}
             >
               Add task
             </button>
@@ -113,10 +187,7 @@ export const TodoModal: React.FC<Props> = ({
               <button
                 className="bg-primary text-white btn"
                 disabled={todo?.taskName === ""}
-                onClick={() => {
-                  handleUpdateTodo(todo);
-                  setIsModalOpen(false);
-                }}
+                onClick={handleSaveTodo}
               >
                 Save
               </button>

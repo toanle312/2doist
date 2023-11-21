@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./style.scss";
 import { Todo } from "@/Components/Todo/Todo";
-import { useDate } from "@/Hooks/use-date";
+import { useDate } from "@/Hooks/useDate";
 import TodoProvider from "@/Context/TodoContext";
 import TodoList from "@/Components/TodoList/TodoList";
 import { Alert } from "antd";

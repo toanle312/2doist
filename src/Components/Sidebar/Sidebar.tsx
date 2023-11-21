@@ -8,14 +8,9 @@ import React, {
 import { SideBarItems } from "@/Data";
 import "./SideBar.scss";
 import { NavLink } from "react-router-dom";
-import {
-  MenuOutlined,
-  OrderedListOutlined,
-  PlusOutlined,
-  ProjectOutlined,
-} from "@ant-design/icons";
-import { useAppDispatch, useAppSelector } from "@/Hooks";
-import { addProject, fetchProjects } from "@/Redux/Projects/ProjectsSlice";
+import { PlusOutlined } from "@ant-design/icons";
+import { useAppDispatch } from "@/Hooks";
+import { addProject } from "@/Redux/Projects/ProjectsSlice";
 import ProjectList from "../Projects/ProjectList";
 
 type Props = {
@@ -24,6 +19,13 @@ type Props = {
   isOpen: boolean;
 };
 
+/**
+ *
+ * @param setSideBarWidth function to set the sidebar width
+ * @param sidebarWidth the sidebar width
+ * @param isOpen prop to check if the sidebar is open
+ * @returns
+ */
 const Sidebar: React.FC<Props> = ({
   setSideBarWidth,
   sidebarWidth,
@@ -94,7 +96,7 @@ const Sidebar: React.FC<Props> = ({
             </NavLink>
           ))}
         </ul>
-        <section className="flex-1 ">
+        <section className="flex-1">
           <hr className="my-2" />
           <ProjectList />
         </section>

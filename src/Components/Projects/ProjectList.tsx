@@ -1,20 +1,9 @@
-import { useAppDispatch, useAppSelector } from "@/Hooks";
+import { useAppSelector, useFetch } from "@/Hooks";
 import ProjectItem from "./ProjectItem";
-import { useEffect } from "react";
 import { fetchProjects } from "@/Redux/Projects/ProjectsSlice";
 
 const ProjectList = () => {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    (async () => {
-      try {
-        dispatch(fetchProjects());
-      } catch (error) {
-        console.log(error);
-        throw new Error("Can not fetch projects");
-      }
-    })();
-  }, []);
+  useFetch(fetchProjects());
   const projects = useAppSelector((state) => state.projects.projects);
 
   return (
