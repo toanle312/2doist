@@ -140,7 +140,7 @@ export const TodoModal: React.FC<Props> = ({
         {!isEditText ? (
           <div>
             <Select
-              style={{ width: "150px" }}
+              style={{ width: "150px", backgroundColor: "transparent" }}
               onChange={(value) => {
                 handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
               }}
@@ -169,15 +169,12 @@ export const TodoModal: React.FC<Props> = ({
           ""
         )}
         <div className="ml-auto flex gap-2">
-          <button
-            className="bg-[#f5f5f5] text-black btn"
-            onClick={handleCancelAddTodo}
-          >
+          <button className="btn" onClick={handleCancelAddTodo}>
             Cancel
           </button>
           {(type === MODAL_TYPES.ADD && (
             <button
-              className="bg-primary text-white btn"
+              className="!bg-primary !text-white btn"
               disabled={todo?.taskName === ""}
               onClick={handleAddNewTodo}
             >
@@ -186,7 +183,7 @@ export const TodoModal: React.FC<Props> = ({
           )) ||
             (type === MODAL_TYPES.SAVE && !isEditText && (
               <button
-                className="bg-primary text-white btn"
+                className="!bg-primary text-white btn"
                 disabled={todo?.taskName === ""}
                 onClick={handleSaveTodo}
               >

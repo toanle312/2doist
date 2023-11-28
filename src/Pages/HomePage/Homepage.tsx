@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Outlet } from "react-router-dom";
 import "./HomePage.scss";
+import { ThemeContext } from "@/Context/ThemeContext";
 
 type Props = {
   isOpenMenu: boolean;
@@ -16,9 +17,12 @@ const HomePage: React.FC<Props> = ({ isOpenMenu, sidebarWidth }) => {
               marginLeft: sidebarWidth,
               width: `calc(100% - ${sidebarWidth}px`,
             }
-          : { margin: "auto", marginTop: "48px" }
+          : {
+              margin: "auto",
+              marginTop: "48px",
+            }
       }
-      className="h-[--control-height] bg-white w-full text-black px-[55px] pb-[36px] home-page"
+      className={`home-page h-[--control-height] w-full px-[55px] pb-[36px]`}
     >
       <Outlet />
     </div>

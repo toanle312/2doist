@@ -28,7 +28,7 @@ type Props = {
   children: ReactNode;
 };
 
-const DueDateProvider: React.FC<Props> = ({ children }: any) => {
+const DueDateProvider: React.FC<Props> = ({ children }) => {
   // Show current month and current year when scroll calendar
   const [month, setMonth] = useState<number>(0);
   const [year, setYear] = useState<number>(0);

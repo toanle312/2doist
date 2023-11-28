@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { homeBtn, menu } from "@/Assets";
 import SearchBox from "@/Components/SearchBox/SearchBox";
 import "./Navbar.scss";
 import { useNavigate } from "react-router-dom";
 import { NESTED_URL } from "@/Utils";
 import { UserInfor } from "@/Components/UserInfor/UserInfor";
+import { ThemeContext } from "@/Context/ThemeContext";
 
 type Props = {
   isOpenMenu: boolean;
@@ -12,9 +13,14 @@ type Props = {
   sidebarWidth: number;
 };
 
-const Navbar: React.FC<Props> = ({ isOpenMenu, setIsOpenMenu, sidebarWidth }) => {
+const Navbar: React.FC<Props> = ({
+  isOpenMenu,
+  setIsOpenMenu,
+  sidebarWidth,
+}) => {
   const navigate = useNavigate();
-  
+  const { setDarkTheme, isDarkTheme } = useContext(ThemeContext);
+
   return (
     <div className="w-full flex bg-primary p-2 justify-between fixed top-0 left-0 h-[48px]">
       {/* Left control */}
@@ -39,7 +45,15 @@ const Navbar: React.FC<Props> = ({ isOpenMenu, setIsOpenMenu, sidebarWidth }) =>
       </div>
       {/* Right control */}
       <div className="flex">
-        <UserInfor/>
+        <button
+          className="bg-slate-100"
+          onClick={() => {
+            setDarkTheme(!isDarkTheme);
+          }}
+        >
+          Change Theme
+        </button>
+        <UserInfor />
       </div>
     </div>
   );
