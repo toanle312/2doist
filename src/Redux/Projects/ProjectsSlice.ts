@@ -2,6 +2,8 @@ import { firebaseProvider } from "@/Firebase/provider";
 import { TProject } from "@/interface";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+// const projectNameCount: { [key: string]: number; } = {} as any;
+
 const initialState: { projects: TProject[]; currentProject: TProject; status: string } = {
   projects: [],
   currentProject: {} as TProject,
@@ -13,12 +15,7 @@ export const projectsSlice = createSlice(
     name: "projects",
     initialState: initialState,
     reducers: {
-      getCurrentProject: (state, action) => {
-        if (action.payload !== "Tasks") {
-          state.currentProject = [...state.projects].find((p: TProject) => p.id === action.payload) as TProject;
-          state.status = "idle";
-        }
-      }
+
     },
     extraReducers: (builder) => {
       builder.addCase(addProject.pending, (state, _) => {
@@ -42,6 +39,7 @@ export const projectsSlice = createSlice(
           return project;
         })
         state.projects = updatedProjects;
+        state.currentProject = action.payload;
         state.status = "idle";
       });
       builder.addCase(updateProject.rejected, (state, _) => {
@@ -72,6 +70,16 @@ export const projectsSlice = createSlice(
         state.status = "idle";
       });
       builder.addCase(fetchProjects.rejected, (state, _) => {
+        state.status = "rejected";
+      });
+      builder.addCase(getCurrentProject.pending, (state, _) => {
+        state.status = "pending";
+      });
+      builder.addCase(getCurrentProject.fulfilled, (state, action) => {
+        state.currentProject = action.payload;
+        state.status = "idle";
+      });
+      builder.addCase(getCurrentProject.rejected, (state, _) => {
         state.status = "rejected";
       });
     }
@@ -131,13 +139,26 @@ export const addTodoIntoProject = createAsyncThunk("projects/addTodoIntoProject"
 export const fetchProjects = createAsyncThunk("projects/fetchProjects", async () => {
   try {
     const data = await firebaseProvider.fetchDocs("projects");
-    const filteredData = data.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as TProject),
-      // convert timestamp to date
-      createdAt: doc.data().createdAt.toDate() as Date,
-    }));
+    const filteredData = data.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...(doc.data() as TProject),
+        // convert timestamp to date
+        createdAt: doc.data().createdAt.toDate() as Date,
+      }
+
+    });
     return filteredData.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+  } catch (error) {
+    console.error(error);
+    throw new Error("Can not fetch projects");
+  }
+})
+
+export const getCurrentProject = createAsyncThunk("projects/getCurrentProject", async (projectId: string) => {
+  try {
+    const data = await firebaseProvider.getDocById("projects", projectId) as TProject;
+    return data;
   } catch (error) {
     console.error(error);
     throw new Error("Can not fetch projects");

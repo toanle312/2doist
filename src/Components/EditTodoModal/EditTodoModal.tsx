@@ -1,14 +1,14 @@
-import { Modal } from "antd";
+import { Modal, Select } from "antd";
 import React, { useContext, useEffect } from "react";
 import TodoItem from "@/Components/TodoList/TodoItem";
 import { Priority } from "@/Components/TodoModal/Priority/Priority";
 import DueDateProvider from "@/Context/DueDateContext";
 import { DueDate } from "@/Components/TodoModal/DueDate/DueDate";
-import { DUEDATE_TYPES, TODOITEM_TYPES } from "@/Utils";
+import { DUEDATE_TYPES, TODOITEM_TYPES, TODO_PROPERTIES } from "@/Utils";
 
 import "./EditTodoModal.scss";
 import { TodoContext } from "@/Context/TodoContext";
-import { useAppDispatch } from "@/Hooks";
+import { useAppDispatch, useAppSelector } from "@/Hooks";
 import SubTasksControl from "@/Components/SubTasks/SubTasksControl";
 
 // import TodoProvider as SubTaskProvider (subtask is same structure as todo)
@@ -31,11 +31,13 @@ const EditTodoModal: React.FC<Props> = ({
   setIsOpenEditTodoModal,
 }) => {
   const dispatch = useAppDispatch();
-  const { todo, handleUpdateTodo } = useContext(TodoContext);
+  const { todo, handleUpdateTodo, handleChangeTodo } = useContext(TodoContext);
 
   useEffect(() => {
     dispatch(todosSlice.actions.getCurrentTodo(todo.id));
   }, [todo.id, dispatch]);
+
+  const projects = useAppSelector((state) => state.projects.projects);
 
   const handleSaveTodoModal = () => {
     handleUpdateTodo(todo);
@@ -74,8 +76,31 @@ const EditTodoModal: React.FC<Props> = ({
               <div>
                 <h1>Project</h1>
                 <hr className="mb-2" />
-                {/* Thêm một dropdown để chọn project */}
-                <p>Inbox</p>
+                <Select
+                  style={{ width: "150px" }}
+                  onChange={(value) => {
+                    handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
+                  }}
+                  onSelect={(value) => {
+                    handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
+                  }}
+                  value={todo?.project}
+                  options={[
+                    {
+                      value: "Tasks",
+                      label: "Tasks",
+                    },
+                    {
+                      label: "Projects",
+                      options: [
+                        ...projects.map((project) => ({
+                          value: project.id,
+                          label: project.projectName,
+                        })),
+                      ],
+                    },
+                  ]}
+                />
               </div>
               <div>
                 <h1>Due Date</h1>

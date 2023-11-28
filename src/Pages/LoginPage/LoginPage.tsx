@@ -11,7 +11,6 @@ const LoginPage : React.FC = () => {
   };
   const handleFacebookLogin = () => {
     dispatch(loginUser(facebookProvider));
-    
   };
 
   return (

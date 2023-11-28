@@ -9,14 +9,41 @@ import { SideBarItems } from "@/Data";
 import "./SideBar.scss";
 import { NavLink } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
-import { useAppDispatch } from "@/Hooks";
+import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { addProject } from "@/Redux/Projects/ProjectsSlice";
 import ProjectList from "../Projects/ProjectList";
+import { TProject } from "@/interface";
 
 type Props = {
   sidebarWidth: number;
   setSideBarWidth: React.Dispatch<React.SetStateAction<number>>;
   isOpen: boolean;
+};
+
+const detectDuplicateProject = (
+  projects: TProject[],
+  project: string
+): number => {
+  let count = 0;
+  for (const proj of projects) {
+    if (proj.projectName === project) {
+      count += 1;
+    } else if (proj.projectName.includes(project)) {
+      const pattern: RegExp = /\(\d+\)/;
+      const matches = proj.projectName.match(pattern);
+      if (matches) {
+        const number = matches[0]?.match(/\d+/);
+        if (number) {
+          console.log(+number[0], count);
+          if (+number[0] - count === 1 || +number[0] - count === 0) {
+            count += 1;
+          }
+        }
+      }
+    }
+  }
+
+  return count;
 };
 
 /**
@@ -67,10 +94,16 @@ const Sidebar: React.FC<Props> = ({
     };
   }, [resize, stopResizing, isResizing]);
   const dispatch = useAppDispatch();
+  const projects = useAppSelector((state) => state.projects.projects);
 
   const handleAddNewProject = async () => {
     try {
-      await dispatch(addProject("Untitled project")).unwrap();
+      let project = "Untitled project";
+      const count = detectDuplicateProject(projects, project);
+      if (count) {
+        project = "Untitled project (" + count + ")";
+      }
+      await dispatch(addProject(project)).unwrap();
     } catch (error) {
       console.error(error);
       throw new Error("Can not add new project");

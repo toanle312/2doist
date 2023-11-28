@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
-import Navbar from '@/Components/Navbar/Navbar';
-import Sidebar from '@/Components/Sidebar/Sidebar';
-import HomePage from '@/Pages/HomePage/HomePage';
-
+import React, { useState } from "react";
+import Navbar from "@/Components/Navbar/Navbar";
+import Sidebar from "@/Components/Sidebar/Sidebar";
+import HomePage from "@/Pages/HomePage/HomePage";
 
 const MainLayout: React.FC = () => {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);

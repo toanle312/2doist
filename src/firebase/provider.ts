@@ -3,6 +3,7 @@ import {
   QuerySnapshot,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -54,6 +55,14 @@ class FirebaseProvider {
     const documentRef = doc(db, group, element?.id as string);
     delete element.id;
     return setDoc(documentRef, element);
+  };
+
+  public deleteExistDoc = (
+    group: string,
+    element: any
+  ): Promise<void> => {
+    const documentRef = doc(db, group, element?.id as string);
+    return deleteDoc(documentRef);
   };
 
   /**

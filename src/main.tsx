@@ -9,6 +9,7 @@ import AuthProvider from "./Redux/Provider/AppProvider";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <Router>
@@ -18,4 +19,3 @@ root.render(
     </Router>
   </React.StrictMode>
 );
-

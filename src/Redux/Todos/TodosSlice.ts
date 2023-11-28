@@ -58,6 +58,16 @@ export const todosSlice = createSlice({
       })
       .addCase(updateTodo.rejected, (state, _action) => {
         state.status = "Error";
+      })
+      .addCase(deleteTodo.pending, (state, _action) => {
+        state.status = "Loading";
+      })
+      .addCase(deleteTodo.fulfilled, (state, action) => {
+        state.todos = [...state.todos].filter(todo => todo.id !== action.payload.id);
+        state.currentSubTask = [] as TTodo[];
+      })
+      .addCase(deleteTodo.rejected, (state, _action) => {
+        state.status = "Error";
       });
   },
 });
@@ -73,6 +83,7 @@ export const addTodo = createAsyncThunk(
   "todos/addTodo",
   async ({ group, todo }: addTodoType) => {
     try {
+      console.log(todo)
       const docRef = await firebaseProvider.addNewDoc(group, {
         ...todo,
         createdAt: new Date(),
@@ -93,13 +104,21 @@ export const updateTodo = createAsyncThunk("todos/updateTodo", async ({ group, t
   try {
     const temp = JSON.parse(JSON.stringify(todo));
     temp.createdAt = new Date(temp.createdAt);
-    console.log(temp);
-    console.log(todo);
     await firebaseProvider.updateDoc(group, temp);
     return todo;
   } catch (error) {
     console.error(error);
     throw new Error("Can not update todo");
+  }
+});
+
+export const deleteTodo = createAsyncThunk("todos/deleteTodo", async (todo: TTodo) => {
+  try {
+    await firebaseProvider.deleteExistDoc("todos", todo);
+    return todo;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Can not delete todo");
   }
 });
 

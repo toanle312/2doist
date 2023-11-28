@@ -4,10 +4,18 @@ import "./Todo.scss";
 import { TodoModal } from "@/Components/TodoModal/TodoModal";
 import { MODAL_TYPES } from "@/Utils";
 import { TodoContext } from "@/Context/TodoContext";
+import { Dropdown } from "antd";
 
 type Props = {
   page: string;
 };
+
+const items = [
+  {
+    label: <p>Delete</p>,
+    key: "0",
+  },
+];
 
 /**
  *
@@ -34,7 +42,9 @@ export const Todo: React.FC<Props> = ({ page }) => {
           }}
         >
           <PlusOutlined className="icon" />
-          <p>Add task</p>
+          <Dropdown menu={{ items }} trigger={["contextMenu"]}>
+            <p>Add task</p>
+          </Dropdown>
         </div>
       ) : (
         <TodoModal

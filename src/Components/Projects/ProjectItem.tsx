@@ -3,7 +3,7 @@ import { MenuOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Projects.scss";
-import { useAppDispatch } from "@/Hooks";
+import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { projectsSlice, updateProject } from "@/Redux/Projects/ProjectsSlice";
 
 type Props = {
@@ -19,10 +19,14 @@ const ProjectItem: React.FC<Props> = ({ project }) => {
   const dispatch = useAppDispatch();
   const [projectName, setProjectName] = useState<string>(project.projectName);
   const inputRef = useRef<HTMLInputElement>(null);
+  const initProjectName = useRef<string>(project.projectName);
+
+  const projects = useAppSelector((state) => state.projects.projects);
 
   useEffect(() => {
     if (project.isNew) {
       inputRef.current?.select();
+      inputRef.current?.click();
     }
   }, []);
 
@@ -39,9 +43,6 @@ const ProjectItem: React.FC<Props> = ({ project }) => {
     <NavLink
       to={`/home/project/${project.id}`}
       className="sidebarItem flex gap-2 items-center"
-      onClick={() => {
-        dispatch(projectsSlice.actions.getCurrentProject(project.id));
-      }}
     >
       <MenuOutlined style={{ color: "#db4c3f" }} />
       <input
@@ -60,12 +61,24 @@ const ProjectItem: React.FC<Props> = ({ project }) => {
           }
         }}
         onBlur={() => {
-          handleSaveName({
-            id: project.id,
-            projectName,
-            todos: project.todos,
-            createdAt: project.createdAt,
-          });
+          if (
+            projects.some(
+              (proj) =>
+                proj.projectName === projectName && proj.id !== project.id
+            )
+          ) {
+            inputRef.current?.select();
+          } else {
+            if (projectName === "") {
+              setProjectName(initProjectName.current);
+            }
+            handleSaveName({
+              id: project.id,
+              projectName,
+              todos: project.todos,
+              createdAt: project.createdAt,
+            });
+          }
         }}
       />
     </NavLink>

@@ -48,7 +48,7 @@ export const TodoModal: React.FC<Props> = ({
   } = useContext(TodoContext);
 
   const dispatch = useAppDispatch();
-  const ref = useRef<TTodo>(todo);
+  const prevTodoRef = useRef<TTodo>(todo);
 
   const projects = useAppSelector((state) => state.projects.projects);
   const currentProject = useAppSelector(
@@ -80,8 +80,11 @@ export const TodoModal: React.FC<Props> = ({
 
     handleChangeTodo(
       TODO_PROPERTIES.PROJECT,
-      page === TODO_PAGES.PROJECT ? currentProject.id : ref.current.project
+      page === TODO_PAGES.PROJECT
+        ? currentProject.id
+        : prevTodoRef.current.project
     );
+
     handleCancelTodo(page);
   };
 
@@ -89,7 +92,7 @@ export const TodoModal: React.FC<Props> = ({
     if (type === MODAL_TYPES.ADD) {
       handleCancelTodo();
     }
-    setTodo(ref.current);
+    setTodo(prevTodoRef.current);
     setIsModalOpen(false);
   };
 
@@ -119,7 +122,7 @@ export const TodoModal: React.FC<Props> = ({
         }}
       />
       {!isEditText && (
-        <>
+        <div>
           <div className="modal__control">
             <DueDateProvider>
               <DueDate type={DUEDATE_TYPES.FULL} />
@@ -131,11 +134,9 @@ export const TodoModal: React.FC<Props> = ({
             </button>
           </div>
           <hr />
-        </>
+        </div>
       )}
       <div className="modal__footer">
-        {/* Thêm một drop down để chọn project */}
-
         {!isEditText ? (
           <div>
             <Select
@@ -167,7 +168,7 @@ export const TodoModal: React.FC<Props> = ({
         ) : (
           ""
         )}
-        <div className="flex gap-2">
+        <div className="ml-auto flex gap-2">
           <button
             className="bg-[#f5f5f5] text-black btn"
             onClick={handleCancelAddTodo}

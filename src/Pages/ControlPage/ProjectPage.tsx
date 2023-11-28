@@ -2,26 +2,35 @@ import { Todo } from "@/Components/Todo/Todo";
 import TodoList from "@/Components/TodoList/TodoList";
 import TodoProvider from "@/Context/TodoContext";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
-import { fetchProjects, projectsSlice } from "@/Redux/Projects/ProjectsSlice";
+import {
+  fetchProjects,
+  getCurrentProject,
+  projectsSlice,
+} from "@/Redux/Projects/ProjectsSlice";
 import { TODO_PAGES } from "@/Utils";
-import { TProject } from "@/interface";
 import { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProjectPage = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { id: projectId } = useParams();
+
   useEffect(() => {
     (async () => {
       try {
-        await dispatch(fetchProjects());
-        dispatch(projectsSlice.actions.getCurrentProject(projectId));
+        const proj = await dispatch(
+          getCurrentProject(projectId as string)
+        ).unwrap();
+        if (proj === undefined) {
+          navigate("not-found");
+        }
       } catch (error) {
         console.error(error);
-        throw new Error("Can not fetch projects and get current project");
+        throw new Error("Can not get current project");
       }
     })();
-  }, [projectId, dispatch]);
+  }, [projectId]);
 
   const currentProject = useAppSelector(
     (state) => state.projects.currentProject
@@ -33,7 +42,7 @@ const ProjectPage = () => {
         <div className="today-header__content">
           <div>
             <span className="text-[20px] font-bold mr-2">
-              {currentProject.projectName}
+              {currentProject?.projectName}
             </span>
           </div>
         </div>
