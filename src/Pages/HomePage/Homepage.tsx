@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Outlet } from "react-router-dom";
 import "./HomePage.scss";
+import { ThemeContext } from "@/Context/ThemeContext";
 
 type Props = {
   isOpenMenu: boolean;

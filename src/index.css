@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root{
   --primary-color: "#db4c3f";
   --control-height: calc(100vh - 48px);
 }
@@ -13,8 +13,4 @@
 
 .ant-popover {
   z-index: 10000;
-}
-
-.ant-select-selection-item {
-  font-weight: 500 !important;
 }

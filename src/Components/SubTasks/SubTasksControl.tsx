@@ -5,7 +5,7 @@ import { TodoContext as SubTaskContext } from "@/Context/TodoContext";
 import SubTaskList from "../SubTasks/SubTaskList";
 import { SubTaskModal } from "../TodoModal/SubTaskModal";
 import { MODAL_TYPES } from "@/Utils";
-import { ThemeContext } from "@/Context/ThemeContext";
+import { TTodo } from "@/interface";
 
 const SubTasksControl = () => {
   const [isOpenAddSubTask, setIsOpenAddSubTask] = useState<boolean>(false);
@@ -19,27 +19,19 @@ const SubTasksControl = () => {
 
   const currentTodo = useAppSelector((state) => state.todos.currentTodo);
 
-  const { isDarkTheme } = useContext(ThemeContext);
-
   return (
     <div>
       {currentTodo.subTasks?.length ? (
         <section className="ml-[24px]">
           <div className="flex flex-col h-full">
             <div
-              className="flex gap-2 text-textGray cursor-pointer mb-3"
+              className="flex gap-2 text-textGray cursor-pointer"
               onClick={() => {
                 setIsShowSubTasks(!isShowSubTasks);
               }}
             >
               {isShowSubTasks ? <DownOutlined /> : <RightOutlined />}
-              <span
-                className={`font-medium ${
-                  isDarkTheme ? "text-white" : "text-textColor"
-                }`}
-              >
-                Sub-tasks
-              </span>{" "}
+              <span className="text-textColor font-medium">Sub-tasks</span>{" "}
               {currentTodo.subTasks.filter((task) => task.isCompleted).length}/
               {currentTodo.subTasks.length}
             </div>

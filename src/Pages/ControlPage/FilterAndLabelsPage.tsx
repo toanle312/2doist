@@ -1,11 +1,9 @@
-import React from "react";
+import React from 'react';
 
-const FilterAndLabelsPage: React.FC = () => {
+const FilterAndLabelsPage : React.FC = () => {
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      Filter And Labels Page
-    </div>
-  );
-};
+    <div>FilterAndLabelsPage</div>
+  )
+}
 
-export default FilterAndLabelsPage;
+export default FilterAndLabelsPage

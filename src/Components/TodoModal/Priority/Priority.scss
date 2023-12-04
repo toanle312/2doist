@@ -1,16 +1,10 @@
 @import "../TodoModal.scss";
 
-.priority {
+.priority{
   padding: 4px;
   border-radius: 5px;
-  &:hover {
+  &:hover{
     cursor: pointer;
     background-color: $hover-color;
-  }
-  &.dark-mode {
-    &:hover {
-      cursor: pointer;
-      background-color: $dark-mode-hover;
-    }
   }
 }

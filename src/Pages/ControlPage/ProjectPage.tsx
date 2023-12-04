@@ -2,9 +2,13 @@ import { Todo } from "@/Components/Todo/Todo";
 import TodoList from "@/Components/TodoList/TodoList";
 import TodoProvider from "@/Context/TodoContext";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
-import { getCurrentProject } from "@/Redux/Projects/ProjectsSlice";
+import {
+  fetchProjects,
+  getCurrentProject,
+  projectsSlice,
+} from "@/Redux/Projects/ProjectsSlice";
 import { TODO_PAGES } from "@/Utils";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const ProjectPage = () => {

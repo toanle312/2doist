@@ -8,9 +8,9 @@ import * as path from "path"
 export default defineConfig({
   base: "/todoist/",
   plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
-  resolve: {
+  resolve:{
     alias: {
       "@": path.resolve(__dirname, "./src/"),
     }
-  },
+  }
 })

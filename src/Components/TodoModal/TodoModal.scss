@@ -29,13 +29,6 @@
       padding: 2px 4px;
       font-size: 14px;
       color: #666666;
-      &.dark-mode {
-        color: #b3b3b3;
-        border-color: #3d3d3d;
-        &:hover {
-          background-color: $dark-mode-hover;
-        }
-      }
       &:hover {
         background-color: $hover-color;
       }
@@ -64,16 +57,6 @@
       }
       &:hover {
         filter: brightness(0.9);
-      }
-    }
-
-    &.dark-mode {
-      .btn {
-        background-color: $dark-mode-sidebar;
-        color: white;
-        &:hover {
-          background-color: $dark-mode-hover;
-        }
       }
     }
   }

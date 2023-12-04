@@ -5,10 +5,18 @@ import { fetchTodosByUserID } from "@/Redux/Todos/TodosSlice";
 import { TODOITEM_TYPES, TODO_PAGES } from "@/Utils";
 import { DownOutlined, RightOutlined } from "@ant-design/icons";
 import React from "react";
+import { Dropdown } from "antd";
 
 type Props = {
   type?: string;
 };
+
+const items = [
+  {
+    label: <p>Delete</p>,
+    key: "0",
+  },
+];
 
 /**
  *
@@ -47,7 +55,7 @@ const TodoList: React.FC<Props> = ({ type }) => {
       </ul>
       {todos.filter((todo) => todo.isCompleted).length ? (
         <div
-          className="text-medium text-white inline-flex gap-2 bg-primary px-1 rounded-[3px] cursor-pointer"
+          className="text-medium text-textGray inline-flex gap-2 bg-[#f5f5f5] px-1 rounded-[3px] cursor-pointer"
           onClick={() => {
             setIsShowCompleted(!isShowCompleted);
           }}

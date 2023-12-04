@@ -7,7 +7,6 @@ import { TodoContext } from "@/Context/TodoContext";
 import { DUEDATE_TYPES, TODO_PROPERTIES } from "@/Utils";
 import { DaysInWeek } from "@/interface";
 import { DueDateContext } from "@/Context/DueDateContext";
-import { ThemeContext } from "@/Context/ThemeContext";
 
 type Props = {
   type: string;
@@ -28,7 +27,6 @@ export const DueDate: React.FC<Props> = ({
   position = "leftBottom",
 }) => {
   const { todo, handleChangeTodo } = useContext(TodoContext);
-  const { isDarkTheme } = useContext(ThemeContext);
 
   const {
     isOpenDueDate,
@@ -102,9 +100,7 @@ export const DueDate: React.FC<Props> = ({
       }}
     >
       {type === DUEDATE_TYPES.FULL ? (
-        <button
-          className={`modal__control-item ${isDarkTheme ? "dark-mode" : ""}`}
-        >
+        <button className="modal__control-item">
           <CalendarOutlined style={{ color: showDueDate?.color }} />
           <p style={{ color: showDueDate?.color }}>{showDueDate?.text}</p>
           {showDueDate?.text !== "Due Date" && (

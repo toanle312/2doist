@@ -7,11 +7,9 @@ import "./Priority.scss";
 import { TodoContext } from "@/Context/TodoContext";
 import { TODO_PROPERTIES } from "@/Utils";
 import { EPriority } from "@/interface";
-import { ThemeContext } from "@/Context/ThemeContext";
 
 export const Priority: React.FC = () => {
   const { todo, handleChangeTodo } = useContext(TodoContext);
-  const { isDarkTheme } = useContext(ThemeContext);
 
   const [icon, setIcon] = useState<JSX.Element>(<FlagOutlined />);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -25,9 +23,7 @@ export const Priority: React.FC = () => {
     return priorities.map((p) => (
       <div
         key={p.id}
-        className={`flex items-center gap-2 priority ${
-          isDarkTheme ? "dark-mode" : ""
-        }`}
+        className="flex items-center gap-2 priority"
         onClick={() => {
           handleChangeTodo(TODO_PROPERTIES.PRIORITY, p.number);
           setIcon(p.icon);
@@ -61,9 +57,7 @@ export const Priority: React.FC = () => {
         setIsOpen(visible);
       }}
     >
-      <button
-        className={`modal__control-item ${isDarkTheme ? "dark-mode" : ""}`}
-      >
+      <button className="modal__control-item">
         {todo?.priority === 4 ? <FlagOutlined /> : icon}
         {EPriority[todo?.priority]}
         {todo?.priority !== 4 && <div onClick={handleCancelPriority}>X</div>}

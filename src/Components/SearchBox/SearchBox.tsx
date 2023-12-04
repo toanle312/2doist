@@ -1,19 +1,17 @@
-import React from "react";
-import { closeBtn, searchIcon } from "@/Assets";
-import "./SearchBox.scss";
+import React from 'react'
+import { closeBtn, searchIcon } from '@/Assets'
+import "./SearchBox.scss"
 
 type Props = {
   width: number;
-};
+}
 
 const SearchBox: React.FC<Props> = ({ width = 300 }) => {
   return (
     <div
       style={{ width: width - 80 }}
-      className={`flex bg-[hsla(0,0%,100%,0.2)] rounded-sm relative w-[300px] min-w-[142px] max-w-[315px] text-small`}
-    >
+      className={`flex bg-[hsla(0,0%,100%,0.2)] rounded-sm relative w-[300px] min-w-[142px] max-w-[315px] text-small`}>
       <input
-        disabled
         type="text"
         className="input outline-none bg-transparent w-full text-sm rounded-sm pl-9 py-1"
         placeholder="Search"
@@ -27,7 +25,7 @@ const SearchBox: React.FC<Props> = ({ width = 300 }) => {
         <img src={closeBtn} alt="close-button" className=" right-[5px] " />
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default SearchBox;
+export default SearchBox
