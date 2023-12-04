@@ -14,6 +14,7 @@ import SubTasksControl from "@/Components/SubTasks/SubTasksControl";
 // import TodoProvider as SubTaskProvider (subtask is same structure as todo)
 import { default as SubTaskProvider } from "@/Context/TodoContext";
 import { todosSlice } from "@/Redux/Todos/TodosSlice";
+import { ThemeContext } from "@/Context/ThemeContext";
 
 type Props = {
   isOpenEditTodoModal: boolean;
@@ -47,6 +48,8 @@ const EditTodoModal: React.FC<Props> = ({
     setIsOpenEditTodoModal(false);
   };
 
+  const { isDarkTheme } = useContext(ThemeContext);
+
   return (
     <Modal
       destroyOnClose={true}
@@ -68,9 +71,9 @@ const EditTodoModal: React.FC<Props> = ({
             </SubTaskProvider>
           </div>
           <div
-            className={`basis-[30%] p-2 bg-[#fafafa] h-full ${
-              todo.isCompleted ? "disabled" : ""
-            }`}
+            className={`basis-[30%] p-2 ${
+              isDarkTheme ? "bg-[#282828]" : "bg-[#fafafa]"
+            } h-full ${todo.isCompleted ? "disabled" : ""}`}
           >
             <div className="flex flex-col gap-2">
               <div>
@@ -118,7 +121,11 @@ const EditTodoModal: React.FC<Props> = ({
           </div>
         </div>
         <hr />
-        <div className="modal__footer mb-[-0.5rem] mt-3 mx-3">
+        <div
+          className={`modal__footer mb-[-0.5rem] mt-3 mx-3 ${
+            isDarkTheme ? "dark-mode " : ""
+          }`}
+        >
           <div></div>
           <div className="flex gap-2">
             <button
@@ -128,7 +135,7 @@ const EditTodoModal: React.FC<Props> = ({
               Cancel
             </button>
             <button
-              className="bg-primary text-white btn"
+              className="!bg-primary !text-white btn"
               disabled={todo?.taskName === ""}
               onClick={handleSaveTodoModal}
             >

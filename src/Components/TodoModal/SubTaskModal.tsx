@@ -8,6 +8,7 @@ import { DUEDATE_TYPES, MODAL_TYPES } from "@/Utils";
 import DueDateProvider from "@/Context/DueDateContext";
 import { TTodo } from "@/interface";
 import { useAppSelector } from "@/Hooks";
+import { ThemeContext } from "@/Context/ThemeContext";
 //
 
 export type Props = {
@@ -29,6 +30,8 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
     todo: task,
     handleUpdateSubTask,
   } = useContext(TodoContext);
+
+  const { isDarkTheme } = useContext(ThemeContext);
 
   const ref = useRef<TTodo>(task);
 
@@ -69,21 +72,22 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
           handleChangeTask(e.target.name, e.target.value);
         }}
       />
-
       <div className="modal__control">
         <DueDateProvider>
           <DueDate type={DUEDATE_TYPES.FULL} />
         </DueDateProvider>
         <Priority />
-        <button className="modal__control-item">
+        <button
+          className={`modal__control-item  ${isDarkTheme ? "dark-mode" : ""}`}
+        >
           <TagOutlined />
           Label
         </button>
       </div>
       <hr />
 
-      <div className="modal__footer">
-        <div>Choose here</div>
+      <div className={`modal__footer ${isDarkTheme ? "dark-mode" : ""}`}>
+        <div></div>
         <div className="flex gap-2">
           <button
             className="bg-[#f5f5f5] text-black btn"
@@ -93,7 +97,7 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
           </button>
           {type === MODAL_TYPES.ADD ? (
             <button
-              className="bg-primary text-white btn"
+              className="!bg-primary !text-white btn"
               disabled={task?.taskName === ""}
               onClick={handleAddNewSubTask}
             >
@@ -101,7 +105,7 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
             </button>
           ) : (
             <button
-              className="bg-primary text-white btn"
+              className="!bg-primary !text-white btn"
               disabled={task?.taskName === ""}
               onClick={handleSaveSubTask}
             >

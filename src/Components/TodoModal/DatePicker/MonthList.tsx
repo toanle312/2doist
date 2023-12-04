@@ -11,6 +11,7 @@ import {
 } from "@/Utils";
 import { DueDateContext } from "@/Context/DueDateContext";
 import { DatePickerContext } from "@/Context/DatePickerContext";
+import { ThemeContext } from "@/Context/ThemeContext";
 
 type Props = {
   year: number;
@@ -160,6 +161,8 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
     setIsOpenDueDate(false);
   };
 
+  const { isDarkTheme } = useContext(ThemeContext);
+
   return (
     <div>
       {(month !== currentDate?.getMonth() ||
@@ -183,7 +186,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
                 className={`basis-[14.285%] py-[4px] px-[6px] text-center text-extra-small cursor-pointer${
                   // only choose date after current date
                   isDisableDate(currentDate as Date, year, month, day + 1)
-                    ? " disable-date"
+                    ? ` disable-date`
                     : ""
                 }${
                   // highlight current date
@@ -194,7 +197,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
                   // active choose date and add hover for others date
                   todo.dueDate === new Date(year, month, day + 1).toDateString()
                     ? " active-date"
-                    : " hover-date"
+                    : ` hover-date ${isDarkTheme && "dark-mode"}`
                 }`}
                 onClick={() => {
                   handleChooseDueDate(day);
