@@ -17,7 +17,6 @@ const AppRouter: React.FC = () => {
     <Routes>
       {/* Auto redirect to login page */}
       <Route path="/" element={<Navigate to={PAGE_URL.LOGIN} />} />
-      <Route path="/todoist" element={<Navigate to={PAGE_URL.LOGIN} />} />
       {/* Public route */}
       <Route path={PAGE_URL.LOGIN} element={<LoginPage />}></Route>
       {/* Private route (only show home page when login success)*/}
