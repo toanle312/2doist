@@ -1,7 +1,6 @@
 import React, {
   MouseEvent,
   useCallback,
-  useContext,
   useEffect,
   useRef,
   useState,
@@ -14,7 +13,6 @@ import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { addProject } from "@/Redux/Projects/ProjectsSlice";
 import ProjectList from "../Projects/ProjectList";
 import { TProject } from "@/interface";
-import { ThemeContext } from "@/Context/ThemeContext";
 
 type Props = {
   sidebarWidth: number;
@@ -60,7 +58,6 @@ const Sidebar: React.FC<Props> = ({
   sidebarWidth,
   isOpen,
 }) => {
-  const { isDarkTheme } = useContext(ThemeContext);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isResizing, setIsResizing] = useState<boolean>(false);
 

@@ -8,12 +8,14 @@ import { TDateList } from "@/interface";
 import { DUEDATE_TYPES, TODO_PROPERTIES } from "@/Utils";
 import { DueDateContext } from "@/Context/DueDateContext";
 import DatePickerProvider from "@/Context/DatePickerContext";
+import { ThemeContext } from "@/Context/ThemeContext";
 
 export const DueDateItems: React.FC = () => {
   const { today } = useDate();
 
   const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
   const { setIsOpenDueDate, type, dateList } = useContext(DueDateContext);
+  const { isDarkTheme } = useContext(ThemeContext);
 
   const handleChooseDate = (dateItem: TDateList) => {
     if (type === DUEDATE_TYPES.FULL) {
@@ -28,7 +30,7 @@ export const DueDateItems: React.FC = () => {
     <div className="w-full max-w-[250px] max-h-[600px]">
       <input
         placeholder="Type a due date"
-        className="w-full outline-none pb-3"
+        className="w-full outline-none pb-3 bg-transparent"
         value={todo.dueDate}
         name="dueDate"
         onChange={(e) => {
@@ -43,13 +45,13 @@ export const DueDateItems: React.FC = () => {
           .map((dateItem: any) => (
             <li
               key={dateItem.id}
-              className="date-item"
+              className={`date-item ${isDarkTheme ? "dark-mode" : ""}`}
               onClick={() => {
                 handleChooseDate(dateItem);
               }}
             >
               <img src={dateItem.icon} alt="Date Icon" />
-              <p className="flex-1 font-medium text-textColor text-extra-small">
+              <p className="flex-1 font-medium text-extra-small">
                 {dateItem.content}
               </p>
               <p className="text-textGray text-extra-small">{dateItem.date}</p>

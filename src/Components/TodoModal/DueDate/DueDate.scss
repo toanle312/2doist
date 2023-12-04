@@ -1,12 +1,19 @@
 @import "../TodoModal.scss";
 
-.date-item{
+.date-item {
   display: flex;
   gap: 8px;
   padding: 4px 0;
   justify-content: center;
-  &:hover{
+  &:hover {
     background-color: $hover-color;
+    cursor: pointer;
+  }
+}
+
+.date-item.dark-mode {
+  &:hover {
+    background-color: $dark-mode-hover;
     cursor: pointer;
   }
 }

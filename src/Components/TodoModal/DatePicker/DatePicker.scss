@@ -22,7 +22,6 @@
 
 .active-date {
   p {
-    
     border-radius: 100%;
     background-color: $primary;
     color: white;
@@ -37,8 +36,14 @@
   }
 }
 
+.hover-date.dark-mode:hover {
+  p {
+    border-radius: 100%;
+    background-color: $dark-mode-hover;
+  }
+}
 
 .disable-date {
-  color: rgb(209, 209, 209);
+  opacity: 0.15;
   pointer-events: none;
 }

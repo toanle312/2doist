@@ -101,6 +101,10 @@ export const TodoModal: React.FC<Props> = ({
     setIsModalOpen(false);
   };
 
+  // const { useToken } = theme;
+  // const { token } = useToken();
+  // console.log(token.colorPrimary);
+
   return (
     <div className="modal">
       <input
@@ -140,7 +144,11 @@ export const TodoModal: React.FC<Props> = ({
         {!isEditText ? (
           <div>
             <Select
-              style={{ width: "150px", backgroundColor: "transparent" }}
+              style={{
+                width: "150px",
+                backgroundColor: "transparent",
+                borderColor: "none",
+              }}
               onChange={(value) => {
                 handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
               }}

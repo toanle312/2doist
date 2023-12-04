@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./App.css";
 import AppRouter from "./Router/AppRouter";
 
-const App : React.FC = () => {
+const App: React.FC = () => {
   return <AppRouter />;
-}
+};
 
 export default App;

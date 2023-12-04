@@ -16,6 +16,7 @@
         }
         &.active {
           background-color: #4f2929;
+          // background-color: hsla(0, 0%, 100%, 0.2);
         }
       }
     }
@@ -51,28 +52,6 @@
                 color: white;
                 &:hover {
                   background-color: $dark-mode-hover;
-                }
-              }
-              .ant-select {
-                background-color: $dark-mode-background;
-                color: white;
-                &.ant-select-open {
-                  background-color: $dark-mode-background;
-                  color: white;
-                }
-                .ant-select-selector {
-                  background-color: inherit;
-                  color: inherit;
-                  &:hover {
-                    border-color: unset;
-                  }
-                  .ant-select-selection-item {
-                    background-color: inherit;
-                    color: inherit;
-                  }
-                }
-                .ant-select-arrow {
-                  color: white;
                 }
               }
             }

@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { addTodo, updateTodo } from "@/Redux/Todos/TodosSlice";
-import { TSubTask, TTodo } from "@/interface";
+import { TTodo } from "@/interface";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { TODO_PAGES } from "@/Utils";
 import { v4 as uuidv4 } from "uuid";

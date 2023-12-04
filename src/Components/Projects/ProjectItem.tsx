@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Projects.scss";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
-import { projectsSlice, updateProject } from "@/Redux/Projects/ProjectsSlice";
+import { updateProject } from "@/Redux/Projects/ProjectsSlice";
 
 type Props = {
   project: TProject;

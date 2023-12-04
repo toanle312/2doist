@@ -95,7 +95,7 @@ const SubTaskItem: React.FC<Props> = ({ task }) => {
                   {task.taskName}
                 </p>
                 <p className="text-small text-textGray">{task.description}</p>
-                <p className="flex justify-end text-small">Inbox</p>
+                <p className="flex justify-end text-small">{task.project}</p>
               </section>
             </section>
             <hr />

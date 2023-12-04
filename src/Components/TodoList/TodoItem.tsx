@@ -3,7 +3,6 @@ import { TTodo } from "@/interface";
 
 import "./TodoItem.scss";
 import {
-  CalendarOutlined,
   CheckOutlined,
   CommentOutlined,
   EditOutlined,
@@ -22,7 +21,7 @@ import EditTodoModal from "@/Components/EditTodoModal/EditTodoModal";
 
 import ShowDueDate from "./ShowDueDate";
 import { Dropdown } from "antd";
-import { useAppDispatch } from "@/Hooks";
+import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { deleteTodo } from "@/Redux/Todos/TodosSlice";
 
 type Props = {
@@ -62,6 +61,10 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
 
   const ref = useRef<HTMLElement>(null);
 
+  const currentProject = useAppSelector(
+    (state) => state.projects.currentProject
+  );
+
   useEffect(() => {
     if (!isEditDueDate) {
       if (ref.current) {
@@ -96,7 +99,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
             <li
               className={`todo-item ${
                 todo.isCompleted ? "checked" : ""
-              }relative cursor-pointer`}
+              } relative cursor-pointer`}
               onClick={() => {
                 setTodo(todo);
                 setIsOpenEditTodoModal(true);
@@ -198,7 +201,9 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
                           <ShowDueDate dueDate={todo.dueDate} />
                         </DueDateProvider>
                       </section>
-                      <p className="flex justify-end text-small">Inbox</p>
+                      <p className="flex justify-end text-small">
+                        {currentProject.projectName}
+                      </p>
                     </section>
                   </section>
                   <hr />
