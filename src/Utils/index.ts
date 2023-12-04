@@ -1,6 +1,6 @@
 export const PAGE_URL = {
-  LOGIN: "/todoist/login",
-  HOME: "/todoist/home",
+  LOGIN: "/login",
+  HOME: "/home",
 }
 
 export const NESTED_URL = {
