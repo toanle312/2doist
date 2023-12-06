@@ -197,7 +197,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
                   // active choose date and add hover for others date
                   todo.dueDate === new Date(year, month, day + 1).toDateString()
                     ? " active-date"
-                    : ` hover-date ${isDarkTheme && "dark-mode"}`
+                    : ` hover-date ${isDarkTheme ? "dark-mode" : ""}`
                 }`}
                 onClick={() => {
                   handleChooseDueDate(day);

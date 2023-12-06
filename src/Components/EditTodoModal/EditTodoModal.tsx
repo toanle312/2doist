@@ -61,7 +61,7 @@ const EditTodoModal: React.FC<Props> = ({
       }}
       footer={null}
     >
-      <div className="flex flex-col mt-7 mx-[-24px]">
+      <div className={`edit-modal ${isDarkTheme ? "dark-mode" : ""}`}>
         <hr />
         <div className="flex w-full h-[480px]">
           <div className="flex flex-col basis-[70%] p-4 h-full overflow-y-scroll">
@@ -75,7 +75,7 @@ const EditTodoModal: React.FC<Props> = ({
               isDarkTheme ? "bg-[#282828]" : "bg-[#fafafa]"
             } h-full ${todo.isCompleted ? "disabled" : ""}`}
           >
-            <div className="flex flex-col gap-2">
+            <div className="modal__control flex flex-col gap-2">
               <div>
                 <h1>Project</h1>
                 <hr className="mb-2" />

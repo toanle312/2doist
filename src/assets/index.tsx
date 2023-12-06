@@ -9,6 +9,7 @@ import notiBtn from "./notiBtn.svg";
 import productivityBtn from "./productivityBtn.svg";
 import addTaskBtn from "./addTaskBtn.svg";
 import login from "./login.png";
+import themeBtn from "./brightness-and-contrast.png";
 import logoOnly from "./logoOnly.svg";
 import logoOnlyV2 from "./logoOnlyV2.svg";
 import google from "./google.svg";
@@ -51,6 +52,7 @@ export {
   nextWeekend,
   noDate,
   office,
+  themeBtn,
 };
 
 export const home =

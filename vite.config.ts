@@ -6,7 +6,6 @@ import * as path from "path"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/todoist/",
   plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
   resolve: {
     alias: {

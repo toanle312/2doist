@@ -29,13 +29,6 @@
       padding: 2px 4px;
       font-size: 14px;
       color: #666666;
-      &.dark-mode {
-        color: #b3b3b3;
-        border-color: #3d3d3d;
-        &:hover {
-          background-color: $dark-mode-hover;
-        }
-      }
       &:hover {
         background-color: $hover-color;
       }
@@ -47,7 +40,6 @@
     justify-content: space-between;
     padding: 4px;
     font-size: 14px;
-
     .btn {
       padding: 6px 12px;
       border-radius: 5px;
@@ -66,14 +58,32 @@
         filter: brightness(0.9);
       }
     }
+  }
+}
 
-    &.dark-mode {
-      .btn {
-        background-color: $dark-mode-sidebar;
-        color: white;
-        &:hover {
-          background-color: $dark-mode-hover;
-        }
+.edit-modal {
+  display: flex;
+  flex-direction: column;
+  margin: 28px -24px 0;
+}
+
+.modal.dark-mode,
+.edit-modal.dark-mode {
+  .modal__control {
+    .modal__control-item {
+      color: #b3b3b3;
+      border-color: #3d3d3d;
+      &:hover {
+        background-color: $dark-mode-hover;
+      }
+    }
+  }
+  .modal__footer {
+    .btn {
+      background-color: $dark-mode-sidebar;
+      color: white;
+      &:hover {
+        background-color: $dark-mode-hover;
       }
     }
   }

@@ -90,199 +90,200 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
     ];
   }, []);
 
-  return (
-    <>
-      {type === TODOITEM_TYPES.FULL && (
-        // Item with full control -> use for todo list
-        <section>
-          <Dropdown menu={{ items }} trigger={["contextMenu"]}>
-            <li
-              className={`todo-item ${
-                todo.isCompleted ? "checked" : ""
-              } relative cursor-pointer`}
-              onClick={() => {
-                setTodo(todo);
-                setIsOpenEditTodoModal(true);
-                setSelectedItem(todo?.id as string);
-              }}
-            >
-              {isEditTodo && todo?.id === selectedItem ? (
-                // show todo modal when click edit button
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <TodoModal
-                    setIsModalOpen={setIsEditTodo}
-                    type={MODAL_TYPES.SAVE}
-                    page={
-                      new Date(todo.dueDate) === new Date()
-                        ? TODO_PAGES.TODAY
-                        : TODO_PAGES.TASKS
-                    }
-                  />
-                </div>
-              ) : (
-                // show todo item
-                <>
-                  <section className="flex items-start py-1">
-                    <button
-                      className="checkbox-btn mr-2 mt-[4px]"
-                      onClick={handleToggle}
-                    >
-                      <CheckOutlined className={"hidden check-icon"} />
-                    </button>
-                    <section className="w-full">
-                      <section className="flex justify-between mb-2">
-                        <p className="text-medium task-name">{todo.taskName}</p>
-                        <section
-                          className="control-list absolute right-0"
-                          ref={ref}
+  // show todo item with full version
+  if (type === TODOITEM_TYPES.FULL) {
+    return (
+      <section>
+        <Dropdown menu={{ items }} trigger={["contextMenu"]}>
+          <li
+            className={`todo-item ${
+              todo.isCompleted ? "checked" : ""
+            } relative cursor-pointer`}
+            onClick={() => {
+              setTodo(todo);
+              setIsOpenEditTodoModal(true);
+              setSelectedItem(todo?.id as string);
+            }}
+          >
+            {isEditTodo && todo?.id === selectedItem ? (
+              // show todo modal when click edit button
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <TodoModal
+                  setIsModalOpen={setIsEditTodo}
+                  type={MODAL_TYPES.SAVE}
+                  page={
+                    new Date(todo.dueDate) === new Date()
+                      ? TODO_PAGES.TODAY
+                      : TODO_PAGES.TASKS
+                  }
+                />
+              </div>
+            ) : (
+              // show todo item
+              <>
+                <section className="flex items-start py-1">
+                  <button
+                    className="checkbox-btn mr-2 mt-[4px]"
+                    onClick={handleToggle}
+                  >
+                    <CheckOutlined className={"hidden check-icon"} />
+                  </button>
+                  <section className="w-full">
+                    <section className="flex justify-between mb-2">
+                      <p className="text-medium task-name">{todo.taskName}</p>
+                      <section
+                        className="control-list absolute right-0"
+                        ref={ref}
+                      >
+                        <p
+                          className="control-item"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setTodo(todo);
+                            setIsEditTodo(true);
+                            setSelectedItem(todo?.id as string);
+                          }}
                         >
-                          <p
-                            className="control-item"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setTodo(todo);
-                              setIsEditTodo(true);
-                              setSelectedItem(todo?.id as string);
-                            }}
-                          >
-                            <EditOutlined />
-                          </p>
+                          <EditOutlined />
+                        </p>
 
-                          <p
-                            className="control-item"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (ref.current) {
-                                ref.current.style.display = "flex";
-                                ref.current.style.gap = "8px";
-                              }
-                              setTodo(todo);
-                              setSelectedItem(todo?.id as string);
-                              setIsEditDueDate(true);
-                            }}
-                          >
-                            <DueDateProvider>
-                              <DueDate
-                                type={DUEDATE_TYPES.SHORT}
-                                setIsEditDueDate={setIsEditDueDate}
-                              />
-                            </DueDateProvider>
-                          </p>
-                          <p className="control-item">
-                            <CommentOutlined />
-                          </p>
-                          {/* <p className="control-item">
+                        <p
+                          className="control-item"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (ref.current) {
+                              ref.current.style.display = "flex";
+                              ref.current.style.gap = "8px";
+                            }
+                            setTodo(todo);
+                            setSelectedItem(todo?.id as string);
+                            setIsEditDueDate(true);
+                          }}
+                        >
+                          <DueDateProvider>
+                            <DueDate
+                              type={DUEDATE_TYPES.SHORT}
+                              setIsEditDueDate={setIsEditDueDate}
+                            />
+                          </DueDateProvider>
+                        </p>
+                        <p className="control-item">
+                          <CommentOutlined />
+                        </p>
+                        {/* <p className="control-item">
                           <EllipsisOutlined />
                         </p> */}
-                        </section>
                       </section>
-                      <p className="text-small text-textGray">
-                        {todo.description}
-                      </p>
-                      <section className="flex mt-2 gap-1">
-                        {todo.subTasks?.length ? (
-                          <p className="text-small text-textGray">
-                            Tasks &#x2022;
-                            {` ${
-                              todo.subTasks?.filter((task) => task.isCompleted)
-                                .length
-                            }
-                      of ${todo.subTasks?.length} `}
-                            &#x2022;
-                          </p>
-                        ) : (
-                          ""
-                        )}
-                        <DueDateProvider>
-                          <ShowDueDate dueDate={todo.dueDate} />
-                        </DueDateProvider>
-                      </section>
-                      <p className="flex justify-end text-small">
-                        {currentProject.projectName}
-                      </p>
                     </section>
+                    <p className="text-small text-textGray">
+                      {todo.description}
+                    </p>
+                    <section className="flex mt-2 gap-1">
+                      {todo.subTasks?.length ? (
+                        <p className="text-small text-textGray">
+                          Tasks &#x2022;
+                          {` ${
+                            todo.subTasks?.filter((task) => task.isCompleted)
+                              .length
+                          }
+                      of ${todo.subTasks?.length} `}
+                          &#x2022;
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                      <DueDateProvider>
+                        <ShowDueDate dueDate={todo.dueDate} />
+                      </DueDateProvider>
+                    </section>
+                    <p className="flex justify-end text-small">
+                      {currentProject.projectName}
+                    </p>
                   </section>
-                  <hr />
-                </>
-              )}
-            </li>
-          </Dropdown>
-          {/* Show edit todo modal when click item */}
-          <EditTodoModal
-            isOpenEditTodoModal={isOpenEditTodoModal}
-            setIsOpenEditTodoModal={setIsOpenEditTodoModal}
-          />
-        </section>
-      )}
-      {type === TODOITEM_TYPES.SHORT && (
-        // Item without control -> use for edit todo modal
-        <li className={`todo-item ${todo.isCompleted ? "checked" : ""}`}>
-          {isEditTodo ? (
-            // show todo modal to edit task name and description when click task name or description
-            <div
-              className="flex"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
+                </section>
+                <hr />
+              </>
+            )}
+          </li>
+        </Dropdown>
+        {/* Show edit todo modal when click item */}
+        <EditTodoModal
+          isOpenEditTodoModal={isOpenEditTodoModal}
+          setIsOpenEditTodoModal={setIsOpenEditTodoModal}
+        />
+      </section>
+    );
+  }
+
+  // show todo item shortened version
+  if (type === TODOITEM_TYPES.SHORT) {
+    return (
+      <li className={`todo-item ${todo.isCompleted ? "checked" : ""}`}>
+        {isEditTodo ? (
+          // show todo modal to edit task name and description when click task name or description
+          <div
+            className="flex"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <button
+              className="checkbox-btn mr-2 mt-[8px]"
+              onClick={handleToggle}
             >
+              <CheckOutlined className={"hidden check-icon"} />
+            </button>
+            <TodoModal
+              isEditText
+              setIsModalOpen={setIsEditTodo}
+              type={MODAL_TYPES.SAVE}
+              page={
+                new Date(todo.dueDate) === new Date()
+                  ? TODO_PAGES.TODAY
+                  : TODO_PAGES.TASKS
+              }
+            />
+          </div>
+        ) : (
+          // show todo item for edit todo modal
+          <>
+            <section className="flex items-start">
               <button
                 className="checkbox-btn mr-2 mt-[8px]"
                 onClick={handleToggle}
               >
                 <CheckOutlined className={"hidden check-icon"} />
               </button>
-              <TodoModal
-                isEditText
-                setIsModalOpen={setIsEditTodo}
-                type={MODAL_TYPES.SAVE}
-                page={
-                  new Date(todo.dueDate) === new Date()
-                    ? TODO_PAGES.TODAY
-                    : TODO_PAGES.TASKS
-                }
-              />
-            </div>
-          ) : (
-            // show todo item for edit todo modal
-            <>
-              <section className="flex items-start">
-                <button
-                  className="checkbox-btn mr-2 mt-[8px]"
-                  onClick={handleToggle}
+              <section className="w-full p-[6.5px] flex flex-col gap-[4px]">
+                <p
+                  className="task-name text-small font-[500] cursor-text"
+                  onClick={() => {
+                    setIsEditTodo(true);
+                    setTodo(todo);
+                  }}
                 >
-                  <CheckOutlined className={"hidden check-icon"} />
-                </button>
-                <section className="w-full p-[6.5px] flex flex-col gap-[4px]">
-                  <p
-                    className="task-name text-small font-[500] cursor-text"
-                    onClick={() => {
-                      setIsEditTodo(true);
-                      setTodo(todo);
-                    }}
-                  >
-                    {todo.taskName}
-                  </p>
-                  <p
-                    className="text-small text-textGray cursor-text"
-                    onClick={() => {
-                      setIsEditTodo(true);
-                      setTodo(todo);
-                    }}
-                  >
-                    {todo.description}
-                  </p>
-                </section>
+                  {todo.taskName}
+                </p>
+                <p
+                  className="text-small text-textGray cursor-text"
+                  onClick={() => {
+                    setIsEditTodo(true);
+                    setTodo(todo);
+                  }}
+                >
+                  {todo.description}
+                </p>
               </section>
-            </>
-          )}
-        </li>
-      )}
-    </>
-  );
+            </section>
+          </>
+        )}
+      </li>
+    );
+  }
 };
 
 export default TodoItem;

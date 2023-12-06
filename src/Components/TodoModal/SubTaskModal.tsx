@@ -53,7 +53,7 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
   };
 
   return (
-    <div className="modal">
+    <div className={`modal ${isDarkTheme ? "dark-mode" : ""}`}>
       <input
         className="modal__input font-medium"
         placeholder="Task name"
@@ -77,16 +77,14 @@ export const SubTaskModal: React.FC<Props> = ({ setIsModalOpen, type }) => {
           <DueDate type={DUEDATE_TYPES.FULL} />
         </DueDateProvider>
         <Priority />
-        <button
-          className={`modal__control-item  ${isDarkTheme ? "dark-mode" : ""}`}
-        >
+        <button className={`modal__control-item`}>
           <TagOutlined />
           Label
         </button>
       </div>
       <hr />
 
-      <div className={`modal__footer ${isDarkTheme ? "dark-mode" : ""}`}>
+      <div className={`modal__footer`}>
         <div></div>
         <div className="flex gap-2">
           <button

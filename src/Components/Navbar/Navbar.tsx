@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { homeBtn, menu } from "@/Assets";
+import { homeBtn, menu, themeBtn } from "@/Assets";
 import SearchBox from "@/Components/SearchBox/SearchBox";
 import "./Navbar.scss";
 import { useNavigate } from "react-router-dom";
@@ -52,6 +52,7 @@ const Navbar: React.FC<Props> = ({
             setDarkTheme(!isDarkTheme);
           }}
         ></Switch>
+
         <UserInfor />
       </div>
     </div>

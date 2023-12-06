@@ -16,6 +16,7 @@ const TodayPage: React.FC = () => {
             <span className="text-[20px] font-bold mr-2">Today</span>
             <span className="text-[14px] text-textGray">{today}</span>
           </div>
+          <div>view</div>
         </div>
       </header>
       <TodoProvider>

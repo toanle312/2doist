@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { Select } from "antd";
 import { addTodoIntoProject } from "@/Redux/Projects/ProjectsSlice";
 import { firebaseProvider } from "@/Firebase/provider";
+import { ThemeContext } from "@/Context/ThemeContext";
 
 export type Props = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -105,8 +106,10 @@ export const TodoModal: React.FC<Props> = ({
   // const { token } = useToken();
   // console.log(token.colorPrimary);
 
+  const { isDarkTheme } = useContext(ThemeContext);
+
   return (
-    <div className="modal">
+    <div className={`modal ${isDarkTheme ? "dark-mode" : ""}`}>
       <input
         className="modal__input font-medium"
         placeholder="Task name"

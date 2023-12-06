@@ -26,14 +26,16 @@ const MainLayout: React.FC = () => {
             controlOutline: "unset",
           },
           Switch: {
-            colorPrimary: "rgba(0,0,0,0.45)",
-            colorPrimaryHover: "white",
+            colorPrimary: "rgba(0,0,0,0.45)!important",
+            colorPrimaryHover: "rgb(210,211,213)!important",
+            colorTextQuaternary: "rgb(210,211,213)!important",
+            colorTextTertiary: "rgba(0,0,0,0.45)!important",
           },
         },
       }}
     >
       <div className="w-full">
-        <div className={`main-layout ${isDarkTheme && "dark-mode"}`}>
+        <div className={`main-layout ${isDarkTheme ? "dark-mode" : ""}`}>
           {/* Navbar contain Sidebar */}
           <Navbar
             setIsOpenMenu={setIsOpenMenu}
