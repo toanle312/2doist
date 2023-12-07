@@ -15,7 +15,9 @@ export const projectsSlice = createSlice(
     name: "projects",
     initialState: initialState,
     reducers: {
-
+      getProject: (state, action) => {
+        state.currentProject = [...state.projects].find(proj => proj.id === action.payload) as any;
+      }
     },
     extraReducers: (builder) => {
       builder.addCase(addProject.pending, (state, _) => {

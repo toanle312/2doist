@@ -18,10 +18,6 @@ type Props = {
 const TodoList: React.FC<Props> = ({ type }) => {
   const [isShowCompleted, setIsShowCompleted] = useState<boolean>(false);
 
-  const user = useAppSelector((state) => state.auth.account);
-
-  useFetch(fetchTodosByUserID(user.uid));
-
   const currentProject = useAppSelector(
     (state) => state.projects.currentProject
   );
@@ -30,7 +26,7 @@ const TodoList: React.FC<Props> = ({ type }) => {
     if (type === TODO_PAGES.TODAY) {
       return todo.dueDate === new Date().toDateString();
     } else if (type === TODO_PAGES.PROJECT) {
-      return todo.project === currentProject.id;
+      return todo.project === currentProject?.id;
     } else return todo.project === TODO_PAGES.TASKS;
   });
 

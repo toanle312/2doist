@@ -34,7 +34,6 @@ const detectDuplicateProject = (
       if (matches) {
         const number = matches[0]?.match(/\d+/);
         if (number) {
-          console.log(+number[0], count);
           if (+number[0] - count === 1 || +number[0] - count === 0) {
             count += 1;
           }

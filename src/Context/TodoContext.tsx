@@ -6,17 +6,18 @@ import {
   useState,
 } from "react";
 import { addTodo, updateTodo } from "@/Redux/Todos/TodosSlice";
-import { TTodo } from "@/interface";
+import { TProject, TTodo } from "@/interface";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { TODO_PAGES } from "@/Utils";
 import { v4 as uuidv4 } from "uuid";
+import { addTodoIntoProject } from "@/Redux/Projects/ProjectsSlice";
 
 type ContextValueProps = {
-  handleAddTodo: () => Promise<TTodo>;
-  handleAddSubTask: (todo: TTodo, task: TTodo) => void;
-  handleUpdateSubTask: (todo: TTodo, task: TTodo) => void;
-  handleDeleteSubTask: (todo: TTodo, task: TTodo) => void;
-  handleUpdateTodo: (updatedTodo: TTodo) => void;
+  handleAddTodo: () => Promise<void>;
+  handleAddSubTask: (todo: TTodo, task: TTodo) => Promise<void>;
+  handleUpdateSubTask: (todo: TTodo, task: TTodo) => Promise<void>;
+  handleDeleteSubTask: (todo: TTodo, task: TTodo) => Promise<void>;
+  handleUpdateTodo: (updatedTodo: TTodo) => Promise<void>;
   handleCancelTodo: (type?: string) => void;
   isLoadingAddTodo: boolean;
   isLoadingUpdateTodo: boolean;
@@ -28,6 +29,7 @@ type ContextValueProps = {
   setSelectedItem: React.Dispatch<React.SetStateAction<string>>;
   isShowAlert: boolean;
   setIsShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoadingAddTodo: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const TodoContext = createContext<ContextValueProps>(
@@ -63,6 +65,8 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
 
   const dispatch = useAppDispatch();
 
+  const projects = useAppSelector((state) => state.projects.projects);
+
   const handleChangeTodo = useCallback((name: string, value: any) => {
     setTodo((prev) => {
       return {
@@ -77,7 +81,6 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
    */
   const handleAddTodo = useCallback(async () => {
     try {
-      setIsLoadingAddTodo(true);
       const addedTodo = await dispatch(
         addTodo({
           group: "todos",
@@ -86,9 +89,17 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
           } as TTodo,
         })
       ).unwrap();
-
-      setIsLoadingAddTodo(false);
-      return addedTodo as TTodo;
+      if (todo?.project !== "Tasks") {
+        const projectChange = projects.find(
+          (p) => p.id === todo.project
+        ) as TProject;
+        await dispatch(
+          addTodoIntoProject({
+            ...projectChange,
+            todos: [...(projectChange.todos as any), addedTodo.id],
+          })
+        );
+      }
     } catch (error) {
       console.error(error);
       throw new Error("Can not add todo");
@@ -198,31 +209,33 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
 
   const handleCancelTodo = useCallback((type?: string) => {
     if (type === TODO_PAGES.TODAY) {
-      setTodo((prev) => ({
-        ...prev,
-        taskName: "",
-        description: "",
-        subTasks: [] as TTodo[],
-        labels: [] as string[],
-        isCompleted: false,
-        owner: user?.uid,
-        dueDate: new Date().toDateString(),
-        priority: 4,
-        project: prev.project,
-      }));
+      setTodo((prev) => {
+        return {
+          taskName: "",
+          description: "",
+          subTasks: [] as TTodo[],
+          labels: [] as string[],
+          isCompleted: false,
+          owner: user?.uid,
+          dueDate: new Date().toDateString(),
+          priority: 4,
+          project: prev.project,
+        };
+      });
     } else {
-      setTodo((prev) => ({
-        ...prev,
-        taskName: "",
-        description: "",
-        subTasks: [] as TTodo[],
-        labels: [] as string[],
-        isCompleted: false,
-        owner: user?.uid,
-        dueDate: "",
-        priority: 4,
-        project: prev.project,
-      }));
+      setTodo((prev) => {
+        return {
+          taskName: "",
+          description: "",
+          subTasks: [] as TTodo[],
+          labels: [] as string[],
+          isCompleted: false,
+          owner: user?.uid,
+          dueDate: "",
+          priority: 4,
+          project: prev.project,
+        };
+      });
     }
   }, []);
 
@@ -232,6 +245,7 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
       handleUpdateTodo,
       handleCancelTodo,
       isLoadingAddTodo,
+      setIsLoadingAddTodo,
       isLoadingUpdateTodo,
       isLoadingDeleteTodo,
       isShowAlert,
@@ -250,7 +264,9 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
     handleUpdateTodo,
     handleCancelTodo,
     isLoadingAddTodo,
+    setIsLoadingAddTodo,
     isLoadingUpdateTodo,
+
     isLoadingDeleteTodo,
     isShowAlert,
     setIsShowAlert,

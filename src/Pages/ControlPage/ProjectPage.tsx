@@ -2,7 +2,10 @@ import { Todo } from "@/Components/Todo/Todo";
 import TodoList from "@/Components/TodoList/TodoList";
 import TodoProvider from "@/Context/TodoContext";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
-import { getCurrentProject } from "@/Redux/Projects/ProjectsSlice";
+import {
+  getCurrentProject,
+  projectsSlice,
+} from "@/Redux/Projects/ProjectsSlice";
 import { TODO_PAGES } from "@/Utils";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,25 +15,16 @@ const ProjectPage = () => {
   const navigate = useNavigate();
   const { id: projectId } = useParams();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const proj = await dispatch(
-          getCurrentProject(projectId as string)
-        ).unwrap();
-        if (proj === undefined) {
-          navigate("not-found");
-        }
-      } catch (error) {
-        console.error(error);
-        throw new Error("Can not get current project");
-      }
-    })();
-  }, [projectId]);
-
   const currentProject = useAppSelector(
     (state) => state.projects.currentProject
   );
+
+  useEffect(() => {
+    dispatch(projectsSlice.actions.getProject(projectId as string));
+    if (currentProject === undefined) {
+      navigate("not-found");
+    }
+  }, [projectId]);
 
   return (
     <div className="control">

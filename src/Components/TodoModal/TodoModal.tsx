@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { TagOutlined } from "@ant-design/icons";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./TodoModal.scss";
 import { Priority } from "./Priority/Priority";
 import { DueDate } from "./DueDate/DueDate";
@@ -12,12 +12,11 @@ import {
   TODO_PROPERTIES,
 } from "@/Utils";
 import DueDateProvider from "@/Context/DueDateContext";
-import { TProject, TTodo } from "@/interface";
-import { useAppDispatch, useAppSelector } from "@/Hooks";
+import { TTodo } from "@/interface";
+import { useAppSelector } from "@/Hooks";
 import { Select } from "antd";
-import { addTodoIntoProject } from "@/Redux/Projects/ProjectsSlice";
-import { firebaseProvider } from "@/Firebase/provider";
 import { ThemeContext } from "@/Context/ThemeContext";
+import Spinning from "@/Pages/LoadingPage/Spinning";
 
 export type Props = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,17 +43,20 @@ export const TodoModal: React.FC<Props> = ({
     handleAddTodo,
     handleChangeTodo,
     handleUpdateTodo,
+    isLoadingUpdateTodo,
     setTodo,
     todo,
   } = useContext(TodoContext);
 
-  const dispatch = useAppDispatch();
   const prevTodoRef = useRef<TTodo>(todo);
 
   const projects = useAppSelector((state) => state.projects.projects);
   const currentProject = useAppSelector(
     (state) => state.projects.currentProject
   );
+
+  const [isLoadingAddNewTodo, setIsLoadingAddNewTodo] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (page === TODO_PAGES.TODAY) {
@@ -65,19 +67,8 @@ export const TodoModal: React.FC<Props> = ({
   }, []);
 
   const handleAddNewTodo = async () => {
-    const addedTodo = await handleAddTodo();
-    const projectChange = (await firebaseProvider.getDocById(
-      "projects",
-      addedTodo.project as string
-    )) as TProject;
-    if (todo?.project !== "Tasks") {
-      await dispatch(
-        addTodoIntoProject({
-          ...projectChange,
-          todos: [...(projectChange.todos as any), addedTodo.id],
-        })
-      );
-    }
+    setIsLoadingAddNewTodo(true);
+    await handleAddTodo();
 
     handleChangeTodo(
       TODO_PROPERTIES.PROJECT,
@@ -87,18 +78,21 @@ export const TodoModal: React.FC<Props> = ({
     );
 
     handleCancelTodo(page);
+
+    setIsLoadingAddNewTodo(false);
   };
 
   const handleCancelAddTodo = () => {
     if (type === MODAL_TYPES.ADD) {
       handleCancelTodo();
     }
+
     setTodo(prevTodoRef.current);
     setIsModalOpen(false);
   };
 
-  const handleSaveTodo = () => {
-    handleUpdateTodo(todo);
+  const handleSaveTodo = async () => {
+    await handleUpdateTodo(todo);
     setIsModalOpen(false);
   };
 
@@ -109,100 +103,106 @@ export const TodoModal: React.FC<Props> = ({
   const { isDarkTheme } = useContext(ThemeContext);
 
   return (
-    <div className={`modal ${isDarkTheme ? "dark-mode" : ""}`}>
-      <input
-        className="modal__input font-medium"
-        placeholder="Task name"
-        name="taskName"
-        value={todo?.taskName}
-        onChange={(e) => {
-          handleChangeTodo(e.target.name, e.target.value);
-        }}
-      />
-      <input
-        className="modal__input"
-        placeholder="Description"
-        name="description"
-        value={todo?.description}
-        onChange={(e) => {
-          handleChangeTodo(e.target.name, e.target.value);
-        }}
-      />
-      {!isEditText && (
-        <div>
-          <div className="modal__control">
-            <DueDateProvider>
-              <DueDate type={DUEDATE_TYPES.FULL} />
-            </DueDateProvider>
-            <Priority />
-            <button className="modal__control-item">
-              <TagOutlined />
-              Label
-            </button>
+    <>
+      {isLoadingAddNewTodo || isLoadingUpdateTodo ? (
+        <Spinning />
+      ) : (
+        <div className={`modal ${isDarkTheme ? "dark-mode" : ""}`}>
+          <input
+            className="modal__input font-medium"
+            placeholder="Task name"
+            name="taskName"
+            value={todo?.taskName}
+            onChange={(e) => {
+              handleChangeTodo(e.target.name, e.target.value);
+            }}
+          />
+          <input
+            className="modal__input"
+            placeholder="Description"
+            name="description"
+            value={todo?.description}
+            onChange={(e) => {
+              handleChangeTodo(e.target.name, e.target.value);
+            }}
+          />
+          {!isEditText && (
+            <div>
+              <div className="modal__control">
+                <DueDateProvider>
+                  <DueDate type={DUEDATE_TYPES.FULL} />
+                </DueDateProvider>
+                <Priority />
+                <button className="modal__control-item">
+                  <TagOutlined />
+                  Label
+                </button>
+              </div>
+              <hr />
+            </div>
+          )}
+          <div className="modal__footer">
+            {!isEditText ? (
+              <div>
+                <Select
+                  style={{
+                    width: "150px",
+                    backgroundColor: "transparent",
+                    borderColor: "none",
+                  }}
+                  onChange={(value) => {
+                    handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
+                  }}
+                  onSelect={(value) => {
+                    handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
+                  }}
+                  value={todo?.project}
+                  options={[
+                    {
+                      value: "Tasks",
+                      label: "Tasks",
+                    },
+                    {
+                      label: "Projects",
+                      options: [
+                        ...projects.map((project) => ({
+                          value: project.id,
+                          label: project.projectName,
+                        })),
+                      ],
+                    },
+                  ]}
+                />
+              </div>
+            ) : (
+              ""
+            )}
+            <div className="ml-auto flex gap-2">
+              <button className="btn" onClick={handleCancelAddTodo}>
+                Cancel
+              </button>
+              {(type === MODAL_TYPES.ADD && (
+                <button
+                  className="!bg-primary !text-white btn"
+                  disabled={todo?.taskName === ""}
+                  onClick={handleAddNewTodo}
+                >
+                  Add task
+                </button>
+              )) ||
+                (type === MODAL_TYPES.SAVE && !isEditText && (
+                  <button
+                    className="!bg-primary !text-white btn"
+                    disabled={todo?.taskName === ""}
+                    onClick={handleSaveTodo}
+                  >
+                    Save
+                  </button>
+                ))}
+            </div>
           </div>
-          <hr />
         </div>
       )}
-      <div className="modal__footer">
-        {!isEditText ? (
-          <div>
-            <Select
-              style={{
-                width: "150px",
-                backgroundColor: "transparent",
-                borderColor: "none",
-              }}
-              onChange={(value) => {
-                handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
-              }}
-              onSelect={(value) => {
-                handleChangeTodo(TODO_PROPERTIES.PROJECT, value);
-              }}
-              value={todo?.project}
-              options={[
-                {
-                  value: "Tasks",
-                  label: "Tasks",
-                },
-                {
-                  label: "Projects",
-                  options: [
-                    ...projects.map((project) => ({
-                      value: project.id,
-                      label: project.projectName,
-                    })),
-                  ],
-                },
-              ]}
-            />
-          </div>
-        ) : (
-          ""
-        )}
-        <div className="ml-auto flex gap-2">
-          <button className="btn" onClick={handleCancelAddTodo}>
-            Cancel
-          </button>
-          {(type === MODAL_TYPES.ADD && (
-            <button
-              className="!bg-primary !text-white btn"
-              disabled={todo?.taskName === ""}
-              onClick={handleAddNewTodo}
-            >
-              Add task
-            </button>
-          )) ||
-            (type === MODAL_TYPES.SAVE && !isEditText && (
-              <button
-                className="!bg-primary text-white btn"
-                disabled={todo?.taskName === ""}
-                onClick={handleSaveTodo}
-              >
-                Save
-              </button>
-            ))}
-        </div>
-      </div>
-    </div>
+    </>
   );
 };

@@ -24,17 +24,21 @@ export const useAuth = () => {
   return user;
 };
 
-export const useFetch = (fetchCallback: any) => {
+export const useFetch = (fetchCallback: any): any[] => {
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
   useEffect(() => {
     (async () => {
       try {
         await dispatch(fetchCallback).unwrap();
+        setIsLoading(false)
       } catch (error) {
         console.error(error);
         throw new Error("Can not fetch data");
       }
     })();
   }, []);
+
+  return [isLoading, setIsLoading];
 }
 

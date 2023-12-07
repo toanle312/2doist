@@ -82,7 +82,6 @@ export const addTodo = createAsyncThunk(
   "todos/addTodo",
   async ({ group, todo }: addTodoType) => {
     try {
-      console.log(todo)
       const docRef = await firebaseProvider.addNewDoc(group, {
         ...todo,
         createdAt: new Date(),
@@ -124,12 +123,14 @@ export const deleteTodo = createAsyncThunk("todos/deleteTodo", async (todo: TTod
 export const fetchTodosByUserID = createAsyncThunk("todos/fetchTodosByUserID", async (userId: string) => {
   try {
     const data = await firebaseProvider.fetchDocs("todos");
-    const filteredData = data.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as TTodo),
-      createdAt: doc.data().createdAt.toDate() as Date,
-    }));
-    return filteredData.filter((doc) => doc.owner === userId)
+    const filteredData = data.docs?.map((doc) => {
+      return {
+        id: doc.id,
+        ...(doc.data() as TTodo),
+        createdAt: doc.data().createdAt.toDate() as Date,
+      }
+    });
+    return filteredData?.filter((doc) => doc.owner === userId)
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
   } catch (error) {
     console.error(error);

@@ -1,9 +1,7 @@
-import { useAppSelector, useFetch } from "@/Hooks";
+import { useAppSelector } from "@/Hooks";
 import ProjectItem from "./ProjectItem";
-import { fetchProjects } from "@/Redux/Projects/ProjectsSlice";
 
 const ProjectList = () => {
-  useFetch(fetchProjects());
   const projects = useAppSelector((state) => state.projects.projects);
 
   return (

@@ -5,6 +5,11 @@ import HomePage from "@/Pages/HomePage/HomePage";
 import "./MainLayout.scss";
 import { ThemeContext } from "@/Context/ThemeContext";
 import { ConfigProvider, theme } from "antd";
+import { useAppSelector, useFetch } from "@/Hooks";
+import { fetchTodosByUserID } from "@/Redux/Todos/TodosSlice";
+import { fetchProjects } from "@/Redux/Projects/ProjectsSlice";
+import LoadingPage from "@/Pages/LoadingPage/LoadingPage";
+import Spinning from "@/Pages/LoadingPage/Spinning";
 
 const MainLayout: React.FC = () => {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
@@ -12,7 +17,10 @@ const MainLayout: React.FC = () => {
 
   const { isDarkTheme } = useContext(ThemeContext);
 
-  console.log(theme.darkAlgorithm);
+  const user = useAppSelector((state) => state.auth.account);
+
+  const [todoLoading] = useFetch(fetchTodosByUserID(user.uid));
+  const [projectLoading] = useFetch(fetchProjects());
 
   return (
     <ConfigProvider
@@ -42,12 +50,18 @@ const MainLayout: React.FC = () => {
             isOpenMenu={isOpenMenu}
             sidebarWidth={sidebarWidth}
           />
-          <Sidebar
-            sidebarWidth={sidebarWidth}
-            setSideBarWidth={setSidebarWidth}
-            isOpen={isOpenMenu}
-          />
-          <HomePage isOpenMenu={isOpenMenu} sidebarWidth={sidebarWidth} />
+          {todoLoading && projectLoading ? (
+            <LoadingPage loadingOnly />
+          ) : (
+            <>
+              <Sidebar
+                sidebarWidth={sidebarWidth}
+                setSideBarWidth={setSidebarWidth}
+                isOpen={isOpenMenu}
+              />
+              <HomePage isOpenMenu={isOpenMenu} sidebarWidth={sidebarWidth} />
+            </>
+          )}
         </div>
       </div>
     </ConfigProvider>
