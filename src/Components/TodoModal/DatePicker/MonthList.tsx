@@ -8,10 +8,12 @@ import {
   TODO_PROPERTIES,
   getCurrentDayInWeek,
   getDaysInMonth,
+  getTasksByDate,
 } from "@/Utils";
 import { DueDateContext } from "@/Context/DueDateContext";
 import { DatePickerContext } from "@/Context/DatePickerContext";
 import { ThemeContext } from "@/Context/ThemeContext";
+import { useAppSelector } from "@/Hooks";
 
 type Props = {
   year: number;
@@ -74,6 +76,15 @@ const isDisableDate = (
  * @returns List of dates in the month and days of the week
  */
 export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
+  const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
+
+  const { setIsOpenDueDate, isOpenDueDate, type } = useContext(DueDateContext);
+
+  const { setMonth, setYear, setCurrentHoverDate, setNumberOfTasks } =
+    useContext(DatePickerContext);
+
+  const todos = useAppSelector((state) => state.todos.todos);
+
   const days = useMemo(() => {
     const allDays = getDaysInMonth(year, month);
 
@@ -90,12 +101,6 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
 
     return allDays;
   }, [month, year]);
-
-  const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
-
-  const { setIsOpenDueDate, isOpenDueDate, type } = useContext(DueDateContext);
-
-  const { setMonth, setYear } = useContext(DatePickerContext);
 
   // save ref of each month shown in the calendar
   const ref = useRef<HTMLDivElement>(null);
@@ -137,6 +142,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
     );
     if (isContain && ref.current) {
       ref.current.id = "current-month-choose";
+      ref.current.tabIndex = -1;
     } else {
       ref.current?.removeAttribute("id");
     }
@@ -177,7 +183,12 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
         </>
       )}
       {/* Show all date in month -> sort by day in week */}
-      <div className="flex flex-wrap" ref={ref}>
+      <div
+        className="flex flex-wrap"
+        ref={ref}
+        tabIndex={0}
+        data-date={`${month}/${year}`}
+      >
         {days.map((day) => {
           if (day >= 0) {
             return (
@@ -202,8 +213,35 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
                 onClick={() => {
                   handleChooseDueDate(day);
                 }}
+                onMouseEnter={() => {
+                  setCurrentHoverDate(
+                    new Date(year, month, day + 1).toDateString()
+                  );
+                  setNumberOfTasks(() => {
+                    return getTasksByDate(
+                      todos,
+                      new Date(year, month, day + 1).toDateString()
+                    );
+                  });
+                }}
+                onMouseLeave={() => {
+                  setCurrentHoverDate("");
+                  setNumberOfTasks(0);
+                }}
               >
-                <p>{day + 1}</p>
+                <div className="relative py-[2px]">
+                  <div>{day + 1}</div>
+                  {getTasksByDate(
+                    todos,
+                    new Date(year, month, day + 1).toDateString()
+                  ) > 0 ? (
+                    <span className="absolute bottom-[-6px] right-0 left-0">
+                      &#x2022;
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </span>
             );
           }

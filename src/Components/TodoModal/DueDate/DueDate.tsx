@@ -42,7 +42,6 @@ export const DueDate: React.FC<Props> = ({
   useEffect(() => {
     setType(type as string);
   }, [type, setType]);
-
   // Scroll into view current month after open DueDate
   useEffect(() => {
     let timerId: any = undefined;

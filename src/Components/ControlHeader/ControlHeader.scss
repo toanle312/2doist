@@ -1,0 +1,23 @@
+@import "../../Styles/styles.scss";
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: unset;
+  box-shadow: unset;
+  font-size: 16px;
+  &:hover {
+    background: $hover-color;
+    color: $text-color;
+  }
+}
+
+.control-btn.dark-mode {
+  &:hover {
+    background: $dark-mode-hover;
+    color: white;
+  }
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MonthList } from "./MonthList";
 
 type Props = {
@@ -6,8 +6,9 @@ type Props = {
   currentMonth: number;
   currentDate: Date;
   startPos?: number;
+  from: number;
+  to: number;
 };
-const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 /**
  *
  * @param props include: current year, current month (0 - 11), current date
@@ -17,17 +18,35 @@ export const ShowMonthListByYear: React.FC<Props> = ({
   year,
   currentMonth,
   currentDate,
+  from,
+  to,
 }) => {
-  return months
-    .filter((month) => month >= currentMonth)
-    .map((month) => {
-      return (
-        <MonthList
-          key={`${month + 1}/${year}`}
-          year={year}
-          month={month}
-          currentDate={currentDate}
-        />
-      );
-    });
+  let months = [] as { m: number; y: number }[];
+
+  while (from <= to) {
+    months = [...months].concat(
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((month) => {
+        return {
+          m: month,
+          y: from,
+        };
+      })
+    );
+    from = from + 1;
+  }
+
+  const filterMonths = months.filter(
+    (d) => (d.m >= currentMonth && d.y === year) || d.y > year
+  );
+
+  return filterMonths?.map((d) => {
+    return (
+      <MonthList
+        key={`${d.m + 1}/${d.y}`}
+        year={d.y}
+        month={d.m}
+        currentDate={currentDate}
+      />
+    );
+  });
 };

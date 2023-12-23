@@ -27,20 +27,6 @@
   }
 }
 
-.todo-item.checked {
-  .task-name {
-    text-decoration: line-through;
-  }
-  .checkbox-btn {
-    background-color: $text-gray;
-    .check-icon {
-      font-size: 12px;
-      display: block;
-      color: white;
-    }
-  }
-}
-
 .checkbox-btn {
   display: flex;
   justify-content: center;
@@ -65,4 +51,56 @@
     }
     cursor: not-allowed;
   }
+}
+
+.todo-item.checked {
+  .task-name {
+    text-decoration: line-through;
+  }
+  .checkbox-btn {
+    background-color: $text-gray;
+    &.red {
+      background-color: #d1453b !important;
+    }
+    &.yellow {
+      background-color: #eb8909 !important;
+    }
+    &.blue {
+      background-color: #246fe0 !important;
+    }
+    .check-icon {
+      font-size: 12px;
+      display: block;
+      color: white !important;
+    }
+  }
+}
+
+.checkbox-btn.red {
+  background-color: rgba(255, 0, 0, 0.1) !important;
+  border-color: #d1453b;
+  .check-icon {
+    color: #d1453b !important;
+  }
+}
+.checkbox-btn.yellow {
+  background-color: rgba(255, 255, 0, 0.1) !important;
+  border-color: #eb8909;
+  .check-icon {
+    color: #eb8909 !important;
+  }
+}
+.checkbox-btn.blue {
+  background-color: rgba(0, 0, 255, 0.1) !important;
+  border-color: #246fe0;
+  .check-icon {
+    color: #246fe0 !important;
+  }
+}
+
+.todo-item.board {
+  border: 1px solid #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04);
 }

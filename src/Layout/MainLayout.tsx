@@ -39,6 +39,9 @@ const MainLayout: React.FC = () => {
             colorTextQuaternary: "rgb(210,211,213)!important",
             colorTextTertiary: "rgba(0,0,0,0.45)!important",
           },
+          Button: {
+            colorBgTextActive: "#808080",
+          },
         },
       }}
     >

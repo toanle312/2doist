@@ -21,6 +21,7 @@ export const DueDateContext = createContext<{
   setMonth: React.Dispatch<React.SetStateAction<number>>;
   year: number;
   setYear: React.Dispatch<React.SetStateAction<number>>;
+
 }>({} as any);
 
 type Props = {
@@ -33,6 +34,7 @@ const DueDateProvider: React.FC<Props> = ({ children }) => {
   const [year, setYear] = useState<number>(0);
 
   const [type, setType] = useState<string>("");
+
 
   const [showDueDate, setShowDueDate] = useState<TShowDueDate>({
     color: "",

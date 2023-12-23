@@ -1,0 +1,29 @@
+@import "../../Styles/styles.scss";
+
+.view-control {
+  width: 300px;
+  z-index: 1000;
+  position: absolute;
+  left: -100px;
+  right: 0;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 14px;
+}
+
+.view-selection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  border-radius: 2px;
+  &:hover {
+    cursor: pointer;
+  }
+  &.active {
+    background-color: white;
+  }
+}

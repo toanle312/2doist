@@ -23,6 +23,7 @@ import ShowDueDate from "./ShowDueDate";
 import { Dropdown } from "antd";
 import { useAppDispatch, useAppSelector } from "@/Hooks";
 import { deleteTodo } from "@/Redux/Todos/TodosSlice";
+import { ViewContext } from "@/Context/ViewContext";
 
 type Props = {
   todo: TTodo;
@@ -44,10 +45,14 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
     setIsShowAlert,
   } = useContext(TodoContext);
 
+  const { listView } = useContext(ViewContext);
+
   const [isEditTodo, setIsEditTodo] = useState<boolean>(false);
   const [isEditDueDate, setIsEditDueDate] = useState<boolean>(false);
+  const [colorPriority, setColorPriority] = useState<string>("");
   const [isOpenEditTodoModal, setIsOpenEditTodoModal] =
     useState<boolean>(false);
+    
   const dispatch = useAppDispatch();
 
   const handleToggle: React.MouseEventHandler<HTMLButtonElement> | undefined = (
@@ -90,13 +95,28 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
     ];
   }, []);
 
+  useEffect(() => {
+    setColorPriority(() => {
+      if (todo.priority === 1) {
+        return "red";
+      }
+      if (todo.priority === 2) {
+        return "yellow";
+      }
+      if (todo.priority === 3) {
+        return "blue";
+      }
+      return "";
+    });
+  }, [todo]);
+
   // show todo item with full version
   if (type === TODOITEM_TYPES.FULL) {
     return (
       <section>
         <Dropdown menu={{ items }} trigger={["contextMenu"]}>
           <li
-            className={`todo-item ${
+            className={`todo-item ${listView === "List" ? "" : "board"} ${
               todo.isCompleted ? "checked" : ""
             } relative cursor-pointer`}
             onClick={() => {
@@ -127,57 +147,61 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
               <>
                 <section className="flex items-start py-1">
                   <button
-                    className="checkbox-btn mr-2 mt-[4px]"
+                    className={`checkbox-btn ${colorPriority} mr-2 mt-[4px]`}
                     onClick={handleToggle}
                   >
-                    <CheckOutlined className={"hidden check-icon"} />
+                    <CheckOutlined className={`hidden check-icon`} />
                   </button>
                   <section className="w-full">
                     <section className="flex justify-between mb-2">
                       <p className="text-medium task-name">{todo.taskName}</p>
-                      <section
-                        className="control-list absolute right-0"
-                        ref={ref}
-                      >
-                        <p
-                          className="control-item"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setTodo(todo);
-                            setIsEditTodo(true);
-                            setSelectedItem(todo?.id as string);
-                          }}
+                      {listView === "Board" ? (
+                        ""
+                      ) : (
+                        <section
+                          className="control-list absolute right-0"
+                          ref={ref}
                         >
-                          <EditOutlined />
-                        </p>
+                          <p
+                            className="control-item"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setTodo(todo);
+                              setIsEditTodo(true);
+                              setSelectedItem(todo?.id as string);
+                            }}
+                          >
+                            <EditOutlined />
+                          </p>
 
-                        <p
-                          className="control-item"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (ref.current) {
-                              ref.current.style.display = "flex";
-                              ref.current.style.gap = "8px";
-                            }
-                            setTodo(todo);
-                            setSelectedItem(todo?.id as string);
-                            setIsEditDueDate(true);
-                          }}
-                        >
-                          <DueDateProvider>
-                            <DueDate
-                              type={DUEDATE_TYPES.SHORT}
-                              setIsEditDueDate={setIsEditDueDate}
-                            />
-                          </DueDateProvider>
-                        </p>
-                        <p className="control-item">
-                          <CommentOutlined />
-                        </p>
-                        {/* <p className="control-item">
+                          <p
+                            className="control-item"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (ref.current) {
+                                ref.current.style.display = "flex";
+                                ref.current.style.gap = "8px";
+                              }
+                              setTodo(todo);
+                              setSelectedItem(todo?.id as string);
+                              setIsEditDueDate(true);
+                            }}
+                          >
+                            <DueDateProvider>
+                              <DueDate
+                                type={DUEDATE_TYPES.SHORT}
+                                setIsEditDueDate={setIsEditDueDate}
+                              />
+                            </DueDateProvider>
+                          </p>
+                          <p className="control-item">
+                            <CommentOutlined />
+                          </p>
+                          {/* <p className="control-item">
                           <EllipsisOutlined />
                         </p> */}
-                      </section>
+                        </section>
+                      )}
                     </section>
                     <p className="text-small text-textGray">
                       {todo.description}
@@ -196,16 +220,26 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
                       ) : (
                         ""
                       )}
-                      <DueDateProvider>
-                        <ShowDueDate dueDate={todo.dueDate} />
-                      </DueDateProvider>
+                      {listView === "Board" ? (
+                        ""
+                      ) : (
+                        <DueDateProvider>
+                          <ShowDueDate dueDate={todo.dueDate} />
+                        </DueDateProvider>
+                      )}
                     </section>
-                    <p className="flex justify-end text-small">
-                      {currentProject.projectName}
+                    <p
+                      className={`flex ${
+                        listView === "List" ? "justify-end" : "justify-start"
+                      } text-small`}
+                    >
+                      {currentProject === undefined
+                        ? "Tasks"
+                        : currentProject.projectName}
                     </p>
                   </section>
                 </section>
-                <hr />
+                {listView === "Board" ? "" : <hr />}
               </>
             )}
           </li>
@@ -232,7 +266,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
             }}
           >
             <button
-              className="checkbox-btn mr-2 mt-[8px]"
+              className={`checkbox-btn mr-2 mt-[8px]`}
               onClick={handleToggle}
             >
               <CheckOutlined className={"hidden check-icon"} />

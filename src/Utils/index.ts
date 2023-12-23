@@ -1,3 +1,5 @@
+import { TTodo } from "@/interface"
+
 export const PAGE_URL = {
   LOGIN: "/login",
   HOME: "/home",
@@ -64,3 +66,14 @@ export const getCurrentDayInWeek = (year: number, month: number, day: number) =>
   const date = new Date(year, month, day);
   return date.getDay();
 };
+
+export const getTasksByDate = (todos: TTodo[], date: string) => {
+  return todos.reduce((count, todo) => {
+    if (
+      todo.dueDate === date
+    ) {
+      return count + 1;
+    }
+    return count;
+  }, 0)
+}

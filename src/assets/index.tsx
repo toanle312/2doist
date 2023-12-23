@@ -69,24 +69,28 @@ export const priorities = [
     id: "P1",
     number: 1,
     name: "Priority 1",
+    color: "#d1453b",
     icon: <FlagFilled style={{ color: "#d1453b" }} />,
   },
   {
     id: "P2",
     number: 2,
     name: "Priority 2",
+    color: "#eb8909",
     icon: <FlagFilled style={{ color: "#eb8909" }} />,
   },
   {
     id: "P3",
     number: 3,
     name: "Priority 3",
+    color: "#246fe0",
     icon: <FlagFilled style={{ color: "#246fe0" }} />,
   },
   {
     id: "Priority",
     number: 4,
     name: "Priority 4",
+    color: "#000",
     icon: <FlagOutlined />,
   },
 ];
