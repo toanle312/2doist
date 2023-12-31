@@ -1,5 +1,5 @@
 import React from "react";
-import { MonthList } from "./MonthList";
+import { UpComingMonthList } from "./UpComingMonthList";
 import { getAllMonths } from "@/Utils";
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
  * @param props include: current year, current month (0 - 11), current date
  * @returns List of months from current month to last month of the current year
  */
-export const ShowMonthListByYear: React.FC<Props> = ({
+export const ShowUpComingMonthListByYear: React.FC<Props> = ({
   currentYear,
   currentMonth,
   currentDate,
@@ -26,7 +26,7 @@ export const ShowMonthListByYear: React.FC<Props> = ({
 
   return filterMonths?.map((d) => {
     return (
-      <MonthList
+      <UpComingMonthList
         key={`${d.m + 1}/${d.y}`}
         year={d.y}
         month={d.m}

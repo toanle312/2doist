@@ -23,6 +23,8 @@ import nextWeekend from "./nextWeekend.svg";
 import nextWeek from "./nextWeek.svg";
 import noDate from "./noDate.svg";
 import loading from "./loading.png";
+import grouping from "./grouping.svg";
+import sorting from "./sorting.svg";
 import { FlagFilled, FlagOutlined } from "@ant-design/icons";
 import office from "./office-svgrepo-com.svg";
 
@@ -53,6 +55,8 @@ export {
   noDate,
   office,
   themeBtn,
+  grouping,
+  sorting,
 };
 
 export const home =

@@ -23,6 +23,7 @@ export type Props = {
   page?: string;
   type?: string;
   isEditText?: boolean;
+  currentDate?: Date;
 };
 
 /**
@@ -37,6 +38,7 @@ export const TodoModal: React.FC<Props> = ({
   page,
   type,
   isEditText = false,
+  currentDate,
 }) => {
   const {
     handleCancelTodo,
@@ -62,7 +64,9 @@ export const TodoModal: React.FC<Props> = ({
     if (page === TODO_PAGES.TODAY) {
       handleChangeTodo(TODO_PROPERTIES.DUE_DATE, new Date().toDateString());
     } else if (page === TODO_PAGES.PROJECT) {
-      handleChangeTodo(TODO_PROPERTIES.PROJECT, currentProject.id);
+      handleChangeTodo(TODO_PROPERTIES.PROJECT, currentProject?.id);
+    } else if (currentDate) {
+      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, currentDate.toDateString());
     }
   }, []);
 
@@ -73,7 +77,7 @@ export const TodoModal: React.FC<Props> = ({
     handleChangeTodo(
       TODO_PROPERTIES.PROJECT,
       page === TODO_PAGES.PROJECT
-        ? currentProject.id
+        ? currentProject?.id
         : prevTodoRef.current.project
     );
 

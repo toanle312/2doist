@@ -64,7 +64,7 @@ const EditTodoModal: React.FC<Props> = ({
       <div className={`edit-modal ${isDarkTheme ? "dark-mode" : ""}`}>
         <hr />
         <div className="flex w-full h-[480px]">
-          <div className="flex flex-col basis-[70%] p-4 h-full overflow-y-scroll">
+          <div className="flex flex-col basis-[70%] p-4 h-full overflow-y-auto">
             <TodoItem todo={todo} type={TODOITEM_TYPES.SHORT} />
             <SubTaskProvider>
               <SubTasksControl />

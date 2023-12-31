@@ -17,16 +17,16 @@ const TodayPage: React.FC = () => {
   return (
     <ViewProvider>
       <div className="control">
-        <header className="today-header">
-          <ControlHeader />
+        <header className="page-header">
+          <ControlHeader page={TODO_PAGES.TODAY} />
         </header>
         <TodoProvider>
           <section className="todo-list hide-scrollbar">
             <div className="m-auto max-w-[800px] w-full">
-              <TodoList type="Today" />
+              <TodoList page={TODO_PAGES.TODAY} />
             </div>
           </section>
-          <section className="today-control">
+          <section className="page-control">
             <div className="m-auto max-w-[800px] w-full">
               <Todo page={TODO_PAGES.TODAY} />
             </div>

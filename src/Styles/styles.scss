@@ -5,6 +5,27 @@
   &::-webkit-scrollbar {
     display: none;
   }
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+#custom-scrollbar {
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+}
+
+#custom-scrollbar {
+  &::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    border: 1px solid #cacaca;
+  }
+}
+
+#custom-scrollbar {
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: $primary;
+  }
 }

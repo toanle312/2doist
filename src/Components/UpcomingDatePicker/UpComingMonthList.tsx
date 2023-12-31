@@ -1,19 +1,16 @@
-import React, { useMemo, useContext, useRef, useEffect } from "react";
-import "./DatePicker.scss";
+import React, { useMemo, useContext, useRef, useEffect, useState } from "react";
+import "./UpComingDatePicker.scss";
 import { v4 as uuidv4 } from "uuid";
-import { TodoContext } from "@/Context/TodoContext";
 import { MonthShortHand } from "@/interface";
 import {
-  DUEDATE_TYPES,
-  TODO_PROPERTIES,
   getCurrentDayInWeek,
   getDaysInMonth,
   getTasksCountByDate,
 } from "@/Utils";
-import { DueDateContext } from "@/Context/DueDateContext";
 import { DatePickerContext } from "@/Context/DatePickerContext";
 import { ThemeContext } from "@/Context/ThemeContext";
 import { useAppSelector } from "@/Hooks";
+import TodoModalByDay from "../TodoModalByDay/TodoModalByDay";
 
 type Props = {
   year: number;
@@ -75,11 +72,11 @@ const isDisableDate = (
  * @param props include: current year, current month (0 - 11), current date
  * @returns List of dates in the month and days of the week
  */
-export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
-  const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
-
-  const { setIsOpenDueDate, isOpenDueDate, type } = useContext(DueDateContext);
-
+export const UpComingMonthList: React.FC<Props> = ({
+  year,
+  month,
+  currentDate,
+}) => {
   const { setMonth, setYear, setCurrentHoverDate, setNumberOfTasks } =
     useContext(DatePickerContext);
 
@@ -107,7 +104,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
 
   // calculate check point
   const startPosition = document
-    .querySelector(".date-picker hr")
+    .querySelector(".upcoming-date-picker hr")
     ?.getBoundingClientRect().top as number;
 
   // handle scroll to change show month and year
@@ -135,40 +132,21 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
 
   // handle to add id for current month
   useEffect(() => {
-    const allSpanElements = ref.current?.querySelectorAll("span");
-    const spanArray = allSpanElements && Array.from(allSpanElements);
-    const isContain = spanArray?.some((span) =>
-      span.classList.contains("active-date")
-    );
-    if (isContain && ref.current) {
+    if (
+      month === currentDate?.getMonth() &&
+      year === currentDate.getFullYear() &&
+      ref.current
+    ) {
       ref.current.id = "current-month-choose";
-      ref.current.tabIndex = -1;
     } else {
       ref.current?.removeAttribute("id");
     }
-
-    // handle to add id for current month when cancel current due date
-    const firstMonthChild =
-      ref.current?.parentElement?.parentElement?.firstElementChild;
-    if (firstMonthChild) {
-      if (!todo.dueDate) {
-        firstMonthChild.id = "current-month-choose";
-      } else firstMonthChild.removeAttribute("id");
-    }
-  }, [ref, isOpenDueDate, todo.dueDate]);
-
-  const handleChooseDueDate = (day: number) => {
-    const date = new Date(year, month, day + 1).toDateString();
-    if (type === DUEDATE_TYPES.FULL) {
-      handleChangeTodo(TODO_PROPERTIES.DUE_DATE, date);
-    } else {
-      handleUpdateTodo({ ...todo, dueDate: date });
-    }
-    setIsOpenDueDate(false);
-  };
+  }, [ref]);
 
   const { isDarkTheme } = useContext(ThemeContext);
-
+  const [isOpenTodoModalByDay, setIsOpenTodoModalByDay] =
+    useState<boolean>(false);
+  const [chosenDate, setChosenDate] = useState<Date>();
   return (
     <div>
       {(month !== currentDate?.getMonth() ||
@@ -176,7 +154,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
           year !== currentDate?.getFullYear())) && (
         <>
           {/* Hide month and year for current month of current year */}
-          <p className="font-large text-extra-small m-[10px]">
+          <p className="font-medium text-xl m-[10px]">
             {MonthShortHand[month]}
           </p>
           <hr className="my-[6px]" />
@@ -194,24 +172,20 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
             return (
               <span
                 key={`${day + 1}/${month + 1}/${year}`}
-                className={`basis-[14.285%] py-[4px] px-[6px] text-center text-extra-small cursor-pointer${
+                className={`basis-[14.285%] h-[120px] text-center text-xl cursor-pointer${
                   // only choose date after current date
                   isDisableDate(currentDate as Date, year, month, day + 1)
-                    ? ` disable-date`
+                    ? ` upcoming-disable-date`
                     : ""
                 }${
                   // highlight current date
                   isCurrentDate(currentDate as Date, year, month, day + 1)
                     ? " text-primary font-medium"
                     : ""
-                }${
-                  // active choose date and add hover for others date
-                  todo.dueDate === new Date(year, month, day + 1).toDateString()
-                    ? " active-date"
-                    : ` hover-date ${isDarkTheme ? "dark-mode" : ""}`
-                }`}
+                } upcoming-hover-date ${isDarkTheme && "dark-mode"}`}
                 onClick={() => {
-                  handleChooseDueDate(day);
+                  setChosenDate(new Date(year, month, day + 1));
+                  setIsOpenTodoModalByDay(true);
                 }}
                 onMouseEnter={() => {
                   setCurrentHoverDate(
@@ -236,7 +210,7 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
                     todos,
                     new Date(year, month, day + 1).toDateString()
                   ) > 0 ? (
-                    <span className="absolute bottom-[-6px] right-0 left-0">
+                    <span className="absolute bottom-[-20px] right-0 left-0">
                       &#x2022;
                     </span>
                   ) : (
@@ -250,11 +224,18 @@ export const MonthList: React.FC<Props> = ({ year, month, currentDate }) => {
             // show empty field
             <span
               key={uuidv4()}
-              className="basis-[14.285%] py-2 text-center text-extra-small"
+              className="basis-[14.285%] py-2 text-center text-lg"
             />
           );
         })}
       </div>
+      {chosenDate && (
+        <TodoModalByDay
+          isOpenTodoModalByDay={isOpenTodoModalByDay}
+          setIsOpenTodoModalByDay={setIsOpenTodoModalByDay}
+          chosenDate={chosenDate}
+        />
+      )}
     </div>
   );
 };

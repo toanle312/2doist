@@ -1,9 +1,12 @@
+import Upcoming from "@/Components/Upcoming/Upcoming";
 import React from "react";
 
 const UpcomingPage: React.FC = () => {
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      Upcoming Page
+    <div className="flex w-full h-full">
+      <div className="mx-auto w-full">
+        <Upcoming />
+      </div>
     </div>
   );
 };

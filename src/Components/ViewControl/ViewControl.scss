@@ -10,20 +10,74 @@
   border-radius: 6px;
   background-color: #fff;
   font-size: 14px;
+
+  .view-selection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+    border-radius: 2px;
+    background: #f3f4f6;
+    &:hover {
+      cursor: pointer;
+      z-index: 0;
+    }
+    &.active {
+      background-color: white;
+    }
+  }
+
+  .grouping-list,
+  .sorting-list,
+  .direction-list {
+    z-index: 1;
+    position: absolute;
+    width: 250px;
+    border-radius: 6px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
+    background-color: white;
+    top: 30px;
+    right: -30px;
+    font-size: 13px;
+    &__item {
+      display: flex;
+      padding: 4px 6px;
+      border-radius: 6px;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+    }
+  }
 }
 
-.view-selection {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
-  width: 100%;
-  border-radius: 2px;
-  &:hover {
-    cursor: pointer;
+.view-control.dark {
+  color: white;
+  background-color: $dark-mode-background;
+  box-shadow: 0 0 8px rgb(252, 252, 252, 0.12);
+  .view-selection {
+    color: black;
+    background: transparent;
+    &.active {
+      color: white;
+      background-color: $dark-mode-background;
+    }
   }
-  &.active {
-    background-color: white;
+  .grouping-list,
+  .sorting-list,
+  .direction-list {
+    box-shadow: 0 0 8px rgb(252, 252, 252, 0.12);
+
+    background-color: $dark-mode-background;
+    &__item:hover {
+      background-color: $dark-mode-hover;
+    }
   }
+}
+
+.icon {
+  font-size: 20px;
+  color: #808080;
 }

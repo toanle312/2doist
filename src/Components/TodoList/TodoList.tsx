@@ -1,13 +1,15 @@
 import { useContext, useState } from "react";
 import TodoItem from "./TodoItem";
-import { useAppSelector, useFetch } from "@/Hooks";
-import { TODOITEM_TYPES, TODO_PAGES } from "@/Utils";
+import { useAppSelector, useTodoList } from "@/Hooks";
+import { GROUPING_TYPE, TODOITEM_TYPES, TODO_PAGES } from "@/Utils";
 import { DownOutlined, RightOutlined } from "@ant-design/icons";
 import React from "react";
 import { ViewContext } from "@/Context/ViewContext";
+import { DaysInWeek, TTodo } from "@/interface";
 
 type Props = {
-  type?: string;
+  page?: string;
+  initTodoList?: TTodo[];
 };
 
 /**
@@ -15,73 +17,166 @@ type Props = {
  * @param type type of todo page
  * @returns
  */
-const TodoList: React.FC<Props> = ({ type }) => {
+const TodoList: React.FC<Props> = ({ page, initTodoList }) => {
   const [isShowCompleted, setIsShowCompleted] = useState<boolean>(false);
 
   const currentProject = useAppSelector(
     (state) => state.projects.currentProject
   );
 
-  const todos = useAppSelector((state) => state.todos.todos).filter((todo) => {
-    if (type === TODO_PAGES.TODAY) {
-      return todo.dueDate === new Date().toDateString();
-    } else if (type === TODO_PAGES.PROJECT) {
-      return todo.project === currentProject?.id;
-    } else return todo.project === TODO_PAGES.TASKS;
-  });
+  const { listView, groupingType, sortingType, direction } =
+    useContext(ViewContext);
 
-  const { listView } = useContext(ViewContext);
+  const {
+    overDueTodoList,
+    completedTodoList,
+    uncompletedTodoList,
+    groupingTodoList,
+  } = useTodoList(
+    page as string,
+    currentProject,
+    sortingType,
+    direction,
+    groupingType,
+    initTodoList
+  );
+
+  if (groupingType !== GROUPING_TYPE.DEFAULT) {
+    let groupingKeys = [];
+    for (const key in groupingTodoList) {
+      groupingKeys.push(key);
+    }
+    if (groupingType === GROUPING_TYPE.PRIORITY) {
+      groupingKeys = groupingKeys.sort();
+    } else {
+      groupingKeys = groupingKeys.sort((d1, d2) => {
+        return new Date(d1).getTime() - new Date(d2).getTime();
+      });
+    }
+    return (
+      <section className={`${listView === "Board" ? "flex gap-4" : "w-full"}`}>
+        {overDueTodoList.length ? (
+          <section
+            className={`${
+              listView === "Board" ? "w-[200px] flex-shrink-0" : "w-full"
+            }`}
+          >
+            <div className="font-medium text-md mb-2">Overdue Date</div>
+            {listView === "Board" ? "" : <hr />}
+            <ul className="w-full">
+              {overDueTodoList.map((todo) => {
+                return (
+                  <TodoItem
+                    key={todo?.id}
+                    todo={todo}
+                    type={TODOITEM_TYPES.FULL}
+                  />
+                );
+              })}
+            </ul>
+          </section>
+        ) : (
+          ""
+        )}
+        {groupingKeys.map((key) => {
+          return (
+            <section
+              className={`${
+                listView === "Board" ? "w-[200px] flex-shrink-0" : "w-full"
+              }`}
+            >
+              <div className="font-medium text-md mb-2">
+                {groupingType === GROUPING_TYPE.PRIORITY ? (
+                  key
+                ) : key ? (
+                  <span>
+                    {key.split(" ").slice(1).join(" ")} &#x2022;{" "}
+                    {key === new Date().toDateString() && (
+                      <span> Today &#x2022; </span>
+                    )}
+                    {DaysInWeek[new Date(key).getDay()]}
+                  </span>
+                ) : (
+                  "No due date"
+                )}
+              </div>
+              {listView === "Board" ? "" : <hr />}
+              <ul className="w-full mb-8">
+                {groupingTodoList &&
+                  groupingTodoList[key].map((todo) => {
+                    return (
+                      <TodoItem
+                        key={todo?.id}
+                        todo={todo}
+                        type={TODOITEM_TYPES.FULL}
+                      />
+                    );
+                  })}
+              </ul>
+            </section>
+          );
+        })}
+      </section>
+    );
+  }
 
   return (
     <section className={`${listView === "Board" ? "flex gap-4" : "w-full"}`}>
-      {todos.filter(
-        (todo) => new Date(todo.dueDate).getDate() < new Date().getDate()
-      ).length ? (
-        <section className={`${listView === "Board" ? "w-[200px]" : "w-full"}`}>
-          <div>Overdue Date</div>
+      {overDueTodoList.length ? (
+        <section
+          className={`${
+            listView === "Board" ? "w-[200px] flex-shrink-0" : "w-full"
+          }`}
+        >
+          <div className="font-medium text-md mb-2">Overdue Date</div>
+          {listView === "Board" ? "" : <hr />}
           <ul className="w-full">
-            {todos
-              .filter(
-                (todo) =>
-                  new Date(todo.dueDate).getDate() < new Date().getDate()
-              )
-              .reverse()
-              .map((todo) => {
-                return (
-                  <TodoItem
-                    key={todo?.id}
-                    todo={todo}
-                    type={TODOITEM_TYPES.FULL}
-                  />
-                );
-              })}
+            {overDueTodoList.map((todo) => {
+              return (
+                <TodoItem
+                  key={todo?.id}
+                  todo={todo}
+                  type={TODOITEM_TYPES.FULL}
+                />
+              );
+            })}
           </ul>
         </section>
       ) : (
         ""
       )}
-      {todos.filter((todo) => !todo.isCompleted).length ? (
-        <section className={`${listView === "Board" ? "w-[200px]" : "w-full"}`}>
-          {listView === "Board" ? <div>Today</div> : ""}
+      {uncompletedTodoList.length ? (
+        <section
+          className={`${
+            listView === "Board" ? "w-[200px] flex-shrink-0" : "w-full"
+          }`}
+        >
+          {listView === "Board" && page === TODO_PAGES.TODAY ? (
+            <div className="font-medium text-md mb-2">Today</div>
+          ) : (
+            ""
+          )}
           <ul className="w-full">
-            {todos
-              .filter((todo) => !todo.isCompleted)
-              .map((todo) => {
-                return (
-                  <TodoItem
-                    key={todo?.id}
-                    todo={todo}
-                    type={TODOITEM_TYPES.FULL}
-                  />
-                );
-              })}
+            {uncompletedTodoList.map((todo) => {
+              return (
+                <TodoItem
+                  key={todo?.id}
+                  todo={todo}
+                  type={TODOITEM_TYPES.FULL}
+                />
+              );
+            })}
           </ul>
         </section>
       ) : (
         ""
       )}
-      <section className={`${listView === "Board" ? "w-[200px]" : "w-full"}`}>
-        {todos.filter((todo) => todo.isCompleted).length ? (
+      <section
+        className={`${
+          listView === "Board" ? "w-[200px] flex-shrink-0" : "w-full"
+        }`}
+      >
+        {completedTodoList.length ? (
           <div
             className="text-medium text-white inline-flex gap-2 bg-primary px-1 rounded-[3px] cursor-pointer"
             onClick={() => {
@@ -90,25 +185,22 @@ const TodoList: React.FC<Props> = ({ type }) => {
           >
             {isShowCompleted ? <DownOutlined /> : <RightOutlined />}
             <span className="font-medium">Completed</span>
-            {todos.filter((todo) => todo.isCompleted).length}
+            {completedTodoList.length}
           </div>
         ) : (
           ""
         )}
         {isShowCompleted ? (
           <ul className="w-full">
-            {todos
-              .filter((todo) => todo.isCompleted)
-              .reverse()
-              .map((todo) => {
-                return (
-                  <TodoItem
-                    key={todo?.id}
-                    todo={todo}
-                    type={TODOITEM_TYPES.FULL}
-                  />
-                );
-              })}
+            {completedTodoList.map((todo) => {
+              return (
+                <TodoItem
+                  key={todo?.id}
+                  todo={todo}
+                  type={TODOITEM_TYPES.FULL}
+                />
+              );
+            })}
           </ul>
         ) : (
           ""

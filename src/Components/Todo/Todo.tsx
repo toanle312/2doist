@@ -8,6 +8,7 @@ import { Dropdown } from "antd";
 
 type Props = {
   page: string;
+  currentDate?: Date;
 };
 
 const items = [
@@ -22,7 +23,7 @@ const items = [
  * @param page type of todo page
  * @returns
  */
-export const Todo: React.FC<Props> = ({ page }) => {
+export const Todo: React.FC<Props> = ({ page, currentDate }) => {
   const [isAddTodo, setIsAddTodo] = useState<boolean>(false);
 
   const {
@@ -51,6 +52,7 @@ export const Todo: React.FC<Props> = ({ page }) => {
           type={MODAL_TYPES.ADD}
           page={page}
           setIsModalOpen={setIsAddTodo}
+          currentDate={currentDate}
         />
       )}
     </div>

@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useMemo } from "react";
-import "./DatePicker.scss";
-import { ShowMonthListByYear } from "./ShowMonthListByYear";
+import "./UpComingDatePicker.scss";
+import { ShowUpComingMonthListByYear } from "./ShowUpComingMonthListByYear";
 import { MonthShortHand } from "@/interface";
 import { DatePickerContext } from "@/Context/DatePickerContext";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { TodoContext } from "@/Context/TodoContext";
 import { ThemeContext } from "@/Context/ThemeContext";
 
 type Props = {
@@ -20,10 +19,10 @@ const end = start + 1;
  * @param props includes today: current date
  * @returns Table of month in years to choose date
  */
-export const DatePicker: React.FC<Props> = ({ today }) => {
+export const UpComingDatePicker: React.FC<Props> = ({ today }) => {
   const { month, year, setMonth, setYear, currentHoverDate, numberOfTasks } =
     useContext(DatePickerContext);
-  const { todo } = useContext(TodoContext);
+
   const { isDarkTheme } = useContext(ThemeContext);
 
   // Update today
@@ -32,16 +31,15 @@ export const DatePicker: React.FC<Props> = ({ today }) => {
   }, [today]);
 
   useEffect(() => {
-    const date = todo.dueDate ? new Date(todo.dueDate) : currentDate;
-    setMonth(date.getMonth());
-    setYear(date.getFullYear());
+    setMonth(currentDate.getMonth());
+    setYear(currentDate.getFullYear());
   }, [today]);
 
   return (
-    <div className="date-picker overflow-hidden">
-      <div className="date-picker__header flex justify-between">
-        <p className="font-large text-small">
-          {MonthShortHand[month] + " " + year}
+    <div className="upcoming-date-picker overflow-hidden">
+      <div className="upcoming-date-picker__header flex justify-between">
+        <p className="font-large text-3xl">
+          {year === 0 ? "..." : MonthShortHand[month] + " " + year}
         </p>
         <section className="flex gap-4 items-center">
           <button
@@ -75,9 +73,9 @@ export const DatePicker: React.FC<Props> = ({ today }) => {
             }}
           >
             <div
-              className={`w-[8px] h-[8px] mx-1 border-solid ${
+              className={`w-[12px] h-[12px] mx-1 border-solid ${
                 isDarkTheme ? "border-white" : "border-black"
-              } border-[1px] rounded-full`}
+              } border-[2px] rounded-full`}
             ></div>
           </button>
           <button
@@ -98,31 +96,31 @@ export const DatePicker: React.FC<Props> = ({ today }) => {
         </section>
       </div>
       {currentHoverDate ? (
-        <span className="text-extra-small text-textGray flex justify-center">
+        <span className="text-lg text-textGray flex justify-center">
           {currentHoverDate} &#x2022;&nbsp;
           <span className="font-bold">
             {numberOfTasks} {numberOfTasks > 1 ? "tasks " : "task "} due
           </span>
         </span>
       ) : (
-        <div className="date-picker__date">
+        <div className="upcoming-date-picker__date mt-4">
           {/* Show date in week */}
           {dateInWeek.map((date) => {
             return (
               <p
                 key={date}
-                className="basis-[14.285%] text-extra-small flex-1 text-center"
+                className="basis-[14.285%] text-lg flex-1 text-center"
               >
-                {date[0]}
+                {date}
               </p>
             );
           })}
         </div>
       )}
       <hr className="mt-[6px]" />
-      <div className="date-picker__month-list relative">
+      <div className="upcoming-date-picker__month-list relative">
         {/* Show all month from current month to the month end of the year */}
-        <ShowMonthListByYear
+        <ShowUpComingMonthListByYear
           currentYear={currentDate.getFullYear()}
           currentMonth={currentDate.getMonth()} //getMonth(): return month of year from 0 - 11
           currentDate={currentDate}

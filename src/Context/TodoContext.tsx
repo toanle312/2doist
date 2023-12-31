@@ -266,7 +266,6 @@ const TodoProvider: React.FC<Props> = ({ children }) => {
     isLoadingAddTodo,
     setIsLoadingAddTodo,
     isLoadingUpdateTodo,
-
     isLoadingDeleteTodo,
     isShowAlert,
     setIsShowAlert,

@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppDispatch, RootState } from "@/Redux/store";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { User } from "firebase/auth";
 import { auth } from "@/Firebase/config";
+import useTodoList from "./useTodoList";
 
+export { useTodoList };
 //useDispatch hook with types.
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 //useSelector hook with types
@@ -13,11 +15,11 @@ export const useAuth = () => {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    const unsubcribed = auth.onAuthStateChanged((user) =>
+    const unsubscribed = auth.onAuthStateChanged((user) =>
       setUser(user as User)
     );
     return () => {
-      unsubcribed();
+      unsubscribed();
     };
   }, []);
 
@@ -31,7 +33,7 @@ export const useFetch = (fetchCallback: any): any[] => {
     (async () => {
       try {
         await dispatch(fetchCallback).unwrap();
-        setIsLoading(false)
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
         throw new Error("Can not fetch data");
@@ -40,5 +42,4 @@ export const useFetch = (fetchCallback: any): any[] => {
   }, []);
 
   return [isLoading, setIsLoading];
-}
-
+};

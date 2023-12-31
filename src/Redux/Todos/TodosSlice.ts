@@ -2,11 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { firebaseProvider } from "@/Firebase/provider";
 import { TTodo } from "@/interface";
 
-const initialState: { todos: TTodo[]; currentSubTask: TTodo[]; currentTodo: TTodo; status: string } = {
+const initialState: { todos: TTodo[]; currentSubTask: TTodo[]; currentTodo: TTodo; status: string, groupingType: "", sortingType: "" } = {
   todos: [] as TTodo[],
   currentSubTask: [] as TTodo[],
   currentTodo: {} as TTodo,
-  status: "Normal",
+  status: "idle",
+  groupingType: "",
+  sortingType: ""
 };
 
 export const todosSlice = createSlice({
@@ -18,7 +20,15 @@ export const todosSlice = createSlice({
     },
     getCurrentTodo: (state, action) => {
       state.currentTodo = [...state.todos].find(todo => todo.id === action.payload) as TTodo;
-      state.status = "Normal";
+      state.status = "idle";
+    },
+    updateGroupingType: (state, action) => {
+      state.groupingType = action.payload;
+      state.status = "idle";
+    },
+    updateSortingType: (state, action) => {
+      state.sortingType = action.payload;
+      state.status = "idle";
     }
   },
   extraReducers: (builder) => {

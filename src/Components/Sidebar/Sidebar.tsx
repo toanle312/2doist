@@ -59,6 +59,7 @@ const Sidebar: React.FC<Props> = ({
 }) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isResizing, setIsResizing] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const startResizing = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -102,7 +103,9 @@ const Sidebar: React.FC<Props> = ({
       if (count) {
         project = "Untitled project (" + count + ")";
       }
+      setIsLoading(true);
       await dispatch(addProject(project)).unwrap();
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
       throw new Error("Can not add new project");
@@ -138,6 +141,7 @@ const Sidebar: React.FC<Props> = ({
         >
           <PlusOutlined />
           New project
+          {isLoading === false ? "" : "Loading ..."}
         </div>
       </section>
       <div

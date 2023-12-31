@@ -52,7 +52,7 @@ const TodoItem: React.FC<Props> = ({ todo, type }) => {
   const [colorPriority, setColorPriority] = useState<string>("");
   const [isOpenEditTodoModal, setIsOpenEditTodoModal] =
     useState<boolean>(false);
-    
+
   const dispatch = useAppDispatch();
 
   const handleToggle: React.MouseEventHandler<HTMLButtonElement> | undefined = (
