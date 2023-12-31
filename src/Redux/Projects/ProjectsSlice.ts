@@ -10,7 +10,7 @@ const initialState: {
   status: string;
 } = {
   projects: [],
-  currentProject: undefined,
+  currentProject: {} as TProject,
   status: "idle",
 };
 
@@ -25,6 +25,9 @@ export const projectsSlice = createSlice({
         state.currentProject = [...state.projects].find(
           (proj) => proj.id === action.payload
         ) as any;
+        if (state.currentProject === undefined) {
+          state.currentProject = { projectName: "not-found ☠️" } as TProject;
+        }
       }
     },
   },
@@ -37,6 +40,17 @@ export const projectsSlice = createSlice({
       state.status = "idle";
     });
     builder.addCase(addProject.rejected, (state, _) => {
+      state.status = "rejected";
+    });
+    builder.addCase(deleteProject.pending, (state, _) => {
+      state.status = "pending";
+    });
+    builder.addCase(deleteProject.fulfilled, (state, action) => {
+      state.projects = [...state.projects].filter(
+        (proj) => proj.id !== action.payload.id
+      );
+    });
+    builder.addCase(deleteProject.rejected, (state, _) => {
       state.status = "rejected";
     });
     builder.addCase(updateProject.pending, (state, _) => {
@@ -115,6 +129,19 @@ export const addProject = createAsyncThunk(
     } catch (error) {
       console.error(error);
       throw new Error("Can not add project");
+    }
+  }
+);
+
+export const deleteProject = createAsyncThunk(
+  "projects/deleteProject",
+  async (project: TProject) => {
+    try {
+      await firebaseProvider.deleteExistDoc("projects", project);
+      return project;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Can not delete project");
     }
   }
 );

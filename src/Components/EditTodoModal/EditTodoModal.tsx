@@ -15,6 +15,7 @@ import SubTasksControl from "@/Components/SubTasks/SubTasksControl";
 import { default as SubTaskProvider } from "@/Context/TodoContext";
 import { todosSlice } from "@/Redux/Todos/TodosSlice";
 import { ThemeContext } from "@/Context/ThemeContext";
+import Spinning from "@/Pages/LoadingPage/Spinning";
 
 type Props = {
   isOpenEditTodoModal: boolean;
@@ -32,18 +33,22 @@ const EditTodoModal: React.FC<Props> = ({
   setIsOpenEditTodoModal,
 }) => {
   const dispatch = useAppDispatch();
-  const { todo, handleUpdateTodo, handleChangeTodo } = useContext(TodoContext);
+  const { todo, handleUpdateTodo, handleChangeTodo, isLoadingUpdateTodo } =
+    useContext(TodoContext);
 
   useEffect(() => {
     dispatch(todosSlice.actions.getCurrentTodo(todo.id));
-  }, [todo.id, dispatch]);
+  }, [todo.id]);
+
+  const currentTodo = useAppSelector((state) => state.todos.currentTodo);
 
   const projects = useAppSelector((state) => state.projects.projects);
 
-  const handleSaveTodoModal = () => {
-    handleUpdateTodo(todo);
+  const handleSaveTodoModal = async () => {
+    await handleUpdateTodo({ ...todo, subTasks: currentTodo.subTasks });
     setIsOpenEditTodoModal(false);
   };
+
   const handleCancelTodoModal = () => {
     setIsOpenEditTodoModal(false);
   };
@@ -63,7 +68,12 @@ const EditTodoModal: React.FC<Props> = ({
     >
       <div className={`edit-modal ${isDarkTheme ? "dark-mode" : ""}`}>
         <hr />
-        <div className="flex w-full h-[480px]">
+
+        <div
+          className={`${
+            isLoadingUpdateTodo && "disabled"
+          } flex w-full h-[480px]`}
+        >
           <div className="flex flex-col basis-[70%] p-4 h-full overflow-y-auto">
             <TodoItem todo={todo} type={TODOITEM_TYPES.SHORT} />
             <SubTaskProvider>
@@ -134,13 +144,18 @@ const EditTodoModal: React.FC<Props> = ({
             >
               Cancel
             </button>
-            <button
-              className="!bg-primary !text-white btn"
-              disabled={todo?.taskName === ""}
-              onClick={handleSaveTodoModal}
-            >
-              Save
-            </button>
+
+            {isLoadingUpdateTodo ? (
+              <Spinning />
+            ) : (
+              <button
+                className="!bg-primary !text-white btn"
+                disabled={todo?.taskName === ""}
+                onClick={handleSaveTodoModal}
+              >
+                Save
+              </button>
+            )}
           </div>
         </div>
       </div>

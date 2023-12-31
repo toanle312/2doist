@@ -9,7 +9,6 @@ import { useAppSelector, useFetch } from "@/Hooks";
 import { fetchTodosByUserID } from "@/Redux/Todos/TodosSlice";
 import { fetchProjects } from "@/Redux/Projects/ProjectsSlice";
 import LoadingPage from "@/Pages/LoadingPage/LoadingPage";
-import Spinning from "@/Pages/LoadingPage/Spinning";
 
 const MainLayout: React.FC = () => {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);

@@ -1,27 +1,26 @@
-# React + TypeScript + Vite
+# 2DOIST - PERSONAL PROJECT
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Tổng quan dự án
 
-Currently, two official plugins are available:
+- Xây dựng dựa trang web todoist.com và ứng dụng Microsoft To Do
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Sử dụng Vite để tạo dự án sơ khai với React + TypeScript.
 
-## Expanding the ESLint configuration
+- Đối với FE, sử dụng các thư viện và Framework hỗ trợ sau:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+  - React + TS (Typescript)
+  - TailwindCSS
+  - Ant Design
+  - Redux Toolkits
+  - SASS/SCSS
 
-- Configure the top-level `parserOptions` property like this:
+- Đối với BE, sử dụng Firebase của Google
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+- Dùng Vercel để deploy dự án
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Cách chạy chương trình
+
+- Cài đặt npm và vite phiên bản mởi nhất
+- Clone repos này về máy
+- cd todoist/, chạy lệnh `npm i`, sau khi tải các package xong chạy `npm run dev`
+- cd /src/Emulators, chạy lệnh `firebase emulators:start` (bắt buộc cài firebase tools), để sử dụng firebase trên localhost

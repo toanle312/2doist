@@ -100,10 +100,6 @@ export const TodoModal: React.FC<Props> = ({
     setIsModalOpen(false);
   };
 
-  // const { useToken } = theme;
-  // const { token } = useToken();
-  // console.log(token.colorPrimary);
-
   const { isDarkTheme } = useContext(ThemeContext);
 
   return (

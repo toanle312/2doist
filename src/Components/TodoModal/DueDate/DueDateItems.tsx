@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useDate } from "@/Hooks/useDate";
 
 import "./DueDate.scss";
@@ -14,8 +14,7 @@ export const DueDateItems: React.FC = () => {
   const { today } = useDate();
 
   const { todo, handleChangeTodo, handleUpdateTodo } = useContext(TodoContext);
-  const { setIsOpenDueDate, type, dateList, isOpenDueDate } =
-    useContext(DueDateContext);
+  const { setIsOpenDueDate, type, dateList } = useContext(DueDateContext);
   const { isDarkTheme } = useContext(ThemeContext);
 
   const handleChooseDate = (dateItem: TDateList) => {

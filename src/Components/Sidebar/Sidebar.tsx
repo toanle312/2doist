@@ -140,8 +140,7 @@ const Sidebar: React.FC<Props> = ({
           onClick={handleAddNewProject}
         >
           <PlusOutlined />
-          New project
-          {isLoading === false ? "" : "Loading ..."}
+          {isLoading === false ? "New project" : "Loading ..."}
         </div>
       </section>
       <div
