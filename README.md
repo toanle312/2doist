@@ -16,7 +16,7 @@
 
 - Đối với BE, sử dụng Firebase của Google
 
-- Dùng Vercel để deploy dự án
+- Dùng Netlify để deploy dự án
 
 ## Cách chạy chương trình
 
