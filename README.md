@@ -11,7 +11,7 @@
   - React + TS (Typescript)
   - TailwindCSS
   - Ant Design
-  - Redux Toolkits
+  - Redux Toolkit
   - SASS/SCSS
 
 - Đối với BE, sử dụng Firebase của Google
